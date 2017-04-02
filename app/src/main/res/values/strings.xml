@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Handy Phone</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format1">Frequent</string>
+    <string name="section_format2">Work</string>
+    <string name="section_format3">Family</string>
+    <string name="section_format4">Friends</string>
+    <string name="section_format">All Contacts</string>
+</resources>
