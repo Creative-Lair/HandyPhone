@@ -1,9 +1,14 @@
 package com.creativelair.handyphone;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
@@ -17,133 +22,95 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AlphabetIndexer;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.Toast;
 
-public class All_Contacts extends Fragment implements
-        LoaderCallbacks<Cursor>{
+import com.creativelair.handyphone.Adapters.ContactListAdapter;
 
-  //  private OnContactSelectedListener mContactsListener;
-    private SimpleCursorAdapter mAdapter;
-    private String mCurrentFilter = null;
+import java.util.ArrayList;
 
-    ListView listView;
+public class All_Contacts extends Fragment{
 
-    String TAG = getClass().getSimpleName();
-
-    private static final String[] CONTACTS_SUMMARY_PROJECTION = new String[] {
-            Contacts._ID,
-            Contacts.DISPLAY_NAME,
-            Contacts.HAS_PHONE_NUMBER,
-            Contacts.LOOKUP_KEY
-    };
+    GridView listView;
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.all_contacts, container, false);
-        listView = (ListView) view.findViewById(R.id.list);
+        listView = (GridView) view.findViewById(R.id.list);
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+           requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+       } else {
+           LoadContactsAyscn loadContactsAyscn = new LoadContactsAyscn();
+           loadContactsAyscn.execute();
+       }
+
         return view;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                LoadContactsAyscn loadContactsAyscn = new LoadContactsAyscn();
+                loadContactsAyscn.execute();
 
-        setHasOptionsMenu(true);
-
-        getLoaderManager().initLoader(0, null, this);
-
-        mAdapter = new IndexedListAdapter(
-                this.getActivity(),
-                R.layout.fragment_frequent,
-                null,
-                new String[] {ContactsContract.Contacts.DISPLAY_NAME},
-                new int[] {R.id.list});
-
-        listView.setAdapter(mAdapter);
-        listView.setFastScrollEnabled(true);
-
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            Toast.makeText(activity, "", Toast.LENGTH_SHORT).show();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnContactSelectedListener");
-        }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-        Uri baseUri;
-
-        if (mCurrentFilter != null) {
-            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,
-                    Uri.encode(mCurrentFilter));
-        } else {
-            baseUri = Contacts.CONTENT_URI;
-        }
-
-        String selection = "((" + Contacts.DISPLAY_NAME + " NOTNULL) AND ("
-                + Contacts.HAS_PHONE_NUMBER + "=1) AND ("
-                + Contacts.DISPLAY_NAME + " != '' ))";
-
-        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-
-        Log.v(TAG, "Name = "+ContactsContract.Contacts.DISPLAY_NAME);
-
-        return new CursorLoader(getActivity(), baseUri, CONTACTS_SUMMARY_PROJECTION, selection, null, sortOrder);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
-    }
-
-    class IndexedListAdapter extends SimpleCursorAdapter implements SectionIndexer{
-
-        AlphabetIndexer alphaIndexer;
-
-        public IndexedListAdapter(Context context, int layout, Cursor c,
-                                  String[] from, int[] to) {
-            super(context, layout, c, from, to, 0);
-        }
-
-        @Override
-        public Cursor swapCursor(Cursor c) {
-            if (c != null) {
-                alphaIndexer = new AlphabetIndexer(c,
-                        c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME),
-                        " ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-                Log.v(TAG, "data = "+ c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            } else {
+                Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
             }
-            return super.swapCursor(c);
-        }
-
-        @Override
-        public int getPositionForSection(int section) {
-            return alphaIndexer.getPositionForSection(section);
-        }
-
-        @Override
-        public int getSectionForPosition(int position) {
-            return alphaIndexer.getSectionForPosition(position);
-        }
-
-        @Override
-        public Object[] getSections() {
-            return alphaIndexer == null ? null : alphaIndexer.getSections();
         }
     }
+
+    class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<com.creativelair.handyphone.Contacts>> {
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected ArrayList<com.creativelair.handyphone.Contacts> doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+            ArrayList<com.creativelair.handyphone.Contacts> contacts = new ArrayList<>();
+
+            Cursor c = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                    null, null, null);
+            while (c.moveToNext()) {
+
+                String contactName = c
+                        .getString(c
+                                .getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String phNumber = c
+                        .getString(c
+                                .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                com.creativelair.handyphone.Contacts contacts1 = new com.creativelair.handyphone.Contacts(contactName,phNumber,null);
+
+                contacts.add(contacts1);
+
+            }
+            c.close();
+
+            return contacts;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<com.creativelair.handyphone.Contacts> contacts) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(contacts);
+
+            ContactListAdapter adapter = new ContactListAdapter(getContext(),R.layout.contact_list_item,contacts);
+
+            listView.setAdapter(adapter);
+        }
+
+    }
+
+
 }
