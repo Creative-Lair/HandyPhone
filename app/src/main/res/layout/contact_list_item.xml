@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.creativelair.handyphone.SquareImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/icon"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:adjustViewBounds="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_contact"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/icon"
+        android:layout_alignStart="@+id/icon"
+        android:text="@string/contact_name"
+        android:gravity="center_horizontal"
+        android:textSize="18sp"
+        android:layout_below="@+id/icon"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/name"/>
+
+
+</RelativeLayout>
