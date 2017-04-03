@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.creativelair.handyphone.All_Contacts;
+import com.creativelair.handyphone.Fragment.All_Contacts;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 

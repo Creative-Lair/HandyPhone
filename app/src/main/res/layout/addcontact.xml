@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center">
 
     <ImageView
         android:id="@+id/icon"
@@ -10,24 +12,36 @@
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="80dp"
         android:background="@drawable/imageborder" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icon"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/select_from_gallery"
+        android:textSize="16sp"
+        android:id="@+id/gallery"
+        android:background="@null"/>
 
     <EditText
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icon"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/gallery"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/imageborder"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/enter_name"
-        android:background="@drawable/imageborder"
         android:inputType="textPersonName"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
-        android:textColorLink="@color/colorBlack" />
+        android:textColorLink="@color/colorBlack"
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/phone"
@@ -37,15 +51,15 @@
         android:layout_alignStart="@+id/name"
         android:layout_below="@+id/name"
         android:layout_marginTop="15dp"
-        android:ems="10"
         android:background="@drawable/imageborder"
+        android:ems="10"
         android:gravity="center"
         android:hint="@string/enter_number"
         android:inputType="phone"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textColorLink="@color/colorBlack"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/category"
@@ -74,10 +88,10 @@
          android:id="@+id/work"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginLeft="10dp"
-         android:layout_marginStart="10dp"
          android:layout_marginEnd="10dp"
+         android:layout_marginLeft="10dp"
          android:layout_marginRight="10dp"
+         android:layout_marginStart="10dp"
          android:text="@string/work" />
 
      <CheckBox
@@ -102,9 +116,9 @@
  </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/add"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:background="@color/colorBlack"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
