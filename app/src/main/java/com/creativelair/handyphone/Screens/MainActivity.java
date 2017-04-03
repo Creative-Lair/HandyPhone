@@ -1,4 +1,4 @@
-package com.creativelair.handyphone;
+package com.creativelair.handyphone.Screens;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.creativelair.handyphone.Adapters.SectionsPagerAdapter;
+import com.creativelair.handyphone.R;
 
 public class MainActivity extends AppCompatActivity {
 

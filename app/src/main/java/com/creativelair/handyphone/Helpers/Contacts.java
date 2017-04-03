@@ -1,15 +1,20 @@
-package com.creativelair.handyphone;
+package com.creativelair.handyphone.Helpers;
 
 import android.graphics.Bitmap;
-
-/**
- * Created by AHSAN on 4/2/2017.
- */
 
 public class Contacts {
     private String Name;
     private String Number;
-    private Bitmap icon;
+    private String icon;
+    private String Group;
+
+    public Contacts() {
+        Name = null;
+        Number = null;
+        icon = null;
+        Group = null;
+
+    }
 
     public String getName() {
         return Name;
@@ -27,15 +32,23 @@ public class Contacts {
         Number = number;
     }
 
-    public Bitmap getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(Bitmap icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 
-    public Contacts(String name, String number, Bitmap icon) {
+    public String getGroup() {
+        return Group;
+    }
+
+    public void setGroup(String group) {
+        Group = group;
+    }
+
+    public Contacts(String name, String number, String icon) {
         Name = name;
         Number = number;
         this.icon = icon;

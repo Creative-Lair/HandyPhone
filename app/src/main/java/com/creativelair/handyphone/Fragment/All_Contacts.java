@@ -1,41 +1,31 @@
-package com.creativelair.handyphone;
+package com.creativelair.handyphone.Fragment;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.Contacts;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AlphabetIndexer;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.SectionIndexer;
 import android.widget.Toast;
 
 import com.creativelair.handyphone.Adapters.ContactListAdapter;
+import com.creativelair.handyphone.GridSpacingItemDecoration;
+import com.creativelair.handyphone.Helpers.Contacts;
+import com.creativelair.handyphone.R;
+import com.creativelair.handyphone.RecyclerItemClickListener;
+import com.creativelair.handyphone.Screens.AddContact;
 
 import java.util.ArrayList;
 
@@ -44,7 +34,8 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
     RecyclerView listView;
     FloatingActionButton fb;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-
+    private static LayoutInflater inflat = null;
+    ArrayList<Contacts> allcontacts;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -53,12 +44,30 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         fb = (FloatingActionButton) view.findViewById(R.id.add);
 
         fb.setOnClickListener(this);
-
+        allcontacts = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext().getApplicationContext(), 2);
         listView.setLayoutManager(mLayoutManager);
         listView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         listView.setItemAnimator(new DefaultItemAnimator());
 
+        listView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), listView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        if(view==null) {
+                            view = inflat.inflate(R.layout.all_contacts, null);
+                        }
+
+                        Contacts contacts = allcontacts.get(position);
+
+                        MyDialog myDialog = new MyDialog(contacts);
+                        myDialog.show(getActivity().getFragmentManager(), "my_dialog");
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
         checkPermission();
         return view;
     }
@@ -102,7 +111,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         }
     }
 
-    public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<com.creativelair.handyphone.Contacts>> {
+    public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
 
         @Override
         protected void onPreExecute() {
@@ -111,8 +120,8 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         }
 
         @Override
-        protected ArrayList<com.creativelair.handyphone.Contacts> doInBackground(Void... params) {
-            ArrayList<com.creativelair.handyphone.Contacts> contacts = new ArrayList<>();
+        protected ArrayList<Contacts> doInBackground(Void... params) {
+            ArrayList<Contacts> contacts = new ArrayList<>();
             Cursor c = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     null, null, null);
             while (c.moveToNext()) {
@@ -124,9 +133,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                         .getString(c
                                 .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                //Blo = c.getBlob(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
-
-                com.creativelair.handyphone.Contacts contacts1 = new com.creativelair.handyphone.Contacts(contactName,phNumber,null);
+                Contacts contacts1 = new Contacts(contactName,phNumber,null);
 
                 contacts.add(contacts1);
 
@@ -137,8 +144,9 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         }
 
         @Override
-        protected void onPostExecute(ArrayList<com.creativelair.handyphone.Contacts> contacts) {
+        protected void onPostExecute(ArrayList<Contacts> contacts) {
             super.onPostExecute(contacts);
+            allcontacts = contacts;
             ContactListAdapter adapter = new ContactListAdapter(getContext(), contacts);
             listView.setAdapter(adapter);
         }
