@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,7 +18,11 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,22 +39,37 @@ import java.util.ArrayList;
 
 public class All_Contacts extends Fragment{
 
-    GridView listView;
+    RecyclerView listView;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.all_contacts, container, false);
-        listView = (GridView) view.findViewById(R.id.list);
-       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-           requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-       } else {
-           LoadContactsAyscn loadContactsAyscn = new LoadContactsAyscn();
-           loadContactsAyscn.execute();
-       }
+        listView = (RecyclerView) view.findViewById(R.id.list);
 
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext().getApplicationContext(), 2);
+        listView.setLayoutManager(mLayoutManager);
+        listView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        listView.setItemAnimator(new DefaultItemAnimator());
+
+        checkPermission();
         return view;
+    }
+
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    public void checkPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+        } else {
+            LoadContactsAyscn loadContactsAyscn = new LoadContactsAyscn();
+            loadContactsAyscn.execute();
+        }
+
     }
 
     @Override
@@ -65,20 +85,17 @@ public class All_Contacts extends Fragment{
         }
     }
 
-    class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<com.creativelair.handyphone.Contacts>> {
+public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<com.creativelair.handyphone.Contacts>> {
 
         @Override
         protected void onPreExecute() {
-            // TODO Auto-generated method stub
             super.onPreExecute();
 
         }
 
         @Override
         protected ArrayList<com.creativelair.handyphone.Contacts> doInBackground(Void... params) {
-            // TODO Auto-generated method stub
             ArrayList<com.creativelair.handyphone.Contacts> contacts = new ArrayList<>();
-
             Cursor c = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     null, null, null);
             while (c.moveToNext()) {
@@ -89,6 +106,8 @@ public class All_Contacts extends Fragment{
                 String phNumber = c
                         .getString(c
                                 .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                //Blo = c.getBlob(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
 
                 com.creativelair.handyphone.Contacts contacts1 = new com.creativelair.handyphone.Contacts(contactName,phNumber,null);
 
@@ -102,11 +121,8 @@ public class All_Contacts extends Fragment{
 
         @Override
         protected void onPostExecute(ArrayList<com.creativelair.handyphone.Contacts> contacts) {
-            // TODO Auto-generated method stub
             super.onPostExecute(contacts);
-
-            ContactListAdapter adapter = new ContactListAdapter(getContext(),R.layout.contact_list_item,contacts);
-
+            ContactListAdapter adapter = new ContactListAdapter(getContext(), contacts);
             listView.setAdapter(adapter);
         }
 

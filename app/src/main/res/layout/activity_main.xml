@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="@color/colorWhite"
             app:layout_scrollFlags="scroll|enterAlways">
 
         </android.support.v7.widget.Toolbar>
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="center"
-            app:tabTextColor="#000000"
+            app:tabTextColor="@color/colorBlack"
             app:tabTextAppearance="@style/TextAppearance.StatusBar.EventContent.Title"
             app:tabMode="scrollable"
             app:tabIndicatorColor="#005" />

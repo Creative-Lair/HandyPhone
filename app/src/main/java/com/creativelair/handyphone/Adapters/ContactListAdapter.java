@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,52 +18,56 @@ import com.creativelair.handyphone.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by AHSAN on 4/2/2017.
- */
 
-public class ContactListAdapter extends ArrayAdapter {
+
+public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.MyViewHolder> {
 
     private Context mContext;
     ArrayList<Contacts> contacts;
 
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView name;
+        public ImageView img;
 
-    public ContactListAdapter(Context context,int resource, ArrayList<Contacts> objects) {
-        super(context, resource, objects);
-        this.mContext = context;
-        this.contacts = objects;
+        public MyViewHolder(View view) {
+            super(view);
+            name = (TextView) view.findViewById(R.id.name);
+            img = (ImageView) view.findViewById(R.id.icon);
 
+        }
     }
 
     @Override
-    public int getCount() {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.contact_list_item, parent, false);
+
+
+
+        return new MyViewHolder(itemView);
+    }
+
+
+    public ContactListAdapter(Context mContext, ArrayList<Contacts> contacts) {
+        this.mContext = mContext;
+        this.contacts = contacts;
+    }
+
+    @Override
+    public int getItemCount() {
         return contacts.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return contacts.get(position);
-    }
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        Contacts contact = contacts.get(position);
+        holder.name.setText(contact.getName());
 
+
+    }
     @Override
     public long getItemId(int position) {
         return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-
-        convertView = inflater.inflate(R.layout.contact_list_item, parent, false);
-
-        ImageView iv = (ImageView) convertView.findViewById(R.id.icon);
-        TextView tv = (TextView) convertView.findViewById(R.id.name);
-
-        //iv.setImageDrawable();
-        tv.setText(contacts.get(position).getName());
-
-        return convertView;
     }
 
 }
