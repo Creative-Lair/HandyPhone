@@ -1,19 +1,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:orientation="vertical" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/icon_add"
+        app:backgroundTint="@color/colorBlack"
+        app:fabSize="normal" />
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:numColumns="auto_fit"
-        android:columnWidth="135dp"
-        android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
-        android:gravity="center"
-        android:stretchMode="columnWidth" >
-
-    </GridView>
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:layout_alignParentTop="true"
+        android:scrollbars="vertical" />
 </RelativeLayout>
