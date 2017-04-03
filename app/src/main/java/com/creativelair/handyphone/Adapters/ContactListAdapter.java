@@ -62,7 +62,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Contacts contact = contacts.get(position);
         holder.name.setText(contact.getName());
+        if(contact.getIcon()!=null) {
+            holder.img.setImageBitmap(contact.getIcon());
 
+        }
 
     }
     @Override
