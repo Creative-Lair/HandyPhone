@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -37,9 +39,10 @@ import com.creativelair.handyphone.Adapters.ContactListAdapter;
 
 import java.util.ArrayList;
 
-public class All_Contacts extends Fragment{
+public class All_Contacts extends Fragment implements View.OnClickListener{
 
     RecyclerView listView;
+    FloatingActionButton fb;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     @Override
@@ -47,6 +50,9 @@ public class All_Contacts extends Fragment{
 
         View view = inflater.inflate(R.layout.all_contacts, container, false);
         listView = (RecyclerView) view.findViewById(R.id.list);
+        fb = (FloatingActionButton) view.findViewById(R.id.add);
+
+        fb.setOnClickListener(this);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext().getApplicationContext(), 2);
         listView.setLayoutManager(mLayoutManager);
@@ -85,7 +91,18 @@ public class All_Contacts extends Fragment{
         }
     }
 
-public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<com.creativelair.handyphone.Contacts>> {
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.add:
+                Intent i = new Intent( getContext() , AddContact.class);
+                startActivity(i);
+                break;
+        }
+    }
+
+    public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<com.creativelair.handyphone.Contacts>> {
 
         @Override
         protected void onPreExecute() {
