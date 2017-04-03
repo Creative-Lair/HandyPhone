@@ -20,6 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".AddContact"
+            android:label="@string/add_contact"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.ADDCONTACT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
