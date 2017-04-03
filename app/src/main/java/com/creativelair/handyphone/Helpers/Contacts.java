@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 public class Contacts {
     private String Name;
     private String Number;
-    private String icon;
+    private Bitmap icon;
     private String Group;
 
     public Contacts() {
@@ -32,11 +32,11 @@ public class Contacts {
         Number = number;
     }
 
-    public String getIcon() {
+    public Bitmap getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(Bitmap icon) {
         this.icon = icon;
     }
 
@@ -48,9 +48,13 @@ public class Contacts {
         Group = group;
     }
 
-    public Contacts(String name, String number, String icon) {
+    public Contacts(String name, String number, Bitmap icon) {
         Name = name;
         Number = number;
         this.icon = icon;
     }
 }
+
+
+
+

@@ -161,15 +161,14 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                 Bitmap photo = null;
                 //Blo = c.getBlob(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
                 long contactID=c.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID);
-               int img= c.getInt(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
+               int imgId= c.getInt(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
 
 
 
                // photo = BitmapFactory.decodeStream(img);
-               System.out.println(img);
-                System.out.println(contactName );
-                Bitmap bitmap = queryContactImage(img);
-                img=0;
+
+
+
 /*
 
                 try {
@@ -194,18 +193,14 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                 }
 
  */
-                com.creativelair.handyphone.Contacts contacts1=null;
-                if(bitmap !=null )
-                {
-                    contacts1 = new com.creativelair.handyphone.Contacts(contactName,phNumber,bitmap);
-                }
-                else
-                {
-                    contacts1 = new com.creativelair.handyphone.Contacts(contactName,phNumber,null);
+                com.creativelair.handyphone.Helpers.Contacts contacts1;
+                    photo=queryContactImage(imgId);
+            if( photo !=null)
+             contacts1 = new Contacts(contactName,phNumber,photo);
 
-                }
+             else
+                contacts1 = new Contacts(contactName,phNumber,null);
 
-                Contacts contacts1 = new Contacts(contactName,phNumber,null);
 
                 contacts.add(contacts1);
 
@@ -214,7 +209,8 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
 
             return contacts;
         }
-        private Bitmap queryContactImage(int imageDataRow) {
+
+        public Bitmap queryContactImage(int imageDataRow) {
             Cursor c = getActivity().getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[] {
                     ContactsContract.CommonDataKinds.Photo.PHOTO
             }, ContactsContract.Data._ID + "=?", new String[] {
@@ -243,6 +239,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         }
 
     }
+
 
 
 }

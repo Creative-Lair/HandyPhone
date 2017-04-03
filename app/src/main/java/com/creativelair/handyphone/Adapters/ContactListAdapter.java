@@ -2,6 +2,11 @@ package com.creativelair.handyphone.Adapters;
 
 import android.content.Context;
 
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.ContactsContract;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.creativelair.handyphone.Fragment.All_Contacts;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.R;
 
@@ -19,6 +25,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     private Context mContext;
     ArrayList<Contacts> contacts;
+
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
@@ -57,15 +65,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Contacts contact = contacts.get(position);
         holder.name.setText(contact.getName());
-        if(contact.getIcon()!=null) {
-            holder.img.setImageBitmap(contact.getIcon());
-
-        }
+        holder.img.setImageBitmap(contact.getIcon());
 
     }
     @Override
     public long getItemId(int position) {
         return 0;
     }
+
+
 
 }

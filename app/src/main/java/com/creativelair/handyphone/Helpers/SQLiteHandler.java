@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 public class SQLiteHandler extends SQLiteOpenHelper {
@@ -34,7 +35,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                KEY_NAME + " TEXT NOT NULL, " +
                 KEY_CONTACTNUMBER + " TEXT NOT NULL, " +
                 KEY_GROUP + " TEXT NOT NULL, " +
-                KEY_CONTACTPIC + " TEXT, PRIMARY KEY(" + KEY_ID + "))";
+                KEY_CONTACTPIC + " BLOB, PRIMARY KEY(" + KEY_ID + "))";
 
         db.execSQL(CREATE_LOGIN_TABLE);
         Log.d(TAG, "Database tables created");
@@ -55,10 +56,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         String name = contacts.getName();
         String phone = contacts.getNumber();
-        String image = contacts.getIcon();
+        Bitmap image = contacts.getIcon();
         String group = contacts.getGroup();
 
         ContentValues values = new ContentValues();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+       image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        byte[] img = bos.toByteArray();
         values.put(KEY_NAME, name); // Name
         values.put(KEY_CONTACTNUMBER, phone); // Email
         values.put(KEY_GROUP, group);
@@ -66,7 +70,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         if(image ==  null){
             values.put(KEY_CONTACTPIC, "");
         }else {
-            values.put(KEY_CONTACTPIC, image);
+            values.put(KEY_CONTACTPIC, img);
         }
 
         long uid = db.insert(TABLE_CONTACT, null, values);
