@@ -59,7 +59,7 @@ public class Search extends Activity implements SearchView.OnQueryTextListener, 
                             view = inflat.inflate(R.layout.all_contacts, null);
                         }
 
-                        Contacts contact = contacts.get(position);
+                        Contacts contact = listAdapter.getList().get(position);
 
                         MyDialog myDialog = new MyDialog(contact);
                         myDialog.show(getFragmentManager(), "my_dialog");
