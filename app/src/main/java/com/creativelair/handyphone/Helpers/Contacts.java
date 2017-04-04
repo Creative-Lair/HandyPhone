@@ -7,13 +7,30 @@ public class Contacts {
     private String Number;
     private Bitmap icon;
     private String Group;
+    private int id;
 
     public Contacts() {
+        id = -1;
         Name = null;
         Number = null;
         icon = null;
         Group = null;
 
+    }
+
+    public Contacts(String name, String number, Bitmap icon, int id) {
+        Name = name;
+        Number = number;
+        this.icon = icon;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -46,12 +63,6 @@ public class Contacts {
 
     public void setGroup(String group) {
         Group = group;
-    }
-
-    public Contacts(String name, String number, Bitmap icon) {
-        Name = name;
-        Number = number;
-        this.icon = icon;
     }
 }
 

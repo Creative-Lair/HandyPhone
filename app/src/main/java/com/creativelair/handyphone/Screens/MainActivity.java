@@ -1,32 +1,24 @@
 package com.creativelair.handyphone.Screens;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import com.creativelair.handyphone.Adapters.SectionsPagerAdapter;
 import com.creativelair.handyphone.R;
+import com.creativelair.handyphone.Search;
 
 public class MainActivity extends AppCompatActivity {
 
+    String[] tabs = {"All Contacts"};
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    String[] tabs = {"All Contacts"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.search) {
+            Intent i = new Intent(this, Search.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

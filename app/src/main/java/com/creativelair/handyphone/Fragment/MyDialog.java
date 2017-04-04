@@ -9,24 +9,21 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.creativelair.handyphone.Helpers.Contacts;
+import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.R;
+import com.creativelair.handyphone.Screens.EditContact;
 
 /**
  * Created by AHSAN on 4/3/2017.
@@ -40,7 +37,8 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
     private ImageButton call, msg;
     private TextView name,phone;
     private Contacts contacts;
-
+    private ImageButton edit;
+    private Preference preference;
 
     public MyDialog(Contacts contacts){
         super();
@@ -53,6 +51,7 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
 
         inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.popup_dialog , null);
+        preference = new Preference(getActivity());
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -64,13 +63,21 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         msg = (ImageButton) view.findViewById(R.id.msg);
         name = (TextView) view.findViewById(R.id.name);
         phone = (TextView) view.findViewById(R.id.phone);
+        edit = (ImageButton) view.findViewById(R.id.edit);
+
 
         name.setText(contacts.getName());
         phone.setText(contacts.getNumber());
 
+        if (contacts.getIcon() != null) {
+            iv.setImageBitmap(contacts.getIcon());
+        }
+
 
         call.setOnClickListener(this);
         msg.setOnClickListener(this);
+        edit.setOnClickListener(this);
+
 
         ViewGroup.LayoutParams params = iv.getLayoutParams();
         params.height = (height/3) * 2 - 100;
@@ -107,6 +114,17 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
                     call_action();
                 }
 
+                break;
+            case R.id.edit:
+
+                preference.setName(contacts.getName());
+                preference.setPhone(contacts.getNumber());
+                preference.setGroup(contacts.getGroup());
+                preference.setPic(contacts.getIcon());
+                preference.setId(contacts.getId());
+
+                Intent i = new Intent(getActivity(), EditContact.class);
+                startActivity(i);
                 break;
         }
 

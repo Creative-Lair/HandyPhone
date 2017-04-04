@@ -5,16 +5,19 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical">
+
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scrollbars="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/icon"
                 android:layout_width="150dp"
@@ -25,22 +28,11 @@
                 android:background="@drawable/imageborder"
                 android:scaleType="fitXY" />
 
-            <Button
-                android:id="@+id/gallery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/icon"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="5dp"
-                android:background="@null"
-                android:text="@string/select_from_gallery"
-                android:textSize="16sp" />
-
-            <EditText
+            <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/gallery"
+                android:layout_below="@+id/icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/imageborder"
@@ -53,7 +45,7 @@
                 android:textColorLink="@color/colorBlack"
                 android:textSize="20sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,7 +72,7 @@
                 android:layout_marginTop="15dp"
                 android:ems="10"
                 android:gravity="center"
-                android:text= "@string/category"
+                android:text="@string/category"
                 android:textColor="@color/colorBlack"
                 android:textSize="22sp" />
 
@@ -126,15 +118,6 @@
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
-    <Button
-        android:id="@+id/add"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorBlack"
-        android:text="@string/add_contact_button"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+
 
 </RelativeLayout>

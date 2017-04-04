@@ -1,14 +1,16 @@
 package com.creativelair.handyphone.Helpers;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class SQLiteHandler extends SQLiteOpenHelper {
 
@@ -22,6 +24,17 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_CONTACTPIC = "contactpic";
     private static final String KEY_CONTACTNUMBER = "contactnumber";
     private static final String KEY_GROUP = "contactgroup";
+    private static final String WORK = "Work";
+    private static final String FAMILY = "Family";
+    private static final String FRIEND = "Friend";
+
+    String[] Column = {
+            KEY_ID,
+            KEY_NAME,
+            KEY_CONTACTNUMBER,
+            KEY_GROUP,
+            KEY_CONTACTPIC
+    };
 
     public SQLiteHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,42 +73,183 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         String group = contacts.getGroup();
 
         ContentValues values = new ContentValues();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-       image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-        byte[] img = bos.toByteArray();
+        if (image != null) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] img = bos.toByteArray();
+            values.put(KEY_CONTACTPIC, img);
+        } else {
+            values.put(KEY_CONTACTPIC, "");
+        }
         values.put(KEY_NAME, name); // Name
         values.put(KEY_CONTACTNUMBER, phone); // Email
         values.put(KEY_GROUP, group);
 
-        if(image ==  null){
-            values.put(KEY_CONTACTPIC, "");
-        }else {
-            values.put(KEY_CONTACTPIC, img);
-        }
-
         long uid = db.insert(TABLE_CONTACT, null, values);
         db.close(); // Closing database connection
 
-        Log.d(TAG, "New user inserted into sqlite: " + name);
+        Log.d(TAG, "New user inserted into sqlite: " + name + group);
     }
 
-    public Contacts getContactDetails() {
-        Contacts user = new Contacts();
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
+    public void updateContact(Contacts oldcontacts, Contacts contacts) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Bitmap image = contacts.getIcon();
+        String where = KEY_NAME + "= ? AND " + KEY_CONTACTNUMBER + "=?";
+        String[] whereargs = {oldcontacts.getName(), oldcontacts.getNumber()};
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_NAME, contacts.getName());
+        cv.put(KEY_CONTACTNUMBER, contacts.getNumber());
+        cv.put(KEY_GROUP, contacts.getGroup());
 
+        if (image != null) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] img = bos.toByteArray();
+            cv.put(KEY_CONTACTPIC, img);
+        } else {
+            cv.put(KEY_CONTACTPIC, "");
+        }
+
+        db.update(TABLE_CONTACT, cv, where, whereargs);
+
+        db.close(); // Closing database connection
+
+        Log.d(TAG, "New user inserted into sqlite: " + contacts.getName() + " " + contacts.getNumber());
+
+
+    }
+
+    public ArrayList<Contacts> getContactDetails() {
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
+        ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         // Move to first row
-        cursor.moveToFirst();
-
-
-
+        if (cursor.moveToFirst()) {
+            do {
+                Contacts user = new Contacts();
+                user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+                user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+                user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                byte[] imageBytes = null;
+                imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
+                if (imageBytes != null) {
+                    user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                } else {
+                    user.setIcon(null);
+                }
+                contacts.add(user);
+                Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
+                System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+            } while (cursor.moveToNext());
+        }
         cursor.close();
         db.close();
         // return user
-        Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
+        // Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
 
-        return user;
+        return contacts;
+    }
+
+    public ArrayList<Contacts> getWork() {
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
+        String whereClause = KEY_GROUP + "=?";
+        String[] whereArgs = {WORK};
+        ArrayList<Contacts> contacts = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
+        // Move to first row
+        if (cursor.moveToFirst()) {
+            do {
+                Contacts user = new Contacts();
+                user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+                user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+                user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                byte[] imageBytes = null;
+                imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
+                if (imageBytes != null) {
+                    user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                } else {
+                    user.setIcon(null);
+                }
+                contacts.add(user);
+                Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
+                System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        // return user
+
+        return contacts;
+    }
+
+    public ArrayList<Contacts> getFamily() {
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
+        String whereClause = KEY_GROUP + "=?";
+        String[] whereArgs = {FAMILY};
+        ArrayList<Contacts> contacts = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
+        // Move to first row
+        if (cursor.moveToFirst()) {
+            do {
+                Contacts user = new Contacts();
+                user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+                user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+                user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                byte[] imageBytes = null;
+                imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
+                if (imageBytes != null) {
+                    user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                } else {
+                    user.setIcon(null);
+                }
+                contacts.add(user);
+                Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
+                System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        // return user
+        // Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
+
+        return contacts;
+    }
+
+    public ArrayList<Contacts> getFriend() {
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
+        String whereClause = KEY_GROUP + "=?";
+        String[] whereArgs = {FRIEND};
+        ArrayList<Contacts> contacts = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
+        // Move to first row
+        if (cursor.moveToFirst()) {
+            do {
+                Contacts user = new Contacts();
+                user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+                user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+                user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                byte[] imageBytes = null;
+                imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
+                if (imageBytes != null) {
+                    user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                } else {
+                    user.setIcon(null);
+                }
+                contacts.add(user);
+                Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
+                System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        // return user
+        // Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
+
+        return contacts;
     }
 
     /**
