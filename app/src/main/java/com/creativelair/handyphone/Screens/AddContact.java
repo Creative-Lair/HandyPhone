@@ -224,6 +224,14 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         try {
             getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
             Toast.makeText(this, "Contact is successfully added", Toast.LENGTH_SHORT).show();
+            Intent contactIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
+            contactIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+
+            contactIntent
+                    .putExtra(ContactsContract.Intents.Insert.NAME, DisplayName)
+                    .putExtra(ContactsContract.Intents.Insert.PHONE, MobileNumber);
+
+            startActivityForResult(contactIntent, 1);
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -1,16 +1,30 @@
 package com.creativelair.handyphone.Fragment;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.graphics.BitmapCompat;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +32,12 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AlphabetIndexer;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SectionIndexer;
 import android.widget.Toast;
 
 import com.creativelair.handyphone.Adapters.ContactListAdapter;
@@ -27,6 +47,9 @@ import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.RecyclerItemClickListener;
 import com.creativelair.handyphone.Screens.AddContact;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.util.ArrayList;
 
 public class All_Contacts extends Fragment implements View.OnClickListener{
@@ -117,13 +140,16 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         protected void onPreExecute() {
             super.onPreExecute();
 
+
         }
+
 
         @Override
         protected ArrayList<Contacts> doInBackground(Void... params) {
             ArrayList<Contacts> contacts = new ArrayList<>();
             Cursor c = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     null, null, null);
+
             while (c.moveToNext()) {
 
                 String contactName = c
@@ -132,8 +158,49 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                 String phNumber = c
                         .getString(c
                                 .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                Bitmap photo = null;
+                //Blo = c.getBlob(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
+                long contactID=c.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID);
+               int imgId= c.getInt(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
 
-                Contacts contacts1 = new Contacts(contactName,phNumber,null);
+
+
+               // photo = BitmapFactory.decodeStream(img);
+
+
+
+/*
+
+                try {
+
+                    InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(getActivity().getContentResolver(),
+                            ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(contactID)));
+
+                  if (inputStream != null) {
+                      System.out.println("Decoding");
+                      System.out.println(inputStream.toString());
+                      photo = BitmapFactory.decodeStream(inputStream);
+
+                   }
+
+                 //   assert null != inputStream;
+                    if (inputStream != null){
+
+                    inputStream.close();}
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+ */
+                com.creativelair.handyphone.Helpers.Contacts contacts1;
+                    photo=queryContactImage(imgId);
+            if( photo !=null)
+             contacts1 = new Contacts(contactName,phNumber,photo);
+
+             else
+                contacts1 = new Contacts(contactName,phNumber,null);
+
 
                 contacts.add(contacts1);
 
@@ -143,6 +210,26 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
             return contacts;
         }
 
+        public Bitmap queryContactImage(int imageDataRow) {
+            Cursor c = getActivity().getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[] {
+                    ContactsContract.CommonDataKinds.Photo.PHOTO
+            }, ContactsContract.Data._ID + "=?", new String[] {
+                    Integer.toString(imageDataRow)
+            }, null);
+            byte[] imageBytes = null;
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    imageBytes = c.getBlob(0);
+                }
+                c.close();
+            }
+
+            if (imageBytes != null) {
+                return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            } else {
+                return null;
+            }
+        }
         @Override
         protected void onPostExecute(ArrayList<Contacts> contacts) {
             super.onPostExecute(contacts);
@@ -152,6 +239,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         }
 
     }
+
 
 
 }
