@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.creativelair.handyphone.Fragment.All_Contacts;
 import com.creativelair.handyphone.Fragment.Family_Contacts;
+import com.creativelair.handyphone.Fragment.Frequent;
 import com.creativelair.handyphone.Fragment.Friend_Contacts;
 import com.creativelair.handyphone.Fragment.Work_Contacts;
 
@@ -27,14 +28,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return new Friend_Contacts();
             case 3:
                 return new Work_Contacts();
-
+            case 4:
+                return new Frequent();
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -43,11 +45,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "ALL CONTACTS";
             case 1:
-                return "FAMILY CONTACTS";
+                return "FAMILY";
             case 2:
-                return "FRIEND CONTACTS";
+                return "FRIEND";
             case 3:
-                return "WORK CONTACTS";
+                return "WORK";
+            case 4:
+                return "FREQUENT";
         }
         return null;
     }

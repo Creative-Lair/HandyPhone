@@ -13,5 +13,5 @@
         android:icon="@drawable/icon_search"
         android:orderInCategory="101"
         android:title="@string/search"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>

@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +37,7 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
     private View view;
     private ImageView iv;
     private ImageButton call, msg;
-    private TextView name,phone;
+    private TextView name, phone, initial;
     private Contacts contacts;
     private ImageButton edit;
     private Preference preference;
@@ -64,6 +66,8 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         name = (TextView) view.findViewById(R.id.name);
         phone = (TextView) view.findViewById(R.id.phone);
         edit = (ImageButton) view.findViewById(R.id.edit);
+        initial = (TextView) view.findViewById(R.id.initial);
+
 
 
         name.setText(contacts.getName());
@@ -71,6 +75,10 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
 
         if (contacts.getIcon() != null) {
             iv.setImageBitmap(contacts.getIcon());
+            initial.setText("");
+        } else {
+            initial.setText("" + contacts.getName().toUpperCase().charAt(0));
+            iv.setImageDrawable(new ColorDrawable(Color.parseColor("#303F9F")));
         }
 
 
@@ -83,6 +91,13 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         params.height = (height/3) * 2 - 100;
         iv.setLayoutParams(params);
 
+    /*    int IVheight = iv.getHeight();
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0 , IVheight/2, 0, 0);
+        initial.setLayoutParams(lp);
+
+*/
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
 

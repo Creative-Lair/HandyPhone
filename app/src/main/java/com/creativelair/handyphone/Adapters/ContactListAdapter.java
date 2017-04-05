@@ -1,6 +1,8 @@
 package com.creativelair.handyphone.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +40,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.contact_list_item, parent, false);
 
-
-
         return new MyViewHolder(itemView);
     }
 
@@ -52,11 +52,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Contacts contact = display.get(position);
         holder.name.setText(contact.getName());
-        if (contact.getIcon() != null)
-        holder.img.setImageBitmap(contact.getIcon());
-        else {
-            holder.img.setImageResource(R.drawable.icon_contact);
+        if (contact.getIcon() != null) {
+            holder.img.setImageBitmap(contact.getIcon());
+            holder.initial.setText("");
+        } else {
+            holder.img.setImageDrawable(new ColorDrawable(Color.parseColor("#303F9F")));
+            holder.initial.setText("" + holder.name.getText().toString().toUpperCase().charAt(0));
         }
+
 
     }
 
@@ -83,14 +86,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name;
+        public TextView name, initial;
         public ImageView img;
 
         public MyViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.name);
             img = (ImageView) view.findViewById(R.id.icon);
-
+            initial = (TextView) view.findViewById(R.id.initial);
         }
     }
 

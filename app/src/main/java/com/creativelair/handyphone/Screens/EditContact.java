@@ -15,7 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -106,11 +106,6 @@ public class EditContact extends AppCompatActivity
         gallery.setOnClickListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_menu, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -118,25 +113,10 @@ public class EditContact extends AppCompatActivity
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.call:
-                call_action();
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void call_action() {
-
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + preference.getPhone()));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            startActivity(intent);
-            return;
-        }
-
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -186,8 +166,14 @@ public class EditContact extends AppCompatActivity
 
                 } else {
                     db.updateContact(oldcontact, contact);
-                    if (updateContact(oldcontact, contact)) ;
+                    if (updateContact(oldcontact, contact))
                     Toast.makeText(this, "Contact Updated", Toast.LENGTH_SHORT).show();
+
+                    preference.setName(contact.getName());
+                    preference.setPhone(contact.getNumber());
+                    preference.setGroup(contact.getGroup());
+                    preference.setPic(mBitmap);
+                    preference.setId(contact.getId());
 
                     Intent i = new Intent(this, DisplayContact.class);
                     startActivity(i);
@@ -247,6 +233,8 @@ public class EditContact extends AppCompatActivity
                             .withSelection(where, nameParams)
                             .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name)
                             .build());
+
+                    Log.d("Contact", "Name");
                 }
 
                 if (!number.equals("")) {
@@ -254,6 +242,8 @@ public class EditContact extends AppCompatActivity
                             .withSelection(where, numberParams)
                             .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number)
                             .build());
+
+                    Log.d("Contact", "Number");
                 }
                 contentResolver.applyBatch(ContactsContract.AUTHORITY, ops);
             }
