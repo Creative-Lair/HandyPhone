@@ -24,6 +24,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_CONTACTPIC = "contactpic";
     private static final String KEY_CONTACTNUMBER = "contactnumber";
     private static final String KEY_GROUP = "contactgroup";
+    private static final String KEY_CONTACT_ID = "id_Contact";
     private static final String WORK = "Work";
     private static final String FAMILY = "Family";
     private static final String FRIEND = "Friend";
@@ -33,7 +34,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             KEY_NAME,
             KEY_CONTACTNUMBER,
             KEY_GROUP,
-            KEY_CONTACTPIC
+            KEY_CONTACTPIC,
+            KEY_CONTACT_ID
     };
 
     public SQLiteHandler(Context context) {
@@ -48,7 +50,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                KEY_NAME + " TEXT NOT NULL, " +
                 KEY_CONTACTNUMBER + " TEXT NOT NULL, " +
                 KEY_GROUP + " TEXT NOT NULL, " +
-                KEY_CONTACTPIC + " BLOB, PRIMARY KEY(" + KEY_ID + "))";
+                KEY_CONTACTPIC + " BLOB," +
+                KEY_CONTACT_ID + " INTEGER, PRIMARY KEY(" + KEY_ID + "))";
 
         db.execSQL(CREATE_LOGIN_TABLE);
         Log.d(TAG, "Database tables created");
@@ -61,9 +64,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    /**
-     * Storing user details in database
-     * */
     public void addContact(Contacts contacts) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -71,6 +71,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         String phone = contacts.getNumber();
         Bitmap image = contacts.getIcon();
         String group = contacts.getGroup();
+        int id = contacts.getId();
 
         ContentValues values = new ContentValues();
         if (image != null) {
@@ -84,22 +85,24 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, name); // Name
         values.put(KEY_CONTACTNUMBER, phone); // Email
         values.put(KEY_GROUP, group);
+        values.put(KEY_CONTACT_ID, id);
 
         long uid = db.insert(TABLE_CONTACT, null, values);
         db.close(); // Closing database connection
 
-        Log.d(TAG, "New user inserted into sqlite: " + name + group);
     }
 
     public void updateContact(Contacts oldcontacts, Contacts contacts) {
         SQLiteDatabase db = this.getWritableDatabase();
         Bitmap image = contacts.getIcon();
-        String where = KEY_NAME + "= ? AND " + KEY_CONTACTNUMBER + "=?";
-        String[] whereargs = {oldcontacts.getName(), oldcontacts.getNumber()};
+        String where = KEY_CONTACTNUMBER + "= ?";
+        String[] whereargs = {oldcontacts.getNumber()};
         ContentValues cv = new ContentValues();
         cv.put(KEY_NAME, contacts.getName());
         cv.put(KEY_CONTACTNUMBER, contacts.getNumber());
         cv.put(KEY_GROUP, contacts.getGroup());
+        cv.put(KEY_CONTACT_ID, contacts.getId());
+
 
         if (image != null) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -114,7 +117,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         db.close(); // Closing database connection
 
-        Log.d(TAG, "New user inserted into sqlite: " + contacts.getName() + " " + contacts.getNumber());
 
 
     }
@@ -131,6 +133,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
                 byte[] imageBytes = null;
                 imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
                 if (imageBytes != null) {
@@ -139,14 +142,11 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                     user.setIcon(null);
                 }
                 contacts.add(user);
-                Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        // return user
-        // Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
 
         return contacts;
     }
@@ -165,6 +165,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
                 byte[] imageBytes = null;
                 imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
                 if (imageBytes != null) {
@@ -198,6 +199,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
                 byte[] imageBytes = null;
                 imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
                 if (imageBytes != null) {
@@ -206,20 +208,16 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                     user.setIcon(null);
                 }
                 contacts.add(user);
-                Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        // return user
-        // Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
 
         return contacts;
     }
 
     public ArrayList<Contacts> getFriend() {
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
         String whereClause = KEY_GROUP + "=?";
         String[] whereArgs = {FRIEND};
         ArrayList<Contacts> contacts = new ArrayList<>();
@@ -232,6 +230,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
                 byte[] imageBytes = null;
                 imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
                 if (imageBytes != null) {
@@ -240,14 +239,11 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                     user.setIcon(null);
                 }
                 contacts.add(user);
-                Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        // return user
-        // Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
 
         return contacts;
     }
@@ -257,7 +253,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
      * */
     public void deleteContact() {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Delete All Rows
+
         db.delete(TABLE_CONTACT, null, null);
         db.close();
 

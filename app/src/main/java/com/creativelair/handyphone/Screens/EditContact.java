@@ -30,6 +30,7 @@ import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -65,6 +66,8 @@ public class EditContact extends AppCompatActivity
 
         oldcontact.setName(preference.getName());
         oldcontact.setNumber(preference.getPhone());
+        oldcontact.setId(preference.getId());
+        mBitmap = preference.getPic();
 
         prepare();
         intialize();
@@ -104,6 +107,7 @@ public class EditContact extends AppCompatActivity
         friend.setOnCheckedChangeListener(this);
         add.setOnClickListener(this);
         gallery.setOnClickListener(this);
+        image.setOnClickListener(this);
     }
 
 
@@ -172,7 +176,7 @@ public class EditContact extends AppCompatActivity
                     preference.setName(contact.getName());
                     preference.setPhone(contact.getNumber());
                     preference.setGroup(contact.getGroup());
-                    preference.setPic(mBitmap);
+                    preference.setPic(contact.getIcon());
                     preference.setId(contact.getId());
 
                     Intent i = new Intent(this, DisplayContact.class);
@@ -220,7 +224,7 @@ public class EditContact extends AppCompatActivity
             } else {
                 ContentResolver contentResolver = this.getContentResolver();
 
-                String where = ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.Phone.NUMBER;
+                String where = ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.Phone.NUMBER + "=?";
 
                 String[] nameParams = new String[]{oldname, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, oldnumber};
                 String[] numberParams = new String[]{oldname, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, oldnumber};
@@ -245,6 +249,17 @@ public class EditContact extends AppCompatActivity
 
                     Log.d("Contact", "Number");
                 }
+                if (pic != null) {
+                    ByteArrayOutputStream st = new ByteArrayOutputStream();
+                    mBitmap.compress(Bitmap.CompressFormat.PNG, 75, st);
+
+                    ops.add(android.content.ContentProviderOperation.newUpdate(android.provider.ContactsContract.Data.CONTENT_URI)
+                            .withSelection(where, numberParams)
+                            .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, st.toByteArray())
+                            .build());
+                }
+
+                success = true;
                 contentResolver.applyBatch(ContactsContract.AUTHORITY, ops);
             }
         } catch (Exception e) {

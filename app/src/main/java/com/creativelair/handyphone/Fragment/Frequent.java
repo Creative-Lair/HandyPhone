@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -36,10 +35,6 @@ import java.util.ArrayList;
 
 public class Frequent extends Fragment implements View.OnClickListener {
 
-    public static final String AUTHORITY = "call_log";
-    public static final Uri CONTENT_URI = Uri.parse("content://call_log/calls");
-    public static final String DEFAULT_SORT_ORDER = "date DESC";
-    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     private static LayoutInflater inflat = null;
     RecyclerView listView;
     FloatingActionButton fb;
@@ -83,7 +78,6 @@ public class Frequent extends Fragment implements View.OnClickListener {
     public void checkPermission() {
         Frequent.LoadContactsAyscn loadContactsAyscn = new LoadContactsAyscn();
         loadContactsAyscn.execute();
-        Log.d("Freqent", "Else");
     }
 
     private int dpToPx(int dp) {
@@ -119,15 +113,11 @@ public class Frequent extends Fragment implements View.OnClickListener {
                     ContactsContract.CommonDataKinds.Phone.PHOTO_ID};
 
 
-            Cursor c1 = getActivity().getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
+            Cursor c1 = getActivity().getContentResolver().query(ContactsContract.Contacts.CONTENT_STREQUENT_URI,
                     columns,
                     null,
                     null,
-                    ContactsContract.CommonDataKinds.Phone.TIMES_CONTACTED + " DESC LIMIT 10");
-
-            for (int i = 0; i < c1.getColumnCount(); i++) {
-                Log.d("Columns", c1.getColumnName(i));
-            }
+                    null);
 
 
             while (c1.moveToNext()) {
@@ -152,6 +142,7 @@ public class Frequent extends Fragment implements View.OnClickListener {
                             where,
                             whereargs,
                             null);
+
                     if (c.moveToNext()) {
 
                         String phNumber = c.getString(0);
@@ -163,7 +154,6 @@ public class Frequent extends Fragment implements View.OnClickListener {
                         photo = queryContactImage(imgId);
                         if (photo != null) {
                             contacts1 = new Contacts(contactName, phNumber, photo, id);
-                            Log.d("Photo", "Photo Added" + imgId);
                         } else
                             contacts1 = new Contacts(contactName, phNumber, null, id);
                         contacts1.setGroup(" ");

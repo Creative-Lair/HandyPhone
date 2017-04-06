@@ -89,6 +89,10 @@ public class DisplayContact extends AppCompatActivity {
                 startActivity(i);
                 finish();
                 break;
+
+            case android.R.id.home:
+                finish();
+                break;
         }
 
 

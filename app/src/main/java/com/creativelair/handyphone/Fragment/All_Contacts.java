@@ -2,6 +2,7 @@ package com.creativelair.handyphone.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -44,6 +45,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
     ArrayList<Contacts> allcontacts;
     Preference preference;
     SQLiteHandler db;
+    ProgressDialog pd;
     private Activity activity;
 
     @Override
@@ -175,7 +177,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                 if (hasPhone > 0) {
                     String[] columns1 = {ContactsContract.CommonDataKinds.Phone.NUMBER,
                             ContactsContract.CommonDataKinds.Phone.PHOTO_ID,
-                            ContactsContract.CommonDataKinds.Phone._ID};
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID};
 
                     String where = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?";
                     String[] whereargs = {c_id};

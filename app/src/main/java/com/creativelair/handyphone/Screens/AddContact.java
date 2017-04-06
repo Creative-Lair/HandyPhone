@@ -143,8 +143,8 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
 
                 } else {
-                    db.addContact(contact);
                     contact.setId(addContact(contact));
+                    db.addContact(contact);
                 }
 
                 preference.setName(contact.getName());
