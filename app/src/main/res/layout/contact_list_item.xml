@@ -45,7 +45,8 @@
                 android:gravity="center"
                 android:text=""
                 android:textAllCaps="true"
-                android:textSize="30sp" />
+                android:textColor="@color/colorWhite"
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/name"

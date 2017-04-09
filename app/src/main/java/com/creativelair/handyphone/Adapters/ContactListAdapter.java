@@ -2,6 +2,7 @@ package com.creativelair.handyphone.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,14 +51,18 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+        Typeface RobotoBlack = Typeface.createFromAsset(mContext.getAssets(), "fonts/Raleway-Black.ttf");
+        Typeface Roboto = Typeface.createFromAsset(mContext.getAssets(), "fonts/Raleway-Regular.ttf");
         Contacts contact = display.get(position);
         holder.name.setText(contact.getName());
+        holder.name.setTypeface(Roboto);
         if (contact.getIcon() != null) {
             holder.img.setImageBitmap(contact.getIcon());
             holder.initial.setText("");
         } else {
             holder.img.setImageDrawable(new ColorDrawable(Color.parseColor("#303F9F")));
             holder.initial.setText("" + holder.name.getText().toString().toUpperCase().charAt(0));
+            holder.initial.setTypeface(RobotoBlack);
         }
 
 
@@ -91,6 +96,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
         public MyViewHolder(View view) {
             super(view);
+
             name = (TextView) view.findViewById(R.id.name);
             img = (ImageView) view.findViewById(R.id.icon);
             initial = (TextView) view.findViewById(R.id.initial);

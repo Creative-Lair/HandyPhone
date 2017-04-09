@@ -141,6 +141,13 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
                 Intent i = new Intent(getActivity(), EditContact.class);
                 startActivity(i);
                 break;
+
+            case R.id.msg:
+
+                MessageDialog myDialog = new MessageDialog(contacts);
+                myDialog.show(getActivity().getFragmentManager(), "my_dialog");
+
+                break;
         }
 
     }
