@@ -17,6 +17,7 @@ import android.view.View;
 import com.creativelair.handyphone.Adapters.ContactListAdapter;
 import com.creativelair.handyphone.Fragment.MyDialog;
 import com.creativelair.handyphone.Helpers.Contacts;
+import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 public class Search extends Activity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private static LayoutInflater inflat = null;
+    Preference preference;
     private SearchManager searchManager;
     private SearchView searchView;
     private SQLiteHandler db;
@@ -50,7 +52,7 @@ public class Search extends Activity implements SearchView.OnQueryTextListener, 
         mList.setLayoutManager(mLayoutManager);
         mList.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         mList.setItemAnimator(new DefaultItemAnimator());
-
+        preference = new Preference(this);
         mList.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, mList, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -61,7 +63,7 @@ public class Search extends Activity implements SearchView.OnQueryTextListener, 
 
                         Contacts contact = listAdapter.getList().get(position);
 
-                        MyDialog myDialog = new MyDialog(contact);
+                        MyDialog myDialog = new MyDialog(contact, preference.getColor());
                         myDialog.show(getFragmentManager(), "my_dialog");
                     }
 

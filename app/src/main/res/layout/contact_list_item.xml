@@ -19,7 +19,7 @@
 
             <com.creativelair.handyphone.SquareImageView
                 android:id="@+id/icon"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="10dp"

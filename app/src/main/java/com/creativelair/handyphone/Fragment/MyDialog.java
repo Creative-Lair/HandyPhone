@@ -33,6 +33,7 @@ import com.creativelair.handyphone.Screens.EditContact;
 
 public class MyDialog extends DialogFragment implements View.OnClickListener {
 
+    String color;
     private LayoutInflater inflater;
     private View view;
     private ImageView iv;
@@ -42,9 +43,10 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
     private ImageButton edit;
     private Preference preference;
 
-    public MyDialog(Contacts contacts){
+    public MyDialog(Contacts contacts, String color) {
         super();
         this.contacts = contacts;
+        this.color = color;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
             initial.setText("");
         } else {
             initial.setText("" + contacts.getName().toUpperCase().charAt(0));
-            iv.setImageDrawable(new ColorDrawable(Color.parseColor("#303F9F")));
+            iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
         }
 
 

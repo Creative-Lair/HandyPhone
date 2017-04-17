@@ -4,13 +4,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.creativelair.handyphone.Adapters.MessageListAdapter;
 import com.creativelair.handyphone.Helpers.Contacts;
@@ -20,9 +20,6 @@ import com.creativelair.handyphone.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by AHSAN on 4/3/2017.
- */
 
 public class MessageDialog extends DialogFragment implements AdapterView.OnItemClickListener {
 
@@ -77,7 +74,12 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Message msg = messages.get(position);
 
-        Toast.makeText(getActivity(), msg.getHeader(), Toast.LENGTH_SHORT).show();
+        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+        smsIntent.setType("vnd.android-dir/mms-sms");
+        smsIntent.putExtra("address", contacts.getNumber());
+        smsIntent.putExtra("sms_body", msg.getText());
+        startActivity(smsIntent);
+
 
     }
 

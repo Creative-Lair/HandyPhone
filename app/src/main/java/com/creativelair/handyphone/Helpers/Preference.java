@@ -15,6 +15,7 @@ public class Preference {
     private static final String KEY_PIC = "Contact Pic";
     private static final String KEY_ID = "Contact Id";
     private static final String KEY_LOAD = "Load Database";
+    private static final String KEY_COLOR = "color";
     public static Bitmap bitmap;
     private static String TAG = Preference.class.getSimpleName();
     SharedPreferences pref;
@@ -38,6 +39,16 @@ public class Preference {
         editor.commit();
 
         Log.d(TAG, "Name added");
+    }
+
+    public String getColor() {
+        return pref.getString(KEY_COLOR, "#000000");
+    }
+
+    public void setColor(String color) {
+        editor.putString(KEY_COLOR, color);
+        editor.commit();
+
     }
 
     public String getPhone() {

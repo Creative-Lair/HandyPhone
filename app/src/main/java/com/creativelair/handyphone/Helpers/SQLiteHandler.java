@@ -95,8 +95,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public void updateContact(Contacts oldcontacts, Contacts contacts) {
         SQLiteDatabase db = this.getWritableDatabase();
         Bitmap image = contacts.getIcon();
-        String where = KEY_CONTACTNUMBER + "= ?";
-        String[] whereargs = {oldcontacts.getNumber()};
+        String where = KEY_CONTACTNUMBER + "= ? AND " + KEY_NAME + "=?";
+        String[] whereargs = {oldcontacts.getNumber(), oldcontacts.getName()};
         ContentValues cv = new ContentValues();
         cv.put(KEY_NAME, contacts.getName());
         cv.put(KEY_CONTACTNUMBER, contacts.getNumber());
@@ -106,11 +106,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         if (image != null) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            image.compress(Bitmap.CompressFormat.PNG, 75, bos);
             byte[] img = bos.toByteArray();
             cv.put(KEY_CONTACTPIC, img);
+            Log.d(TAG, "Image Added");
         } else {
             cv.put(KEY_CONTACTPIC, "");
+            Log.d(TAG, "Image Not Added");
         }
 
         db.update(TABLE_CONTACT, cv, where, whereargs);

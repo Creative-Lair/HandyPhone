@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.creativelair.handyphone.Helpers.Contacts;
+import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.R;
 
 import java.util.ArrayList;
@@ -20,9 +21,12 @@ import java.util.ArrayList;
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.MyViewHolder> {
 
     ArrayList<Contacts> contacts;
+    String[] Mcolors = {"#fab806", "#ff600A", "#272bd5", "#17ba23"};
+    int colorIndex = 0;
+    String color;
     private Context mContext;
     private ArrayList<Contacts> display;
-
+    private Preference pref;
 
     public ContactListAdapter(Context mContext, ArrayList<Contacts> contacts) {
         this.mContext = mContext;
@@ -30,6 +34,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         this.display = new ArrayList<>();
         this.contacts.addAll(contacts);
         this.display.addAll(contacts);
+        pref = new Preference(mContext);
     }
 
     public ArrayList<Contacts> getList() {
@@ -60,7 +65,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             holder.img.setImageBitmap(contact.getIcon());
             holder.initial.setText("");
         } else {
-            holder.img.setImageDrawable(new ColorDrawable(Color.parseColor("#303F9F")));
+            pref.setColor(Mcolors[colorIndex % 4]);
+            color = pref.getColor();
+            contact.setColor(color);
+            holder.img.setImageDrawable(new ColorDrawable(Color.parseColor(color)));
+            colorIndex++;
             holder.initial.setText("" + holder.name.getText().toString().toUpperCase().charAt(0));
             holder.initial.setTypeface(RobotoBlack);
         }

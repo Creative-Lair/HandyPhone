@@ -7,6 +7,7 @@ public class Contacts {
     private String Number;
     private Bitmap icon;
     private String Group;
+    private String Color;
     private int id;
 
     public Contacts() {
@@ -15,6 +16,7 @@ public class Contacts {
         Number = null;
         icon = null;
         Group = null;
+        Color = null;
 
     }
 
@@ -23,6 +25,14 @@ public class Contacts {
         Number = number;
         this.icon = icon;
         this.id = id;
+    }
+
+    public String getColor() {
+        return Color;
+    }
+
+    public void setColor(String color) {
+        Color = color;
     }
 
     public int getId() {
