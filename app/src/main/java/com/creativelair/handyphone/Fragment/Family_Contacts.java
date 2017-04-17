@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.creativelair.handyphone.Adapters.ContactListAdapter;
 import com.creativelair.handyphone.GridSpacingItemDecoration;
 import com.creativelair.handyphone.Helpers.Contacts;
+import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.RecyclerItemClickListener;
@@ -29,6 +30,7 @@ public class Family_Contacts extends Fragment implements View.OnClickListener {
     private static LayoutInflater inflat = null;
     RecyclerView listView;
     FloatingActionButton fb;
+    Preference preference;
     ArrayList<Contacts> allcontacts;
     SQLiteHandler db;
 
@@ -45,7 +47,7 @@ public class Family_Contacts extends Fragment implements View.OnClickListener {
         listView.setLayoutManager(mLayoutManager);
         listView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         listView.setItemAnimator(new DefaultItemAnimator());
-
+        preference = new Preference(getActivity());
         listView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), listView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -56,7 +58,7 @@ public class Family_Contacts extends Fragment implements View.OnClickListener {
 
                         Contacts contacts = allcontacts.get(position);
 
-                        MyDialog myDialog = new MyDialog(contacts);
+                        MyDialog myDialog = new MyDialog(contacts, preference.getColor());
                         myDialog.show(getActivity().getFragmentManager(), "my_dialog");
                     }
 

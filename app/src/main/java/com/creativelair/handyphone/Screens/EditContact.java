@@ -2,7 +2,6 @@ package com.creativelair.handyphone.Screens;
 
 import android.Manifest;
 import android.content.ContentProviderOperation;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +28,6 @@ import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -38,8 +35,10 @@ import java.util.ArrayList;
 public class EditContact extends AppCompatActivity
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
+    static final int REQUEST_IMAGE_CAPTURE = 3;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 2;
     private final int PICK_PHOTO = 1;
+    private final int CAMERA = 4;
     ActionBar actionBar;
     TextView name, phone;
     ImageView image;
@@ -49,6 +48,7 @@ public class EditContact extends AppCompatActivity
     Bitmap mBitmap;
     Contacts contact;
     Contacts oldcontact;
+    private String mCurrentPhotoPath;
     private Preference preference;
 
     @Override
@@ -78,7 +78,7 @@ public class EditContact extends AppCompatActivity
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
         image.setImageBitmap(preference.getPic());
-        Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);
         } else if (preference.getGroup().equals("Friend")) {
@@ -107,7 +107,6 @@ public class EditContact extends AppCompatActivity
         friend.setOnCheckedChangeListener(this);
         add.setOnClickListener(this);
         gallery.setOnClickListener(this);
-        image.setOnClickListener(this);
     }
 
 
@@ -170,8 +169,7 @@ public class EditContact extends AppCompatActivity
 
                 } else {
                     db.updateContact(oldcontact, contact);
-                    if (updateContact(oldcontact, contact))
-                    Toast.makeText(this, "Contact Updated", Toast.LENGTH_SHORT).show();
+                    updateContact(oldcontact, contact);
 
                     preference.setName(contact.getName());
                     preference.setPhone(contact.getNumber());
@@ -199,9 +197,8 @@ public class EditContact extends AppCompatActivity
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
                 break;
+
         }
 
     }
@@ -215,60 +212,58 @@ public class EditContact extends AppCompatActivity
         String oldname = oldcontact.getName();
         String oldnumber = oldcontact.getNumber();
 
-        try {
-            name = name.trim();
-            number = number.trim();
+        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
-            if (name.equals("") || number.equals("") || pic == null) {
-                success = false;
-            } else {
-                ContentResolver contentResolver = this.getContentResolver();
+        String where = ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME + "=?";
 
-                String where = ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.Phone.NUMBER + "=?";
-
-                String[] nameParams = new String[]{oldname, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, oldnumber};
-                String[] numberParams = new String[]{oldname, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, oldnumber};
-
-                ArrayList<ContentProviderOperation> ops = new ArrayList<>();
-
-
-                if (!name.equals("")) {
-                    ops.add(android.content.ContentProviderOperation.newUpdate(android.provider.ContactsContract.Data.CONTENT_URI)
-                            .withSelection(where, nameParams)
-                            .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name)
-                            .build());
-
-                    Log.d("Contact", "Name");
-                }
-
-                if (!number.equals("")) {
-                    ops.add(android.content.ContentProviderOperation.newUpdate(android.provider.ContactsContract.Data.CONTENT_URI)
-                            .withSelection(where, numberParams)
-                            .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number)
-                            .build());
-
-                    Log.d("Contact", "Number");
-                }
-                if (pic != null) {
-                    ByteArrayOutputStream st = new ByteArrayOutputStream();
-                    mBitmap.compress(Bitmap.CompressFormat.PNG, 75, st);
-
-                    ops.add(android.content.ContentProviderOperation.newUpdate(android.provider.ContactsContract.Data.CONTENT_URI)
-                            .withSelection(where, numberParams)
-                            .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, st.toByteArray())
-                            .build());
-                }
-
-                success = true;
-                contentResolver.applyBatch(ContactsContract.AUTHORITY, ops);
+    /*    if (name != null) {
+                ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                        .withSelection(where, new String[]{oldname})
+                        .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                        .withValue(ContactsContract.Data.DISPLAY_NAME, name)
+                        .build());
+                Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            success = false;
+       /*     ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                    .withSelection(where, new String[]{oldnumber})
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .build());
+
+            ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                    .withSelection(where, new String[]{oldnumber})
+                    .withValue(ContactsContract.Data.IS_SUPER_PRIMARY, 1)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO,stream.toByteArray())
+                    .build());
+
+
+            try {
+                stream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+            // Adding insert operation to operations list
+        // to insert Mobile Number in the table ContactsContract.Data
+
+
+
+            Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+//
+        // Asking the Contact provider to create a new contact
+        try {
+            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            Toast.makeText(this, "Contact is successfully Updated", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            success = false;
+            e.printStackTrace();
+            Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }*/
         return success;
     }
-
 
     public String check() {
 
@@ -295,7 +290,7 @@ public class EditContact extends AppCompatActivity
                 if (isChecked) {
                     family.setChecked(false);
                     friend.setChecked(false);
-                    Toast.makeText(this, "Work", Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(this, "Work", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.family:
@@ -303,7 +298,7 @@ public class EditContact extends AppCompatActivity
                     work.setChecked(false);
                     friend.setChecked(false);
 
-                    Toast.makeText(this, "Family", Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(this, "Family", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.friends:
@@ -311,7 +306,7 @@ public class EditContact extends AppCompatActivity
                     family.setChecked(false);
                     work.setChecked(false);
 
-                    Toast.makeText(this, "Friend", Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(this, "Friend", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -341,6 +336,8 @@ public class EditContact extends AppCompatActivity
 
                     image.setImageBitmap(mBitmap);
                 }
+                break;
+
         }
     }
 

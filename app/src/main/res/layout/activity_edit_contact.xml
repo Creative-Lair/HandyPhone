@@ -26,6 +26,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="80dp"
                 android:background="@drawable/imageborder"
+                android:clickable="true"
                 android:scaleType="fitXY" />
 
             <Button

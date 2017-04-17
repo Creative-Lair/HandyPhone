@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.creativelair.handyphone.Adapters.ContactListAdapter;
 import com.creativelair.handyphone.GridSpacingItemDecoration;
 import com.creativelair.handyphone.Helpers.Contacts;
+import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.RecyclerItemClickListener;
 import com.creativelair.handyphone.Screens.AddContact;
@@ -37,6 +38,7 @@ public class Frequent extends Fragment implements View.OnClickListener {
 
     private static LayoutInflater inflat = null;
     RecyclerView listView;
+    Preference preference;
     FloatingActionButton fb;
     ArrayList<Contacts> frequent;
 
@@ -52,7 +54,7 @@ public class Frequent extends Fragment implements View.OnClickListener {
         listView.setLayoutManager(mLayoutManager);
         listView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         listView.setItemAnimator(new DefaultItemAnimator());
-
+        preference = new Preference(getActivity());
         listView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), listView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -61,7 +63,7 @@ public class Frequent extends Fragment implements View.OnClickListener {
                             view = inflat.inflate(R.layout.all_contacts, null);
                         }
                         Contacts contacts = frequent.get(position);
-                        MyDialog myDialog = new MyDialog(contacts);
+                        MyDialog myDialog = new MyDialog(contacts, preference.getColor());
                         myDialog.show(getActivity().getFragmentManager(), "my_dialog");
                     }
 

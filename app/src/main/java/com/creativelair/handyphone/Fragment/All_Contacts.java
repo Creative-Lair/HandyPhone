@@ -76,7 +76,8 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
 
                         Contacts contacts = allcontacts.get(position);
 
-                        MyDialog myDialog = new MyDialog(contacts);
+
+                        MyDialog myDialog = new MyDialog(contacts, preference.getColor());
                         myDialog.show(getActivity().getFragmentManager(), "my_dialog");
                     }
 
@@ -141,11 +142,14 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
     }
 
     public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
-
+        ProgressDialog pd;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            pd = new ProgressDialog(getContext());
+            pd.setTitle("Loading Contacts......");
+            pd.setCancelable(false);
+            pd.show();
 
         }
 
@@ -235,6 +239,9 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         @Override
         protected void onPostExecute(ArrayList<Contacts> contacts) {
             super.onPostExecute(contacts);
+            if (pd.isShowing()) {
+                pd.hide();
+            }
             preference.setLoad(true);
             allcontacts = contacts;
             ContactListAdapter adapter = new ContactListAdapter(getContext(), allcontacts);
