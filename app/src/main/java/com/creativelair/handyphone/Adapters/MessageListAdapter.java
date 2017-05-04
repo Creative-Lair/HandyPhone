@@ -2,13 +2,11 @@ package com.creativelair.handyphone.Adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.creativelair.handyphone.Helpers.Message;
 import com.creativelair.handyphone.R;
@@ -29,25 +27,11 @@ public class MessageListAdapter extends ArrayAdapter {
         super(context, resource, objects);
         mContext = context;
         messages = objects;
-        Toast.makeText(context, messages.size() + " " + objects.size(), Toast.LENGTH_SHORT).show();
 
-        log(messages, objects);
 
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
-
-    private void log(ArrayList<Message> messages, ArrayList<Message> objects) {
-        for (Message msg : messages) {
-            Log.d("Ye dekh", msg.getHeader());
-        }
-
-        for (Message msg : objects) {
-            Log.d("Ye bhi dekh", msg.getHeader());
-        }
-
-    }
-
 
     @Override
     public int getCount() {

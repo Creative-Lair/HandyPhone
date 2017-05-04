@@ -6,11 +6,14 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.creativelair.handyphone.Adapters.MessageListAdapter;
 import com.creativelair.handyphone.Helpers.Contacts;
@@ -21,7 +24,7 @@ import com.creativelair.handyphone.R;
 import java.util.ArrayList;
 
 
-public class MessageDialog extends DialogFragment implements AdapterView.OnItemClickListener {
+public class MessageDialog extends DialogFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private LayoutInflater inflater;
     private View view;
@@ -30,6 +33,8 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
     private ArrayList<Message> messages;
     private Preference preference;
     private Context mContext;
+    private Button Add;
+    private RelativeLayout relativeLayout;
 
     public MessageDialog(Contacts contacts) {
         super();
@@ -46,6 +51,9 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
         preference = new Preference(getActivity());
 
         lv = (ListView) view.findViewById(R.id.lv);
+        Add = (Button) view.findViewById(R.id.add);
+        relativeLayout = (RelativeLayout) view.findViewById(R.id.relativelayout);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         Message msg1 = new Message("Meeting", "temp1");
@@ -65,6 +73,8 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
         MessageListAdapter adapter = new MessageListAdapter(getActivity(), R.layout.messagedialoglist, messages);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
+
+        Add.setOnClickListener(this);
 
         return builder.create();
     }
@@ -94,5 +104,18 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
 
         super.onResume();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id) {
+            case R.id.add:
+
+                Snackbar snackbar = Snackbar.make(relativeLayout, "To be implemented in future", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                break;
+        }
     }
 }
