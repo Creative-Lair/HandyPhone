@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.MyViewHolder> {
 
     ArrayList<Contacts> contacts;
-    String[] Mcolors = {"#fab806", "#ff600A", "#272bd5", "#17ba23"};
+    String[] Mcolors = {"#11303f", "#d9dd5f", "#fd1254", "#88abb2"};
     int colorIndex = 0;
     String color;
     private Context mContext;
