@@ -29,7 +29,6 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/imageborder"
                 android:cropToPadding="true"
                 android:scaleType="centerCrop"
                 android:src="@color/colorPrimary" />
