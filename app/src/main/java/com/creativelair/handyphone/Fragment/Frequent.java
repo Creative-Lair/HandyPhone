@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,8 +127,6 @@ public class Frequent extends Fragment implements View.OnClickListener {
                 int hasPhone = c1.getInt(1);
                 String c_id = c1.getString(2);
 
-                Log.d("Names", contactName + " " + hasPhone + " " + c_id + " " + c1.getString(3));
-
                 if (hasPhone > 0) {
                     String[] columns1 = {ContactsContract.CommonDataKinds.Phone.NUMBER,
                             ContactsContract.CommonDataKinds.Phone.PHOTO_ID,
@@ -163,7 +160,6 @@ public class Frequent extends Fragment implements View.OnClickListener {
                         c.close();
                     }
                 }
-
             }
             c1.close();
             return contacts;
@@ -180,7 +176,6 @@ public class Frequent extends Fragment implements View.OnClickListener {
             if (c != null) {
                 if (c.moveToFirst()) {
                     imageBytes = c.getBlob(0);
-                    Log.d("Query", "" + imageDataRow);
                 }
                 c.close();
             }

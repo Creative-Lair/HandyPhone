@@ -18,7 +18,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,7 +107,6 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                 loadContactsAyscn.execute();
             }
         }
-
     }
 
     @Override
@@ -125,7 +123,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                 }
 
             } else {
-                Toast.makeText(getActivity(), "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -147,10 +145,9 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         protected void onPreExecute() {
             super.onPreExecute();
             pd = new ProgressDialog(getContext());
-            pd.setTitle("Loading Contacts......");
+            pd.setTitle("Loading Contacts...");
             pd.setCancelable(false);
             pd.show();
-
         }
 
 
@@ -175,8 +172,6 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                 String contactName = c1.getString(0);
                 int hasPhone = c1.getInt(1);
                 String c_id = c1.getString(2);
-
-                Log.d("Names", contactName + " " + hasPhone + " " + c_id + " " + c1.getString(3));
 
                 if (hasPhone > 0) {
                     String[] columns1 = {ContactsContract.CommonDataKinds.Phone.NUMBER,
@@ -210,7 +205,6 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                         c.close();
                     }
                 }
-
             }
             c1.close();
             return contacts;
@@ -247,9 +241,5 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
             ContactListAdapter adapter = new ContactListAdapter(getContext(), allcontacts);
             listView.setAdapter(adapter);
         }
-
     }
-
-
-
 }

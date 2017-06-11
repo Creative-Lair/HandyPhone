@@ -63,7 +63,6 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
         prepare();
         setListener();
-
     }
 
 

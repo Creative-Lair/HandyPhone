@@ -74,17 +74,13 @@ public class Search extends Activity implements SearchView.OnQueryTextListener, 
                 })
         );
         db = new SQLiteHandler(this);
-
-
         displayList();
-
     }
 
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
-
 
     private void displayList() {
         loadData();
@@ -114,6 +110,4 @@ public class Search extends Activity implements SearchView.OnQueryTextListener, 
         mList.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
     }
-
-
 }

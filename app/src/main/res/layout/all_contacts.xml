@@ -4,6 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:layout_alignParentTop="true"
+        android:scrollbars="vertical" />
+
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,13 +25,5 @@
         app:backgroundTint="@color/colorBlack"
         android:id="@+id/add"
         app:fabSize="normal" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:layout_alignParentTop="true"
-        android:scrollbars="vertical" />
 
 </RelativeLayout>

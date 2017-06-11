@@ -82,7 +82,6 @@ public class Family_Contacts extends Fragment implements View.OnClickListener {
         allcontacts = db.getFamily();
         ContactListAdapter adapter = new ContactListAdapter(getActivity(), allcontacts);
         listView.setAdapter(adapter);
-
     }
 
     @Override
@@ -95,6 +94,4 @@ public class Family_Contacts extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-
-
 }
