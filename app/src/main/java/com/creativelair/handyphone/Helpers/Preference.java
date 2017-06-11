@@ -15,7 +15,9 @@ public class Preference {
     private static final String KEY_PIC = "Contact Pic";
     private static final String KEY_ID = "Contact Id";
     private static final String KEY_LOAD = "Load Database";
-    private static final String KEY_COLOR = "color";
+    private static final String KEY_COLOR = "Color";
+    private static final String HEADING = "Head";
+    private static final String MESSAGE = "Message Body";
     public static Bitmap bitmap;
     private static String TAG = Preference.class.getSimpleName();
     SharedPreferences pref;
@@ -37,8 +39,6 @@ public class Preference {
     public void setName(String name) {
         editor.putString(KEY_NAME, name);
         editor.commit();
-
-        Log.d(TAG, "Name added");
     }
 
     public String getColor() {
@@ -48,7 +48,24 @@ public class Preference {
     public void setColor(String color) {
         editor.putString(KEY_COLOR, color);
         editor.commit();
+    }
 
+    public void setHeading(String head){
+        editor.putString(HEADING, head);
+        editor.commit();
+    }
+
+    public String getHeading(){
+        return pref.getString(HEADING, "Head");
+    }
+
+    public void setMsg(String msgg){
+        editor.putString(MESSAGE, msgg);
+        editor.commit();
+    }
+
+    public String getMsg(){
+        return pref.getString(MESSAGE, "Message Body");
     }
 
     public String getPhone() {
@@ -58,8 +75,6 @@ public class Preference {
     public void setPhone(String phone) {
         editor.putString(KEY_PHONE, phone);
         editor.commit();
-
-        Log.d(TAG, "Phone added");
     }
 
     public String getGroup() {
@@ -69,8 +84,6 @@ public class Preference {
     public void setGroup(String group) {
         editor.putString(KEY_GROUP, group);
         editor.commit();
-
-        Log.d(TAG, "Group added");
     }
 
     public Bitmap getPic() {
@@ -97,9 +110,5 @@ public class Preference {
     public void setId(int id) {
         editor.putInt(KEY_ID, id);
         editor.commit();
-
-        Log.d(TAG, "Id added");
-
     }
-
 }

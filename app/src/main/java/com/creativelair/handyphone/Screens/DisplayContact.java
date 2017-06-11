@@ -44,7 +44,6 @@ public class DisplayContact extends AppCompatActivity {
         preference = new Preference(getApplicationContext());
         actionBar.setTitle(preference.getName());
 
-
         prepare();
         intialize();
         setListener();
@@ -68,8 +67,6 @@ public class DisplayContact extends AppCompatActivity {
         contacts.setGroup(preference.getGroup());
         contacts.setId(preference.getId());
         contacts.setIcon(preference.getPic());
-
-
     }
 
     public void prepare() {
@@ -110,18 +107,14 @@ public class DisplayContact extends AppCompatActivity {
                 break;
 
             case R.id.Call:
-
                 if (isPermissionGranted()) {
                     call_action();
                 }
                 break;
 
             case R.id.msg:
-
                 MessageDialog myDialog = new MessageDialog(contacts);
                 myDialog.show(getFragmentManager(), "my_dialog");
-
-
                 break;
         }
 
@@ -136,7 +129,6 @@ public class DisplayContact extends AppCompatActivity {
                 Log.v("TAG", "Permission is granted");
                 return true;
             } else {
-
                 Log.v("TAG", "Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
                 return false;
@@ -151,7 +143,6 @@ public class DisplayContact extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + contacts.getNumber()));
         startActivity(intent);
-
     }
 
     @Override
@@ -159,7 +150,6 @@ public class DisplayContact extends AppCompatActivity {
         switch (requestCode) {
 
             case 1: {
-
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Toast.makeText(getActivity(), "Permission granted", Toast.LENGTH_SHORT).show();

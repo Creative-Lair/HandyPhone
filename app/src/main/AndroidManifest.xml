@@ -48,6 +48,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Screens.AddNewMsg"
+            android:configChanges="orientation"
+            android:label="Add Template"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.ADDNEWMSG" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Screens.EditContact"
             android:configChanges="orientation"
             android:label="@string/update_contact"

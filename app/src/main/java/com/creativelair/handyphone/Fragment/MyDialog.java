@@ -52,7 +52,6 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-
         inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.popup_dialog , null);
         preference = new Preference(getActivity());
@@ -70,8 +69,6 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         edit = (ImageButton) view.findViewById(R.id.edit);
         initial = (TextView) view.findViewById(R.id.initial);
 
-
-
         name.setText(contacts.getName());
         phone.setText(contacts.getNumber());
 
@@ -82,27 +79,16 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
             initial.setText("" + contacts.getName().toUpperCase().charAt(0));
             iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
         }
-
-
         call.setOnClickListener(this);
         msg.setOnClickListener(this);
         edit.setOnClickListener(this);
-
 
         ViewGroup.LayoutParams params = iv.getLayoutParams();
         params.height = (height/3) * 2 - 100;
         iv.setLayoutParams(params);
 
-    /*    int IVheight = iv.getHeight();
-
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0 , IVheight/2, 0, 0);
-        initial.setLayoutParams(lp);
-
-*/
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
-
         return builder.create();
     }
 
@@ -151,24 +137,20 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
 
                 break;
         }
-
     }
 
     public  boolean isPermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (getActivity().checkSelfPermission(android.Manifest.permission.CALL_PHONE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v("TAG","Permission is granted");
                 return true;
             } else {
 
-                Log.v("TAG","Permission is revoked");
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, 1);
                 return false;
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("TAG","Permission is granted");
             return true;
         }
     }
@@ -182,10 +164,10 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Permission Granted.", Toast.LENGTH_SHORT).show();
                     call_action();
                 } else {
-                    Toast.makeText(getActivity(), "Permission denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Permission Denied.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -196,7 +178,5 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + contacts.getNumber()));
         startActivity(intent);
-
     }
-
 }
