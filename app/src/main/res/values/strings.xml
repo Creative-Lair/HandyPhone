@@ -26,4 +26,5 @@
     <string name="search">Search</string>
     <string name="view">View</string>
     <string name="update">Update</string>
+    <string name="emergency">Emergency Contact</string>
 </resources>
