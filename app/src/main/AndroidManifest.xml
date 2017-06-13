@@ -60,6 +60,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".EmergencyContact"
+            android:configChanges="orientation"
+            android:label="Emergency"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.EMERGENCYCONTACT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Screens.EditContact"
             android:configChanges="orientation"
             android:label="@string/update_contact"

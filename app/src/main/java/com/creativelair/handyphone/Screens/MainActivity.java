@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.creativelair.handyphone.Adapters.SectionsPagerAdapter;
+import com.creativelair.handyphone.EmergencyContact;
 import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.Search;
 
@@ -53,8 +54,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         }
 
+        if (id == R.id.emergency) {
+            Intent i = new Intent(this, EmergencyContact.class);
+            startActivity(i);
+        }
+
         return super.onOptionsItemSelected(item);
     }
-
-
 }

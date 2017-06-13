@@ -10,5 +10,11 @@
         android:title="@string/search"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/emergency"
+        android:icon="@drawable/icon_emergency2"
+        android:orderInCategory="101"
+        android:title="@string/emergency"
+        app:showAsAction="always" />
 
 </menu>
