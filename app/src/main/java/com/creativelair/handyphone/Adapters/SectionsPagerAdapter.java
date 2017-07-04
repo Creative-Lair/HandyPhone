@@ -21,7 +21,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                return new Frequent();
+                return new All_Contacts();
             case 1:
                 return new Family_Contacts();
             case 2:
@@ -29,7 +29,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 3:
                 return new Work_Contacts();
             case 4:
-                return new All_Contacts();
+                return new Frequent();
         }
         return null;
     }
@@ -43,7 +43,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "FREQUENT";
+                return "ALL CONTACTS";
             case 1:
                 return "FAMILY";
             case 2:
@@ -51,7 +51,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 3:
                 return "WORK";
             case 4:
-                return "ALL CONTACTS";
+                return "FREQUENT";
         }
         return null;
     }
