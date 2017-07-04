@@ -122,7 +122,9 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     break;
                 }
 
+
                 mName = mName.substring(0,1).toUpperCase() + mName.substring(1);
+
 
                 contact = new Contacts();
 
@@ -134,6 +136,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 } else {
                     contact.setIcon(null);
                 }
+
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
@@ -167,12 +170,14 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
                 break;
         }
 
     }
 
-    public int addContact(Contacts contact) {
+    private int addContact(Contacts contact) {
         String DisplayName = contact.getName();
         String MobileNumber = contact.getNumber();
 
@@ -196,6 +201,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
                     .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, DisplayName)
                     .build());
+            Log.d("Contact Add", "Name added");
         }
 
         // Adding insert operation to operations list
@@ -207,6 +213,8 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
                     .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
                     .build());
+
+            Log.d("Contact Add", "Mobile Number Added");
         }
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -230,10 +238,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         // Asking the Contact provider to create a new contact
         try {
             getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-            String tag = "Added ";
-            Log.d(tag, " Name: " + contact.getName() + " Number: " + contact.getNumber()
-                    + " Group: " + contact.getGroup() + " Pic: " + contact.getIcon() + " ID: " + contact.getId());
-            Toast.makeText(this, "Contact is successfully added.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Contact is successfully added", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -252,6 +257,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         } else {
             return null;
         }
+
     }
 
     @Override
@@ -284,6 +290,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     Toast.makeText(this, "Friend", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
         }
     }
 
