@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:id="@+id/upper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/add_from_contacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/imageborder"
+            android:onClick="onClick"
+            android:src="@drawable/icon_add"
+            android:textColorLink="@color/colorBlack"
+            app:backgroundTint="#000" />
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="38dp"
+            android:background="@drawable/imageborder"
+            android:foregroundGravity="center"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icon"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:onClick="onClick"
+            android:text="@string/select_from_gallery"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/Name"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/icon"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="55dp"
+            android:background="@drawable/imageborder"
+            android:hint="Enter Name"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            android:textColorHint="@color/colorBlack"
+            android:textColorLink="@color/colorBlack"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/Number"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/Name"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/imageborder"
+            android:gravity="center_vertical"
+            android:hint="Enter Number"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textColorHint="@color/colorBlack"
+            android:textColorLink="@color/colorBlack"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/sav_emg_btn"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorBlack"
+            android:onClick="onClick"
+            android:text="Save Contact"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
