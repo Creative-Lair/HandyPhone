@@ -28,6 +28,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String WORK = "Work";
     private static final String FAMILY = "Family";
     private static final String FRIEND = "Friend";
+    private static final String EMERGENCY = "Emergency";
 
     String[] Column = {
             KEY_ID,
@@ -46,15 +47,15 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_CONTACT + "(" +
-               KEY_ID + " INTEGER NOT NULL , " +
-               KEY_NAME + " TEXT NOT NULL, " +
+                KEY_ID + " INTEGER NOT NULL , " +
+                KEY_NAME + " TEXT NOT NULL, " +
                 KEY_CONTACTNUMBER + " TEXT NOT NULL, " +
                 KEY_GROUP + " TEXT NOT NULL, " +
                 KEY_CONTACTPIC + " BLOB," +
                 KEY_CONTACT_ID + " INTEGER, PRIMARY KEY(" + KEY_ID + "))";
 
         db.execSQL(CREATE_LOGIN_TABLE);
-        Log.d(TAG, "Database tables created");
+        Log.d(TAG, TABLE_CONTACT);
     }
 
     // Upgrading database
@@ -89,7 +90,33 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         long uid = db.insert(TABLE_CONTACT, null, values);
         db.close(); // Closing database connection
+    }
 
+    public void addEmergencyContact(Contacts contacts) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String name = contacts.getName();
+        String phone = contacts.getNumber();
+        Bitmap image = contacts.getIcon();
+        String group = contacts.getGroup();
+        int id = contacts.getId();
+
+        ContentValues values = new ContentValues();
+        if (image != null) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] img = bos.toByteArray();
+            values.put(KEY_CONTACTPIC, img);
+        } else {
+            values.put(KEY_CONTACTPIC, "");
+        }
+        values.put(KEY_NAME, name); // Name
+        values.put(KEY_CONTACTNUMBER, phone); // Email
+        values.put(KEY_GROUP, group);
+        values.put(KEY_CONTACT_ID, id);
+
+        long uid = db.insert(TABLE_CONTACT, null, values);
+        db.close(); // Closing database connection
     }
 
     public void updateContact(Contacts oldcontacts, Contacts contacts) {
@@ -118,9 +145,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         db.update(TABLE_CONTACT, cv, where, whereargs);
 
         db.close(); // Closing database connection
-
-
-
     }
 
     public ArrayList<Contacts> getContactDetails() {
@@ -215,7 +239,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        
+
         return contacts;
     }
 
@@ -250,6 +274,35 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         return contacts;
     }
 
+    public ArrayList<Contacts> getEmergency() {
+        String whereClause = KEY_GROUP + "=?";
+        String[] whereArgs = {EMERGENCY};
+        ArrayList<Contacts> contact = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
+        // Move to first row
+        if (cursor.moveToFirst()) {
+            Contacts user = new Contacts();
+            user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+            user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+            user.setGroup(KEY_GROUP);
+            user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
+            byte[] imageBytes = null;
+            imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
+            if (imageBytes != null) {
+                user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+            } else {
+                user.setIcon(null);
+            }
+            contact.add(user);
+            System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+        }
+        cursor.close();
+        db.close();
+
+        return contact;
+    }
+
     /**
      * Re crate database Delete all tables and create them again
      * */
@@ -258,8 +311,5 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         db.delete(TABLE_CONTACT, null, null);
         db.close();
-
-        Log.d(TAG, "Deleted all user info from sqlite");
     }
-
 }

@@ -177,7 +177,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     }
 
-    private int addContact(Contacts contact) {
+    public int addContact(Contacts contact) {
         String DisplayName = contact.getName();
         String MobileNumber = contact.getNumber();
 
