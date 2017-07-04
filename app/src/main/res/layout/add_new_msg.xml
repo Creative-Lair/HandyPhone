@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_msg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginTop="100sp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Add Heading!"
+        android:inputType="textPersonName"
+        android:maxLength="10"
+        android:padding="20sp"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/new_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginTop="20sp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="Add Message!"
+        android:inputType="textMultiLine|textPersonName"
+        android:maxLines="3"
+        android:padding="20sp" />
+
+    <Button
+        android:id="@+id/btnAddTemp"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="20sp"
+        android:background="@color/colorBlack"
+        android:onClick="onClick"
+        android:padding="20sp"
+        android:text="Add Template"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp" />
+
+</LinearLayout>

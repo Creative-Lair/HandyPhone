@@ -215,7 +215,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-
+        
         return contacts;
     }
 
