@@ -73,8 +73,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             holder.initial.setText("" + holder.name.getText().toString().toUpperCase().charAt(0));
             holder.initial.setTypeface(RobotoBlack);
         }
-
-
     }
 
     @Override
