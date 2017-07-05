@@ -1,82 +1,95 @@
 package com.creativelair.handyphone;
 
 import android.Manifest;
+import android.content.ContentProviderOperation;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.creativelair.handyphone.Helpers.Contacts;
+import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.Screens.AddContact;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by HishamAhmed on 12-Jun-17.
  */
 
-public class EmergencyContact extends AppCompatActivity {
+public class EmergencyContact extends AppCompatActivity implements View.OnClickListener, CheckBox.OnCheckedChangeListener {
 
-    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 2;
-    private final int PICK_PHOTO = 1;
-    ArrayList<Contacts> contacts;
-    RecyclerView listView;
+    Contacts contacts;
     SQLiteHandler db;
     EditText name;
-    EditText number;
-    Bitmap mBitmap;
-    ImageView img;
-    Contacts contact;
-    AddContact add;
+    EditText number, msg_box;
+    CheckBox call, msg, callMsg;
+    Preference pref;
     private ActionBar actionBar;
+
+    private Button btn;
+    private Button imgBtn;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    /*
-        try{
-            contacts = db.getEmergency();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-    */
-        if (contacts == null) {
-            loadEmergencyContactAddScreen();
-        } else {
-            loadEmergencyScreen();
-        }
-    }
 
-    public void loadEmergencyContactAddScreen() {
-        setContentView(R.layout.emergrncy_add_contact);
-        actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.icon_back);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("Emergency");
-        prepare();
+        db = new SQLiteHandler(this);
+        pref = new Preference(this);
+
+        loadEmergencyScreen();
     }
 
     public void loadEmergencyScreen() {
         setContentView(R.layout.emergency);
         contacts = db.getEmergency();
-        prepare();
-        name.setText(contact.getName());
-        number.setText(contact.getNumber());
 
-        /*
-        ContactListAdapter adapter = new ContactListAdapter(this, contacts);
-        listView.setAdapter(adapter);
-        */
+        msg_box = (EditText)findViewById(R.id.msg_box);
+        name = (EditText) findViewById(R.id.emg_name);
+        number = (EditText) findViewById(R.id.emg_numbr);
+        btn = (Button) findViewById(R.id.emg_btn);
+        call = (CheckBox) findViewById(R.id.call);
+        msg = (CheckBox) findViewById(R.id.msg);
+        callMsg = (CheckBox) findViewById(R.id.callMsg);
+        imgBtn = (Button) findViewById(R.id.imageButton);
+
+
+        call.setOnCheckedChangeListener(this);
+        msg.setOnCheckedChangeListener(this);
+        callMsg.setOnCheckedChangeListener(this);
+
+        call.setChecked(pref.getCALL());
+        msg.setChecked(pref.getMSG());
+        callMsg.setChecked(pref.getCALLMSG());
+
+        if(call.isChecked()){
+            msg_box.setEnabled(false);
+        }
+
+        msg_box.setText(pref.getMSGTEXT());
+        imgBtn.setOnClickListener(this);
+        btn.setOnClickListener(this);
+
+        name.setText(pref.getEname());
+        number.setText(pref.getEnumber());
 
         actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.icon_back);
@@ -84,18 +97,49 @@ public class EmergencyContact extends AppCompatActivity {
         actionBar.setTitle("Emergency");
     }
 
-    public void prepare() {
-        name = (EditText) findViewById(R.id.Name);
-        number = (EditText) findViewById(R.id.Number);
-        img = (ImageView) findViewById(R.id.icon);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
-
     public void onClick(View v) {
         int id = v.getId();
-        String sname = name.getText().toString().trim();
-        String snum = number.getText().toString().trim();
+
         switch (id) {
-            case R.id.sav_emg_btn:
+            case R.id.emg_btn:
+                String sname = name.getText().toString().trim();
+                String snum = number.getText().toString().trim();
+                String msgText = msg_box.getText().toString().trim();
+
+                if(msg.isChecked()) {
+                    pref.setMSG(true);
+                    pref.setCALL(false);
+                    pref.setCALLMSG(false);
+                } else if (call.isChecked()){
+                    pref.setMSG(false);
+                    pref.setCALL(true);
+                    pref.setCALLMSG(false);
+                } else if(callMsg.isChecked()){
+                    pref.setMSG(false);
+                    pref.setCALL(false);
+                    pref.setCALLMSG(true);
+                } else {
+                    pref.setMSG(true);
+                    pref.setCALL(false);
+                    pref.setCALLMSG(false);
+                }
+
+                if(msgText.equals("") && (msg.isChecked()||callMsg.isChecked())){
+                    Toast.makeText(this, "Please Set Some Msg Text!!", Toast.LENGTH_SHORT).show();
+                    break;
+                } else {
+                    pref.setMSGTEXT(msgText);
+                }
+
                 if (sname.equals("") || sname.equals(" ")) {
                     Toast.makeText(this, "A person without name is quite useless!!\n" +
                             "Please enter emergency contact name.", Toast.LENGTH_LONG).show();
@@ -105,53 +149,51 @@ public class EmergencyContact extends AppCompatActivity {
                             "Please enter emergency contact number.", Toast.LENGTH_LONG).show();
                     break;
                 } else {
-                    contact = new Contacts();
-                    contact.setName(sname);
-                    contact.setNumber(snum);
-                    contact.setGroup("Emergency");
-                    if (mBitmap != null) {
-                        contact.setIcon(mBitmap);
-                    } else {
-                        contact.setIcon(null);
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(
-                            Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS},
-                                PERMISSIONS_REQUEST_READ_CONTACTS);
-                    } else {
-                        String tag = " Added ";
-                        Log.d(tag, " Name: " + contact.getName() + " Number: " + contact.getNumber()
-                                + " Group: " + contact.getGroup() + " Pic: " + contact.getIcon() + " ID: " + contact.getId());
-                        contact.setId(add.addContact(contact));
-                        db.addEmergencyContact(contact);
-                    }
-                    loadEmergencyScreen();
-                }
+                    pref.setEname(sname);
+                    pref.setEnumber(snum);
+                    Toast.makeText(this, "Contact Added", Toast.LENGTH_SHORT).show();
+                    pref.setEmergency(true);
+                    finish();
 
-            case R.id.gallery:
-                try {
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_PHOTO);
-                    } else {
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, PICK_PHOTO);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
                 break;
 
             case R.id.add_from_contacts:
                 Toast.makeText(this, "Select emergency contact from already saved contacts.", Toast.LENGTH_LONG).show();
+                break;
+
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        int id  = buttonView.getId();
+
+        switch (id) {
+            case R.id.msg:
+                if(msg.isChecked()) {
+                    callMsg.setChecked(false);
+                    call.setChecked(false);
+                    msg_box.setEnabled(true);
+                }
+                break;
+
+            case R.id.call:
+
+                if(call.isChecked()) {
+                    callMsg.setChecked(false);
+                    msg.setChecked(false);
+                    msg_box.setEnabled(false);
+                }
 
                 break;
 
-            case R.id.emg_btn:
-
+            case R.id.callMsg:
+                if(callMsg.isChecked()) {
+                    msg.setChecked(false);
+                    call.setChecked(false);
+                    msg_box.setEnabled(true);
+                }
                 break;
         }
     }

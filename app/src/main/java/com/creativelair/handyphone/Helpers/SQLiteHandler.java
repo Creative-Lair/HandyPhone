@@ -274,15 +274,15 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         return contacts;
     }
 
-    public ArrayList<Contacts> getEmergency() {
+    public Contacts getEmergency() {
         String whereClause = KEY_GROUP + "=?";
         String[] whereArgs = {EMERGENCY};
-        ArrayList<Contacts> contact = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
         // Move to first row
+        Contacts user = null;
         if (cursor.moveToFirst()) {
-            Contacts user = new Contacts();
+            user = new Contacts();
             user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
             user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             user.setGroup(KEY_GROUP);
@@ -294,13 +294,12 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             } else {
                 user.setIcon(null);
             }
-            contact.add(user);
             System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
         }
         cursor.close();
         db.close();
 
-        return contact;
+        return user;
     }
 
     /**

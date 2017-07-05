@@ -1,11 +1,14 @@
 package com.creativelair.handyphone.Fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +20,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.creativelair.handyphone.Adapters.ContactListAdapter;
 import com.creativelair.handyphone.GridSpacingItemDecoration;
@@ -36,6 +40,7 @@ import java.util.ArrayList;
 public class Frequent extends Fragment implements View.OnClickListener {
 
     private static LayoutInflater inflat = null;
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     RecyclerView listView;
     Preference preference;
     FloatingActionButton fb;
@@ -77,8 +82,12 @@ public class Frequent extends Fragment implements View.OnClickListener {
     }
 
     public void checkPermission() {
-        Frequent.LoadContactsAyscn loadContactsAyscn = new LoadContactsAyscn();
-        loadContactsAyscn.execute();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+        } else {
+            Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
+            loadContactsAyscn.execute();
+        }
     }
 
     private int dpToPx(int dp) {
@@ -194,6 +203,18 @@ public class Frequent extends Fragment implements View.OnClickListener {
             frequent = contacts;
             ContactListAdapter adapter = new ContactListAdapter(getContext(), frequent);
             listView.setAdapter(adapter);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
+                loadContactsAyscn.execute();
+            } else {
+                Toast.makeText(getActivity(), "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

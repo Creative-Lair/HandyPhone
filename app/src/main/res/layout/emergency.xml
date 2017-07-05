@@ -1,75 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="vertical"
     android:orientation="vertical"
     >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/emg_pic"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/imageborder"
-            android:scaleType="fitXY" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:hint="Name"
-            android:textColorHint="@color/colorBlack"
-            android:textColorLink="@color/colorBlack"
-            android:textSize="20sp"
-            android:inputType="textPersonName"
-            android:background="@drawable/imageborder"
             android:id="@+id/emg_name"
-            android:textAlignment="center"
-            android:layout_marginRight="10sp"
-            android:layout_toEndOf="@+id/emg_pic"
-            android:layout_marginLeft="10sp"
-            android:layout_marginTop="80dp"
-            android:layout_alignParentTop="true" />
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:hint="Number"
-            android:textAlignment="center"
-            android:id="@+id/emg_numbr"
-            android:textColorHint="@color/colorBlack"
-            android:textColorLink="@color/colorBlack"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/imageborder"
-            android:textSize="20sp"
-            android:gravity="center_vertical"
-            android:layout_marginRight="10sp"
-            android:layout_below="@+id/emg_name"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            android:textColorHint="#A8A8A8"
+            android:textColorLink="@color/colorBlack"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/emg_numbr"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
             android:layout_alignLeft="@+id/emg_name"
             android:layout_alignStart="@+id/emg_name"
-            android:layout_marginTop="20dp" />
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/imageborder"
-            android:textColorLink="@color/colorBlack"
-            android:layout_marginTop="10sp"
-            android:layout_marginEnd="10dp"
+            android:layout_below="@+id/emg_name"
             android:layout_marginRight="10dp"
-            android:src="@drawable/icon_add"
-            app:backgroundTint="#000"
-            />
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/imageborder"
+            android:gravity="center_vertical"
+            android:hint="Number"
+            android:textAlignment="center"
+            android:textColorHint="#A8A8A8"
+            android:textColorLink="@color/colorBlack"
+            android:textSize="20sp" />
 
+        <Button
+            android:id="@+id/imageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="@string/select_from_contacts"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/emg_numbr"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -133,7 +123,7 @@
             android:id="@+id/textView" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/callMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textView"
@@ -142,22 +132,22 @@
             android:layout_alignParentEnd="true" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/str_call"
             android:layout_alignBottom="@+id/str_call"
-            android:layout_alignLeft="@+id/checkBox"
-            android:layout_alignStart="@+id/checkBox" />
+            android:layout_alignLeft="@+id/callMsg"
+            android:layout_alignStart="@+id/callMsg" />
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/str_msg"
             android:layout_alignBottom="@+id/str_msg"
-            android:layout_alignLeft="@+id/checkBox2"
-            android:layout_alignStart="@+id/checkBox2" />
+            android:layout_alignLeft="@+id/call"
+            android:layout_alignStart="@+id/call" />
 
     </RelativeLayout>
 
@@ -192,14 +182,16 @@
         <Button
             android:id="@+id/emg_btn"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="60dp"
             android:layout_alignParentBottom="true"
+            android:layout_below="@id/msg_box"
             android:layout_centerHorizontal="true"
             android:background="@color/colorBlack"
             android:text="Perform Action"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </RelativeLayout>
-
 </RelativeLayout>
+
+</ScrollView>

@@ -18,6 +18,17 @@ public class Preference {
     private static final String KEY_COLOR = "Color";
     private static final String HEADING = "Head";
     private static final String MESSAGE = "Message Body";
+    private static final String SEND_MESSAGE = "msg";
+    private static final String CALL = "call";
+    private static final String CALLANDMESSAGE = "callMsg";
+    private static final String MESSAGE_TEXT = "msg_text";
+    private static final String EMERGENCY = "emergency";
+    private static final String ENAME = "ename";
+    private static final String ENUMBER = "enumber";
+
+
+
+
     public static Bitmap bitmap;
     private static String TAG = Preference.class.getSimpleName();
     SharedPreferences pref;
@@ -111,4 +122,68 @@ public class Preference {
         editor.putInt(KEY_ID, id);
         editor.commit();
     }
+
+    public void setMSG(boolean v){
+        editor.putBoolean(SEND_MESSAGE, v);
+        editor.commit();
+    }
+
+    public void setCALL(boolean v){
+        editor.putBoolean(CALL, v);
+        editor.commit();
+    }
+
+    public void setCALLMSG(boolean v){
+        editor.putBoolean(CALLANDMESSAGE, v);
+        editor.commit();
+    }
+
+    public boolean getMSG(){
+        return pref.getBoolean(SEND_MESSAGE, true);
+    }
+
+    public boolean getCALL(){
+        return pref.getBoolean(CALL, false);
+    }
+
+    public boolean getCALLMSG(){
+        return pref.getBoolean(CALLANDMESSAGE, false);
+    }
+
+    public void setMSGTEXT(String v){
+        editor.putString(MESSAGE_TEXT, v);
+        editor.commit();
+    }
+
+    public String getMSGTEXT(){
+        return pref.getString(MESSAGE_TEXT, "I am in trouble!!");
+    }
+
+    public void setEmergency(Boolean v){
+        editor.putBoolean(EMERGENCY, v);
+        editor.commit();
+    }
+
+    public boolean getEmergency(){
+        return pref.getBoolean(EMERGENCY, false);
+    }
+
+    public void setEname(String ename) {
+        editor.putString(ENAME, ename);
+        editor.commit();
+    }
+
+    public void setEnumber(String enumber) {
+        editor.putString(ENUMBER, enumber);
+        editor.commit();
+    }
+
+    public String getEname(){
+        return pref.getString(ENAME, "");
+    }
+
+    public String getEnumber(){
+        return pref.getString(ENUMBER, "");
+    }
+
 }
