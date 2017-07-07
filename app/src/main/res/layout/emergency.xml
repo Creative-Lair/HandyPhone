@@ -153,7 +153,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/middle"
         android:id="@+id/relativeLayout">
 
@@ -182,7 +182,7 @@
         <Button
             android:id="@+id/emg_btn"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="75dp"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/msg_box"
             android:layout_centerHorizontal="true"

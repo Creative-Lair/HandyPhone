@@ -37,8 +37,6 @@ public class AddNewMsg extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_new_msg);
         actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.icon_back);
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Add Template");
         set();
     }
