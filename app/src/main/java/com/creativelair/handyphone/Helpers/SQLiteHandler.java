@@ -19,6 +19,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "orcl";
     private static final String TABLE_CONTACT = "contacts";
 
+    private static final String MESSAGE_TEMPLATE = "message_template";
+
     private static final String KEY_ID = "conactid";
     private static final String KEY_NAME = "contactname";
     private static final String KEY_CONTACTPIC = "contactpic";
@@ -28,7 +30,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String WORK = "Work";
     private static final String FAMILY = "Family";
     private static final String FRIEND = "Friend";
-    private static final String EMERGENCY = "Emergency";
 
     String[] Column = {
             KEY_ID,
@@ -66,33 +67,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     }
 
     public void addContact(Contacts contacts) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String name = contacts.getName();
-        String phone = contacts.getNumber();
-        Bitmap image = contacts.getIcon();
-        String group = contacts.getGroup();
-        int id = contacts.getId();
-
-        ContentValues values = new ContentValues();
-        if (image != null) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-            byte[] img = bos.toByteArray();
-            values.put(KEY_CONTACTPIC, img);
-        } else {
-            values.put(KEY_CONTACTPIC, "");
-        }
-        values.put(KEY_NAME, name); // Name
-        values.put(KEY_CONTACTNUMBER, phone); // Email
-        values.put(KEY_GROUP, group);
-        values.put(KEY_CONTACT_ID, id);
-
-        long uid = db.insert(TABLE_CONTACT, null, values);
-        db.close(); // Closing database connection
-    }
-
-    public void addEmergencyContact(Contacts contacts) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String name = contacts.getName();
@@ -272,34 +246,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         db.close();
 
         return contacts;
-    }
-
-    public Contacts getEmergency() {
-        String whereClause = KEY_GROUP + "=?";
-        String[] whereArgs = {EMERGENCY};
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
-        // Move to first row
-        Contacts user = null;
-        if (cursor.moveToFirst()) {
-            user = new Contacts();
-            user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
-            user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
-            user.setGroup(KEY_GROUP);
-            user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-            byte[] imageBytes = null;
-            imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
-            if (imageBytes != null) {
-                user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-            } else {
-                user.setIcon(null);
-            }
-            System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
-        }
-        cursor.close();
-        db.close();
-
-        return user;
     }
 
     /**

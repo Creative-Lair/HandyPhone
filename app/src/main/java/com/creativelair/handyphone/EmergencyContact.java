@@ -60,7 +60,6 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
 
     public void loadEmergencyScreen() {
         setContentView(R.layout.emergency);
-        contacts = db.getEmergency();
 
         msg_box = (EditText)findViewById(R.id.msg_box);
         name = (EditText) findViewById(R.id.emg_name);

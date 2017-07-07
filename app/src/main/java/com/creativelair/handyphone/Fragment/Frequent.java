@@ -1,6 +1,7 @@
 package com.creativelair.handyphone.Fragment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -107,10 +108,14 @@ public class Frequent extends Fragment implements View.OnClickListener {
     }
 
     public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
-
+        ProgressDialog pd;
         @Override
         protected void onPreExecute() {
+
             super.onPreExecute();
+            pd = new ProgressDialog(getActivity());
+            pd.setMessage("Loading Contacts");
+            pd.show();
         }
 
         @Override
@@ -203,6 +208,9 @@ public class Frequent extends Fragment implements View.OnClickListener {
             frequent = contacts;
             ContactListAdapter adapter = new ContactListAdapter(getContext(), frequent);
             listView.setAdapter(adapter);
+            if(pd.isShowing()){
+                pd.hide();
+            }
         }
     }
 
