@@ -19,7 +19,9 @@ import com.creativelair.handyphone.Adapters.MessageListAdapter;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Message;
 import com.creativelair.handyphone.Helpers.Preference;
+import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
+import com.creativelair.handyphone.Screens.AddNewMsg;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
     private Context mContext;
     private Button Add;
     private ScrollView scrollLayout;
+    private SQLiteHandler db;
 
     public MessageDialog(Contacts contacts) {
         super();
@@ -47,36 +50,62 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
         inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.messagedialog, null);
         preference = new Preference(getActivity());
+        db = new SQLiteHandler(getActivity());
 
         lv = (ListView) view.findViewById(R.id.lv);
         Add = (Button) view.findViewById(R.id.add);
         scrollLayout = (ScrollView) view.findViewById(R.id.relativelayout);
+        Add.setOnClickListener(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
-        Message msg1 = new Message("Meeting", "I'm in a meeting. I'll call you back.");
-        Message msg2 = new Message("Driving", "Sorry, I'm driving.");
-        Message msg3 = new Message("Urgent", "It's urgent, Call back as soon as possible.");
-        Message msg4 = new Message("Busy", "Can't talk now. Call me later?");
-        Message msg5 = new Message("Busy 2", "Can't talk now. Will call later.");
-        Message msg6 = new Message("Class", "I'm in a class.");
-        Message msg7 = new Message("Late", "I'm going to be late tonight.");
+        if(preference.getMSGLOADED()){
+          messages = new ArrayList<>();
+          messages = db.getMessages();
+        } else {
+            messages = new ArrayList<>();
 
-        messages = new ArrayList<>();
-        messages.add(msg1);
-        messages.add(msg2);
-        messages.add(msg3);
-        messages.add(msg4);
-        messages.add(msg5);
-        messages.add(msg6);
-        messages.add(msg7);
+            Message msg1 = new Message("Meeting", "I'm in a meeting. I'll call you back.");
+            Message msg2 = new Message("Driving", "Sorry, I'm driving.");
+            Message msg3 = new Message("Urgent", "It's urgent, Call back as soon as possible.");
+            Message msg4 = new Message("Busy", "Can't talk now. Call me later?");
+            Message msg5 = new Message("Busy 2", "Can't talk now. Will call later.");
+            Message msg6 = new Message("Class", "I'm in a class.");
+            Message msg7 = new Message("Late", "I'm going to be late tonight.");
 
+            db.addMessage(msg1, messages.size());
+            messages.add(msg1);
+
+            db.addMessage(msg2, messages.size());
+            messages.add(msg2);
+
+            db.addMessage(msg3, messages.size());
+            messages.add(msg3);
+
+            db.addMessage(msg4, messages.size());
+            messages.add(msg4);
+
+            db.addMessage(msg5, messages.size());
+            messages.add(msg5);
+
+            db.addMessage(msg6, messages.size());
+            messages.add(msg6);
+
+            db.addMessage(msg7, messages.size());
+            messages.add(msg7);
+
+            preference.setMSGLOADED(true);
+
+        }
         MessageListAdapter adapter = new MessageListAdapter(getActivity(), R.layout.messagedialoglist, messages);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
 
-//        Add.setOnClickListener(this);
         return builder.create();
+    }
+
+    public void addMessages(){
+
     }
 
 
@@ -101,19 +130,22 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
         params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
 
-    /*
+
         MessageListAdapter adapter = new MessageListAdapter(getActivity(), R.layout.messagedialoglist, messages);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
 
-        String head = preference.getHeading().toString();
-        String messg = preference.getMsg().toString();
-        Message msg7 = new Message(head, messg);
-        messages.add(msg7);
-        Add.setOnClickListener(this);
-        preference.setHeading("");
-        preference.setMsg("");
-    */
+        String head = preference.getHeading();
+        String messg = preference.getMsg();
+
+        if(!head.equals("")&&!messg.equals("")) {
+            Message msg7 = new Message(head, messg);
+            messages.add(msg7);
+            db.addMessage(msg7, messages.size());
+            preference.setHeading("");
+            preference.setMsg("");
+        }
+
         super.onResume();
     }
 
@@ -123,9 +155,8 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
 
         switch (id) {
             case R.id.add:
-
-                /*Intent i = new Intent(getActivity(), AddNewMsg.class);
-                startActivity(i);   */
+                Intent i = new Intent(getActivity(), AddNewMsg.class);
+                startActivity(i);
                 break;
         }
     }

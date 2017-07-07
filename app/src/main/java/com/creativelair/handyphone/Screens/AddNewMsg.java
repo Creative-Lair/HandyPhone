@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.creativelair.handyphone.Helpers.Message;
 import com.creativelair.handyphone.Helpers.Preference;
+import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class AddNewMsg extends AppCompatActivity
     private android.support.v7.app.AlertDialog.Builder builder;
     private ArrayList<Message> messages;
     private Preference pref;
+    private SQLiteHandler db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class AddNewMsg extends AppCompatActivity
         msg = (EditText) findViewById(R.id.new_msg);
         btnAdd = (Button) findViewById(R.id.btnAddTemp);
         lv = (ListView) findViewById(R.id.lv);
+        db = new SQLiteHandler(this);
     }
 
     @Override
@@ -56,8 +59,6 @@ public class AddNewMsg extends AppCompatActivity
             case R.id.btnAddTemp:
                 String heading = head.getText().toString().trim();
                 String mesg = msg.getText().toString().trim();
-          //      String heading = "sfaf";
-          //      String mesg = "ddgcgssd";
 
                 if (heading.equals("")) {
                     Toast.makeText(this, "Please Enter Heading!", Toast.LENGTH_SHORT).show();
@@ -71,6 +72,8 @@ public class AddNewMsg extends AppCompatActivity
                 pref = new Preference(this);
                 pref.setHeading(heading);
                 pref.setMsg(mesg);
+                //Message msg = new Message(heading,mesg);
+                //db.addMessage(msg, );
 
                 finish();
         }

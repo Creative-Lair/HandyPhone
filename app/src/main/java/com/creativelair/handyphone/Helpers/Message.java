@@ -13,6 +13,10 @@ public class Message {
         this.text = text;
     }
 
+    public Message(){
+
+    }
+
     public String getHeader() {
         return header;
     }

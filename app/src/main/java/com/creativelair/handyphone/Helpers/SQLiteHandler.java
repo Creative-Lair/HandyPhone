@@ -20,6 +20,9 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String TABLE_CONTACT = "contacts";
 
     private static final String MESSAGE_TEMPLATE = "message_template";
+    private static final String MESSAGE_ID = "message_id";
+    private static final String MESSAGE_HEADER = "message_header";
+    private static final String MESSAGE_TEXT = "message_text";
 
     private static final String KEY_ID = "conactid";
     private static final String KEY_NAME = "contactname";
@@ -40,6 +43,12 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             KEY_CONTACT_ID
     };
 
+    String[] Column2 = {
+            MESSAGE_ID,
+            MESSAGE_HEADER,
+            MESSAGE_TEXT
+    };
+
     public SQLiteHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -54,8 +63,14 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 KEY_GROUP + " TEXT NOT NULL, " +
                 KEY_CONTACTPIC + " BLOB," +
                 KEY_CONTACT_ID + " INTEGER, PRIMARY KEY(" + KEY_ID + "))";
+        String CREATE_MESSAGE_TABLE =
+                "CREATE TABLE " + MESSAGE_TEMPLATE + "(" +
+                MESSAGE_ID + " INTEGER NOT NULL , " +
+                MESSAGE_HEADER + " TEXT NOT NULL, " +
+                MESSAGE_TEXT + " TEXT NOT NULL, PRIMARY KEY(" + MESSAGE_ID + "))";
 
         db.execSQL(CREATE_LOGIN_TABLE);
+        db.execSQL(CREATE_MESSAGE_TABLE);
         Log.d(TAG, TABLE_CONTACT);
     }
 
@@ -63,8 +78,45 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACT);
+        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_TEMPLATE);
         onCreate(db);
     }
+
+    public void addMessage(Message msg, int count) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String header = msg.getHeader();
+        String text = msg.getText();
+        int id = count;
+
+        ContentValues values = new ContentValues();
+        values.put(MESSAGE_ID, id); // Name
+        values.put(MESSAGE_HEADER, header); // Email
+        values.put(MESSAGE_TEXT, text);
+
+        long uid = db.insert(MESSAGE_TEMPLATE, null, values);
+        db.close(); // Closing database connection
+    }
+
+    public ArrayList<Message> getMessages(){
+        String selectQuery = "SELECT  * FROM " + MESSAGE_TEMPLATE;
+        ArrayList<Message> messages = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // Move to first row
+        if (cursor.moveToFirst()) {
+            do {
+                Message message = new Message();
+                message.setHeader(cursor.getString(cursor.getColumnIndex(MESSAGE_HEADER)));
+                message.setText(cursor.getString(cursor.getColumnIndex(MESSAGE_TEXT)));
+                messages.add(message);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return messages;
+    }
+
 
     public void addContact(Contacts contacts) {
         SQLiteDatabase db = this.getWritableDatabase();

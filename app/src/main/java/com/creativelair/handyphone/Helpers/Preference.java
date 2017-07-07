@@ -25,6 +25,8 @@ public class Preference {
     private static final String EMERGENCY = "emergency";
     private static final String ENAME = "ename";
     private static final String ENUMBER = "enumber";
+    private static final String MESSAGELOADED = "msgloaded";
+
 
 
 
@@ -184,6 +186,15 @@ public class Preference {
 
     public String getEnumber(){
         return pref.getString(ENUMBER, "");
+    }
+
+    public Boolean getMSGLOADED(){
+        return pref.getBoolean(MESSAGELOADED, false);
+    }
+
+    public void setMSGLOADED(boolean v){
+        editor.putBoolean(MESSAGELOADED, v);
+        editor.commit();
     }
 
 }
