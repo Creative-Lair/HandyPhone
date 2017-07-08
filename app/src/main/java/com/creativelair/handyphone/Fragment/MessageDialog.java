@@ -36,7 +36,7 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
     private Preference preference;
     private Context mContext;
     private Button Add;
-    private ScrollView scrollLayout;
+    //  private ScrollView scrollLayout;
     private SQLiteHandler db;
 
     public MessageDialog(Contacts contacts) {
@@ -54,14 +54,14 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
 
         lv = (ListView) view.findViewById(R.id.lv);
         Add = (Button) view.findViewById(R.id.add);
-        scrollLayout = (ScrollView) view.findViewById(R.id.relativelayout);
+        // scrollLayout = (ScrollView) view.findViewById(R.id.relativelayout);
         Add.setOnClickListener(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         if(preference.getMSGLOADED()){
-          messages = new ArrayList<>();
-          messages = db.getMessages();
+            messages = new ArrayList<>();
+            messages = db.getMessages();
         } else {
             messages = new ArrayList<>();
 

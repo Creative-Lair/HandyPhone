@@ -4,83 +4,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f1f1f1"
     tools:context="com.creativelair.handyphone.Screens.About">
 
-   <com.creativelair.handyphone.SquareImageView
-       android:layout_width="90dp"
-       android:layout_height="90dp"
-       android:id="@+id/img"
-       android:src="@drawable/logo"
-       android:layout_marginTop="155dp"
-       android:layout_alignParentTop="true"
-       android:layout_centerHorizontal="true" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="19dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/app_logo2"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
+        android:id="@+id/design"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img"
+        android:layout_alignBottom="@+id/imgCL"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="95dp"
+        android:fontFamily="monospace"
         android:gravity="center_horizontal"
-        android:textColor="#000"
-        android:textSize="20sp"
+        android:text="Designed By:"
+        android:textAllCaps="true"
+        android:textColor="#1d4b5f"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <com.creativelair.handyphone.SquareImageView
+        android:id="@+id/imgCL"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/cl_logo"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
         android:id="@+id/version"
-        android:layout_marginTop="5dp"
-        android:text="Version 1.0.0"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/version"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/fbicon"
-        android:src="@drawable/fblack"/>
-
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="14dp"
+        android:fontFamily="monospace"
+        android:gravity="center_horizontal"
+        android:text="Version 1.0.0"
+        android:textAllCaps="true"
+        android:textColor="#1d4b5f"
+        android:textSize="10sp" />
+
+    <ImageView
+         android:id="@+id/fbicon"
+         android:layout_width="15dp"
+         android:layout_height="15dp"
+         android:src="@drawable/fblack"
+        android:layout_alignBottom="@+id/fblink"
+        android:layout_toLeftOf="@+id/fblink"
+        android:layout_toStartOf="@+id/fblink" />
+
+    <TextView
         android:id="@+id/fblink"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/version"
-        android:layout_toEndOf="@+id/fbicon"
-        android:layout_toRightOf="@+id/fbicon"
-        android:layout_marginLeft="15dp"
-        android:textSize="20sp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
         android:gravity="center_vertical"
-        android:layout_alignBottom="@+id/fbicon"
-        android:layout_alignBaseline="@+id/fbicon"
-        android:layout_marginStart="15dp"/>
+        android:textAlignment="center"
+        android:textColor="#1d4b5f"
+        android:textSize="12sp"
+        android:layout_below="@+id/design"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+         android:id="@+id/webicon"
+         android:layout_width="15dp"
+         android:layout_height="15dp"
+         android:src="@drawable/gblack"
+        android:layout_marginTop="19dp"
         android:layout_below="@+id/fbicon"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/webicon"
-        android:src="@drawable/iblack"/>
+        android:layout_toLeftOf="@+id/weblink"
+        android:layout_toStartOf="@+id/weblink" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:gravity="center_vertical"
         android:id="@+id/weblink"
-        android:textSize="20sp"
-        android:layout_below="@+id/fbicon"
-        android:layout_toEndOf="@+id/webicon"
-        android:layout_toRightOf="@+id/webicon"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/webicon"
-        android:layout_alignBaseline="@+id/webicon"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"/>
+        android:layout_alignLeft="@+id/fblink"
+        android:layout_alignStart="@+id/fblink"
+        android:fontFamily="monospace"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:textColor="#1d4b5f"
+        android:textSize="12sp" />
 
 </RelativeLayout>
