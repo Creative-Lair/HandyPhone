@@ -309,4 +309,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         db.delete(TABLE_CONTACT, null, null);
         db.close();
     }
+
+    public void deleteMSG() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(MESSAGE_TEMPLATE, null, null);
+        db.close();
+    }
+
+
 }

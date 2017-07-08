@@ -113,7 +113,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".Screens.Settings"></activity>
+        <activity android:name=".Screens.Settings" />
+        <activity android:name=".Screens.About"></activity>
     </application>
 
 </manifest>

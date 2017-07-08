@@ -7,7 +7,8 @@
     tools:context="com.creativelair.handyphone.Screens.Settings">
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/list">
 
 
     </ListView>
