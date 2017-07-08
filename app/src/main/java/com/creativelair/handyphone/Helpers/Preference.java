@@ -69,7 +69,7 @@ public class Preference {
     }
 
     public String getHeading(){
-        return pref.getString(HEADING, "Head");
+        return pref.getString(HEADING, "");
     }
 
     public void setMsg(String msgg){
@@ -78,7 +78,7 @@ public class Preference {
     }
 
     public String getMsg(){
-        return pref.getString(MESSAGE, "Message Body");
+        return pref.getString(MESSAGE, "");
     }
 
     public String getPhone() {

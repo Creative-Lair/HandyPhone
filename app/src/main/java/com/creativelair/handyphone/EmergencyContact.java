@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.ContentProviderOperation;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -49,6 +51,7 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
     private Button btn;
     private Button imgBtn;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -68,7 +71,7 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
         call = (CheckBox) findViewById(R.id.call);
         msg = (CheckBox) findViewById(R.id.msg);
         callMsg = (CheckBox) findViewById(R.id.callMsg);
-        imgBtn = (Button) findViewById(R.id.imageButton);
+        imgBtn = (Button) findViewById(R.id.selectcontact);
 
 
         call.setOnCheckedChangeListener(this);
@@ -157,8 +160,10 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
                 }
                 break;
 
-            case R.id.add_from_contacts:
-                Toast.makeText(this, "Select emergency contact from already saved contacts.", Toast.LENGTH_LONG).show();
+            case R.id.selectcontact:
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                startActivityForResult(intent, 103);
                 break;
 
         }
@@ -196,4 +201,31 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent intent) {
+        if (requestCode == 103) {
+            if (resultCode == RESULT_OK) {
+                Uri uri = intent.getData();
+                String[] projection = { ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME };
+
+                Cursor cursor = getContentResolver().query(uri, projection,
+                        null, null, null);
+                cursor.moveToFirst();
+
+                int numberColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                String nu = cursor.getString(numberColumnIndex);
+
+                int nameColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                String n = cursor.getString(nameColumnIndex);
+
+                name.setText(n);
+                number.setText(nu);
+
+               // Log.d(TAG, "ZZZ number : " + number +" , name : "+name);
+
+            }
+        }
+    };
 }
