@@ -58,13 +58,14 @@
         android:textSize="10sp" />
 
     <ImageView
-         android:id="@+id/fbicon"
-         android:layout_width="15dp"
-         android:layout_height="15dp"
-         android:src="@drawable/fblack"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:id="@+id/fbicon"
+        android:src="@drawable/fblack"
         android:layout_alignBottom="@+id/fblink"
         android:layout_toLeftOf="@+id/fblink"
-        android:layout_toStartOf="@+id/fblink" />
+        android:layout_toStartOf="@+id/fblink"
+        />
 
     <TextView
         android:id="@+id/fblink"
@@ -85,6 +86,7 @@
          android:src="@drawable/gblack"
         android:layout_marginTop="19dp"
         android:layout_below="@+id/fbicon"
+        tools:ignore="ContentDescription"
         android:layout_toLeftOf="@+id/weblink"
         android:layout_toStartOf="@+id/weblink" />
 
