@@ -35,6 +35,52 @@
         android:layout_marginTop="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:src="@drawable/FbBlack"/>
+        android:layout_marginBottom="10dp"
+        android:id="@+id/fbicon"
+        android:src="@drawable/fblack"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:id="@+id/fblink"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/version"
+        android:layout_toEndOf="@+id/fbicon"
+        android:layout_toRightOf="@+id/fbicon"
+        android:layout_marginLeft="15dp"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        android:layout_alignBottom="@+id/fbicon"
+        android:layout_alignBaseline="@+id/fbicon"
+        android:layout_marginStart="15dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fbicon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/webicon"
+        android:src="@drawable/iblack"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:gravity="center_vertical"
+        android:id="@+id/weblink"
+        android:textSize="20sp"
+        android:layout_below="@+id/fbicon"
+        android:layout_toEndOf="@+id/webicon"
+        android:layout_toRightOf="@+id/webicon"
+        android:layout_alignBottom="@+id/webicon"
+        android:layout_alignBaseline="@+id/webicon"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"/>
 
 </RelativeLayout>
