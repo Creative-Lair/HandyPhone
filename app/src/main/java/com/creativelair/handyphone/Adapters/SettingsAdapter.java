@@ -36,9 +36,13 @@ public class SettingsAdapter extends ArrayAdapter<String>{
         }
 
         TextView tilte = (TextView) view.findViewById(R.id.textView);
+        TextView detail = (TextView) view.findViewById(R.id.detail);
         String str = arrayList.get(position);
 
-        tilte.setText(str);
+        String[] words = str.split(":");
+
+        tilte.setText(words[0]);
+        detail.setText(words[1]);
 
         return view;
     }

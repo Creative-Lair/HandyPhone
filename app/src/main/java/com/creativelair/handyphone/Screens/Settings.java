@@ -52,10 +52,10 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
         adapter = new SettingsAdapter(this, R.layout.settinglistitems, items);
 
-        items.add("Clear Data");
-        items.add("Update Contacts");
-        items.add("Emergency Contact");
-        items.add("About");
+        items.add("Clear Data:Wipe away all the contacts in categories, emergency contact and custom message templates");
+        items.add("Update Contacts:Resync all contacts");
+        items.add("Emergency Contact:Add or Update Emergency Contact");
+        items.add("About:About us");
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);

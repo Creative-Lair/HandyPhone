@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.creativelair.handyphone.Adapters.SectionsPagerAdapter;
 import com.creativelair.handyphone.EmergencyContact;
+import com.creativelair.handyphone.Fragment.Frequent;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.Search;
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
 
             case 1: {
@@ -163,7 +165,17 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }
-        }
+
+   /*         case 100 : {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                    Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
+                    loadContactsAyscn.execute();
+                } else {
+                    Toast.makeText(this, "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
+                }
+            }
+     */   }
     }
 
     public void sendMessage(){
@@ -172,4 +184,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "SMS sent.",
                 Toast.LENGTH_LONG).show();
     }
+
+
 }

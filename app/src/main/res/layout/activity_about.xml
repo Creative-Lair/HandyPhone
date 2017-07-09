@@ -27,13 +27,13 @@
         android:layout_marginBottom="95dp"
         android:fontFamily="monospace"
         android:gravity="center_horizontal"
-        android:text="Designed By:"
+        android:text="A Product of: "
         android:textAllCaps="true"
         android:textColor="#1d4b5f"
         android:textSize="15sp"
         android:textStyle="bold" />
 
-    <com.creativelair.handyphone.SquareImageView
+    <ImageView
         android:id="@+id/imgCL"
         android:layout_width="100dp"
         android:layout_height="100dp"
