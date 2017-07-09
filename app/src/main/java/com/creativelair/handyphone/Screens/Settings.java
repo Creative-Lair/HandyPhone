@@ -1,6 +1,7 @@
 package com.creativelair.handyphone.Screens;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.creativelair.handyphone.Adapters.ContactListAdapter;
 import com.creativelair.handyphone.Adapters.SettingsAdapter;
@@ -59,8 +62,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
-
-
     }
 
     @Override
@@ -72,7 +73,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 finish();
                 break;
         }
-
 
         return true;
     }
@@ -99,15 +99,25 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 break;
 
             case "Clear Data":
-                db.deleteContact();
-                db.deleteMSG();
-                preference.setMSGLOADED(false);
-                preference.setLoad(false);
-                preference.setMSG(true);
-                preference.setEnumber("");
-                preference.setPic(null);
-                preference.setEname("");
-                preference.setEmergency(false);
+                new AlertDialog.Builder(this)
+                        .setTitle("Clear Data")
+                        .setMessage("Are you sure you want to clear data?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                db.deleteContact();
+                                db.deleteMSG();
+                                preference.setMSGLOADED(false);
+                                preference.setLoad(false);
+                                preference.setMSG(true);
+                                preference.setEnumber("");
+                                preference.setPic(null);
+                                preference.setEname("");
+                                preference.setEmergency(false);
+                                Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
 
                 break;
         }
@@ -124,7 +134,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             pd.show();
         }
 
-
         @Override
         protected ArrayList<Contacts> doInBackground(Void... params) {
             ArrayList<Contacts> contacts = new ArrayList<>();
@@ -133,7 +142,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                     ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER,
                     ContactsContract.CommonDataKinds.Phone._ID,
                     ContactsContract.CommonDataKinds.Phone.PHOTO_ID};
-
 
             Cursor c1 = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
                     columns,
@@ -211,7 +219,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 pd.hide();
             }
             preference.setLoad(true);
-
         }
     }
 }

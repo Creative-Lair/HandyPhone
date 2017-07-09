@@ -27,13 +27,13 @@
         android:layout_marginBottom="95dp"
         android:fontFamily="monospace"
         android:gravity="center_horizontal"
-        android:text="A Product of: "
+        android:text="Developed By:"
         android:textAllCaps="true"
         android:textColor="#1d4b5f"
         android:textSize="15sp"
         android:textStyle="bold" />
 
-    <ImageView
+    <com.creativelair.handyphone.SquareImageView
         android:id="@+id/imgCL"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -64,8 +64,7 @@
         android:src="@drawable/fblack"
         android:layout_alignBottom="@+id/fblink"
         android:layout_toLeftOf="@+id/fblink"
-        android:layout_toStartOf="@+id/fblink"
-        />
+        android:layout_toStartOf="@+id/fblink"/>
 
     <TextView
         android:id="@+id/fblink"
