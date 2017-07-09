@@ -1,8 +1,8 @@
 package com.creativelair.handyphone.Screens;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
@@ -31,11 +31,7 @@ public class About extends AppCompatActivity {
         String text = "<a href='https://www.facebook.com/creativelair'>Give us a like!</a>";
         textView.setText(Html.fromHtml(text));
 
-        TextView textView2 =(TextView)findViewById(R.id.weblink);
-        textView2.setClickable(true);
-        textView2.setMovementMethod(LinkMovementMethod.getInstance());
-        String text1 = "<a href='https://www.facebook.com/creativelair'>Visit our Website.</a>";
-        textView2.setText(Html.fromHtml(text1));
+
     }
 
     @Override

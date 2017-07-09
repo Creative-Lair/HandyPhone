@@ -7,11 +7,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.creativelair.handyphone.Adapters.ContactListAdapter;
 import com.creativelair.handyphone.Adapters.SettingsAdapter;
 import com.creativelair.handyphone.EmergencyContact;
 import com.creativelair.handyphone.Helpers.Contacts;
@@ -89,12 +88,15 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 break;
 
             case "Update Contacts":
-
+                db.deleteAllContacts();
+                LoadContactsAyscn loadContactsAyscn = new LoadContactsAyscn();
+                loadContactsAyscn.execute();
                 break;
 
             case "Emergency Contact":
                 Intent emergency = new Intent(this, EmergencyContact.class);
                 startActivity(emergency);
+
 
                 break;
 
@@ -129,7 +131,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         protected void onPreExecute() {
             super.onPreExecute();
             pd = new ProgressDialog(Settings.this);
-            pd.setTitle("Loading Contacts...");
+            pd.setTitle("Updating Contacts...");
             pd.setCancelable(false);
             pd.show();
         }
@@ -219,6 +221,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 pd.hide();
             }
             preference.setLoad(true);
+            Toast.makeText(Settings.this, "Resync Complete", Toast.LENGTH_SHORT).show();
         }
     }
 }

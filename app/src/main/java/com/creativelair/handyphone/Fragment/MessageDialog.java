@@ -1,12 +1,12 @@
 package com.creativelair.handyphone.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ScrollView;
+
 import com.creativelair.handyphone.Adapters.MessageListAdapter;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Message;
@@ -39,10 +39,16 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
     //  private ScrollView scrollLayout;
     private SQLiteHandler db;
 
+    @SuppressLint("ValidFragment")
     public MessageDialog(Contacts contacts) {
         super();
         this.contacts = contacts;
     }
+
+    public MessageDialog() {
+
+    }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

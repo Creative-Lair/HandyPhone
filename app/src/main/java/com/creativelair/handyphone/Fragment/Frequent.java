@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,12 +40,13 @@ import java.util.ArrayList;
 
 public class Frequent extends Fragment implements View.OnClickListener {
 
-    private static LayoutInflater inflat = null;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+    private static LayoutInflater inflat = null;
     RecyclerView listView;
     Preference preference;
     FloatingActionButton fb;
     ArrayList<Contacts> frequent;
+    boolean perms = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -87,6 +87,7 @@ public class Frequent extends Fragment implements View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
         } else {
+            perms = false;
             Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
             loadContactsAyscn.execute();
         }
@@ -108,15 +109,31 @@ public class Frequent extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                perms = true;
+                Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
+                loadContactsAyscn.execute();
+            } else {
+                Toast.makeText(getActivity(), "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
         ProgressDialog pd;
         @Override
         protected void onPreExecute() {
 
             super.onPreExecute();
-            pd = new ProgressDialog(getActivity());
-            pd.setMessage("Loading Contacts");
-            pd.show();
+            if (perms) {
+                pd = new ProgressDialog(getActivity());
+                pd.setMessage("Loading Contacts");
+                pd.show();
+            }
         }
 
         @Override
@@ -209,21 +226,10 @@ public class Frequent extends Fragment implements View.OnClickListener {
             frequent = contacts;
             ContactListAdapter adapter = new ContactListAdapter(getContext(), frequent);
             listView.setAdapter(adapter);
-            if(pd.isShowing()){
-                pd.hide();
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
-                Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
-                loadContactsAyscn.execute();
-            } else {
-                Toast.makeText(getActivity(), "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
+            if (perms) {
+                if (pd.isShowing()) {
+                    pd.hide();
+                }
             }
         }
     }

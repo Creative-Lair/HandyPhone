@@ -199,7 +199,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                             contacts1 = new Contacts(contactName, phNumber, photo, id);
                         else
                             contacts1 = new Contacts(contactName, phNumber, null, id);
-                        contacts1.setGroup(" ");
+                        contacts1.setGroup("All");
                         db.addContact(contacts1);
                         contacts.add(contacts1);
                         c.close();

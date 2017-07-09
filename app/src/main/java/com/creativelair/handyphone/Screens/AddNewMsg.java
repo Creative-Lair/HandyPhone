@@ -1,19 +1,21 @@
 package com.creativelair.handyphone.Screens;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.creativelair.handyphone.Helpers.Message;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
+
 import java.util.ArrayList;
 
 /**
@@ -38,6 +40,9 @@ public class AddNewMsg extends AppCompatActivity
         setContentView(R.layout.add_new_msg);
         actionBar = getSupportActionBar();
         actionBar.setTitle("Add Template");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+
         set();
     }
 
@@ -47,6 +52,18 @@ public class AddNewMsg extends AppCompatActivity
         btnAdd = (Button) findViewById(R.id.btnAddTemp);
         lv = (ListView) findViewById(R.id.lv);
         db = new SQLiteHandler(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return true;
     }
 
     @Override

@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="vertical"
     android:orientation="vertical"
-    >
+    android:scrollbars="vertical">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:id="@+id/upper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/emg_name"
@@ -38,8 +31,8 @@
             android:layout_alignLeft="@+id/emg_name"
             android:layout_alignStart="@+id/emg_name"
             android:layout_below="@+id/emg_name"
-            android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/imageborder"
             android:gravity="center_vertical"
@@ -59,67 +52,61 @@
             android:layout_marginTop="10dp"
             android:background="@null"
             android:text="@string/select_from_contacts" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/middle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/upper"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:textSize="25sp"
-            android:text="ACTIONS"
-            android:textStyle="bold"
-            android:layout_marginLeft="10sp"
-            android:textColor="@color/colorBlack"
-            android:textAllCaps="true"
             android:id="@+id/head"
-            />
-
-        <TextView
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_below="@+id/head"
-            android:gravity="center_vertical"
-            android:background="@color/colorBlack"
-            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/selectcontact"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/select_emergency_action"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
             android:id="@+id/bar1"
-            android:layout_marginBottom="5dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Send Message"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_below="@+id/head"
-            android:layout_margin="10sp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/colorBlack"
+            android:gravity="center_vertical"
+            android:textAlignment="center"
+            />
+
+        <TextView
             android:id="@+id/str_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/head"
+            android:layout_margin="10dp"
+            android:text="Send Message"
+            android:textSize="20sp"
             />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Call"
-            android:layout_below="@+id/str_msg"
-            android:layout_margin="10sp"
             android:id="@+id/str_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/str_msg"
+            android:layout_margin="10dp"
+            android:text="Call"
+            android:textSize="20sp"
             />
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Call and Send Message"
             android:layout_below="@+id/str_call"
-            android:layout_margin="10sp"
-            android:id="@+id/textView" />
+            android:layout_margin="10dp"
+            android:text="Call and Send Message"
+            android:textSize="20sp" />
 
         <CheckBox
             android:id="@+id/callMsg"
@@ -127,8 +114,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textView"
             android:layout_alignBottom="@+id/textView"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
 
         <CheckBox
             android:id="@+id/call"
@@ -148,36 +135,26 @@
             android:layout_alignLeft="@+id/call"
             android:layout_alignStart="@+id/call" />
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/middle"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/relativeLayout">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:gravity="center_vertical"
-            android:background="@color/colorBlack"
-            android:textAlignment="center"
             android:id="@+id/bar"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/callMsg"
+            android:background="@color/colorBlack"
+            android:gravity="center_vertical"
+            android:textAlignment="center"
             />
 
         <EditText
             android:id="@+id/msg_box"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="120dp"
+            android:layout_below="@+id/bar"
             android:layout_marginTop="5sp"
-            android:hint="Enter your message here..."
             android:ems="10"
-            android:inputType="textMultiLine"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/bar"/>
+            android:hint="Enter your message here..."
+            android:inputType="textMultiLine" />
 
         <Button
             android:id="@+id/emg_btn"
@@ -186,12 +163,12 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@id/msg_box"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:background="@color/colorBlack"
             android:text="Save"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
-    </RelativeLayout>
 </RelativeLayout>
 
 </ScrollView>

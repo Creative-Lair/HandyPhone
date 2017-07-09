@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,11 +10,11 @@
         android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="175dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
         android:foregroundGravity="center"
-        android:src="@drawable/app_logo2"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:src="@drawable/app_logo2" />
 
     <TextView
         android:id="@+id/design"
@@ -37,10 +36,10 @@
         android:id="@+id/imgCL"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/cl_logo"
         android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/cl_logo" />
 
     <TextView
         android:id="@+id/version"
@@ -58,48 +57,25 @@
         android:textSize="10sp" />
 
     <ImageView
+        android:id="@+id/fbicon"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:id="@+id/fbicon"
-        android:src="@drawable/fblack"
         android:layout_alignBottom="@+id/fblink"
         android:layout_toLeftOf="@+id/fblink"
-        android:layout_toStartOf="@+id/fblink"/>
+        android:layout_toStartOf="@+id/fblink"
+        android:src="@drawable/fblack" />
 
     <TextView
         android:id="@+id/fblink"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:fontFamily="monospace"
-        android:gravity="center_vertical"
-        android:textAlignment="center"
-        android:textColor="#1d4b5f"
-        android:textSize="12sp"
         android:layout_below="@+id/design"
-        android:layout_centerHorizontal="true" />
-
-    <ImageView
-         android:id="@+id/webicon"
-         android:layout_width="15dp"
-         android:layout_height="15dp"
-         android:src="@drawable/gblack"
-        android:layout_marginTop="19dp"
-        android:layout_below="@+id/fbicon"
-        tools:ignore="ContentDescription"
-        android:layout_toLeftOf="@+id/weblink"
-        android:layout_toStartOf="@+id/weblink" />
-
-    <TextView
-        android:id="@+id/weblink"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/webicon"
-        android:layout_alignLeft="@+id/fblink"
-        android:layout_alignStart="@+id/fblink"
+        android:layout_centerHorizontal="true"
         android:fontFamily="monospace"
         android:gravity="center_vertical"
         android:textAlignment="center"
         android:textColor="#1d4b5f"
         android:textSize="12sp" />
+
 
 </RelativeLayout>

@@ -27,4 +27,5 @@
     <string name="view">View</string>
     <string name="update">Update</string>
     <string name="emergency">emergency</string>
+    <string name="select_emergency_action">Select Emergency Action</string>
 </resources>

@@ -28,4 +28,5 @@
     <string name="update">Update</string>
     <string name="emergency">Emergency Contact</string>
     <string name="select_from_contacts">Select from contacts</string>
+    <string name="select_emergency_action">Select Emergency Action</string>
 </resources>

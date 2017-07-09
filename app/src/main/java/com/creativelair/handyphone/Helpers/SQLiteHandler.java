@@ -65,13 +65,12 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 KEY_CONTACT_ID + " INTEGER, PRIMARY KEY(" + KEY_ID + "))";
         String CREATE_MESSAGE_TABLE =
                 "CREATE TABLE " + MESSAGE_TEMPLATE + "(" +
-                MESSAGE_ID + " INTEGER NOT NULL , " +
-                MESSAGE_HEADER + " TEXT NOT NULL, " +
-                MESSAGE_TEXT + " TEXT NOT NULL, PRIMARY KEY(" + MESSAGE_ID + "))";
+                        MESSAGE_ID + " INTEGER NOT NULL , " +
+                        MESSAGE_HEADER + " TEXT NOT NULL, " +
+                        MESSAGE_TEXT + " TEXT NOT NULL, PRIMARY KEY(" + MESSAGE_ID + "))";
 
         db.execSQL(CREATE_LOGIN_TABLE);
         db.execSQL(CREATE_MESSAGE_TABLE);
-        Log.d(TAG, TABLE_CONTACT);
     }
 
     // Upgrading database
@@ -162,10 +161,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             image.compress(Bitmap.CompressFormat.PNG, 75, bos);
             byte[] img = bos.toByteArray();
             cv.put(KEY_CONTACTPIC, img);
-            Log.d(TAG, "Image Added");
         } else {
             cv.put(KEY_CONTACTPIC, "");
-            Log.d(TAG, "Image Not Added");
         }
 
         db.update(TABLE_CONTACT, cv, where, whereargs);
@@ -316,6 +313,16 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         db.delete(MESSAGE_TEMPLATE, null, null);
         db.close();
     }
+
+    public void deleteAllContacts() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String whereClause = KEY_GROUP + "=?";
+        String[] whereArgs = new String[]{"All"};
+        db.delete(TABLE_CONTACT, whereClause, whereArgs);
+    }
+
+
 
 
 }
