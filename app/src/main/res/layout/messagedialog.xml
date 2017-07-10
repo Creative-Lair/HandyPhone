@@ -6,6 +6,7 @@
     android:weightSum="10"
     android:orientation="vertical"
     android:layout_gravity="center">
+
     <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"

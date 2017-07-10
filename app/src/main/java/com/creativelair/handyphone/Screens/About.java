@@ -31,7 +31,11 @@ public class About extends AppCompatActivity {
         String text = "<a href='https://www.facebook.com/creativelair'>Give us a like!</a>";
         textView.setText(Html.fromHtml(text));
 
-
+        TextView textView2 =(TextView)findViewById(R.id.instaLink);
+        textView2.setClickable(true);
+        textView2.setMovementMethod(LinkMovementMethod.getInstance());
+        String text2 = "<a href='https://www.instagram.com/the.creative.lair'>Follow us on Instagram!</a>";
+        textView2.setText(Html.fromHtml(text2));
     }
 
     @Override

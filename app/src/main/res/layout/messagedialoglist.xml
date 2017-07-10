@@ -32,5 +32,4 @@
         android:textColor="@color/colorBlack"
         android:textSize="18sp" />
 
-
 </RelativeLayout>

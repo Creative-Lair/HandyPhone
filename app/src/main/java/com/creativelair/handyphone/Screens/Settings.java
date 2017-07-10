@@ -97,7 +97,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 Intent emergency = new Intent(this, EmergencyContact.class);
                 startActivity(emergency);
 
-
                 break;
 
             case "Clear Data":

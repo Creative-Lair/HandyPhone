@@ -53,7 +53,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             KEY_CONTACT_ID,
     };
 
-
     String[] Column2 = {
             MESSAGE_ID,
             MESSAGE_HEADER,
@@ -136,7 +135,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         String phone = contacts.getNumber();
         String image = contacts.getIcon();
         Bitmap bitmap = contacts.getPic();
-
 
         String group = contacts.getGroup();
         int id = contacts.getId();
@@ -320,8 +318,4 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         String[] whereArgs = new String[]{"All"};
         db.delete(TABLE_CONTACT, whereClause, whereArgs);
     }
-
-
-
-
 }

@@ -57,8 +57,6 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
 
     }
 
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -93,7 +91,6 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
                     initial.setText("" + contacts.getName().toUpperCase().charAt(0));
                     iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
                 }
-
             } else {
                 initial.setText("" + contacts.getName().toUpperCase().charAt(0));
                 iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
@@ -110,7 +107,6 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         builder.setView(view);
         return builder.create();
     }
-
 
     @Override
     public void onResume() {

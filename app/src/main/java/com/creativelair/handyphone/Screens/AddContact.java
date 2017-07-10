@@ -176,7 +176,6 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     e.printStackTrace();
                 }
 
-
                 break;
         }
 
@@ -262,7 +261,6 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         } else {
             return null;
         }
-
     }
 
     @Override
@@ -295,7 +293,6 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     Toast.makeText(this, "Friend", Toast.LENGTH_SHORT).show();
                 }
                 break;
-
         }
     }
 
@@ -347,5 +344,4 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 break;
         }
     }
-
 }
