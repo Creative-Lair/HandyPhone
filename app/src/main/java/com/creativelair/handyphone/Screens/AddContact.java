@@ -314,8 +314,15 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
                     // Creating bitmap of the selected image from its inputstream
                     mBitmap = BitmapFactory.decodeStream(imageStream);
-
-                    image.setImageBitmap(mBitmap);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    mBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                    byte[] imageInByte = stream.toByteArray();
+                    long lengthbmp = imageInByte.length /1024;
+                    if(lengthbmp < 1000) {
+                        image.setImageBitmap(mBitmap);
+                    } else {
+                        Toast.makeText(this, "Image too large... Your Image should be less them 1MB", Toast.LENGTH_SHORT).show();
+                    }
                 }
         }
     }

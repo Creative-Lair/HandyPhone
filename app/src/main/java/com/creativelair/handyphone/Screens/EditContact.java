@@ -28,6 +28,7 @@ import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -333,8 +334,16 @@ public class EditContact extends AppCompatActivity
 
                     // Creating bitmap of the selected image from its inputstream
                     mBitmap = BitmapFactory.decodeStream(imageStream);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    mBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                    byte[] imageInByte = stream.toByteArray();
+                    long lengthbmp = imageInByte.length /1024;
+                    if(lengthbmp < 1000) {
+                        image.setImageBitmap(mBitmap);
+                    } else {
+                        Toast.makeText(this, "Image too large... Your Image should be less them 1MB", Toast.LENGTH_SHORT).show();
+                    }
 
-                    image.setImageBitmap(mBitmap);
                 }
                 break;
 
