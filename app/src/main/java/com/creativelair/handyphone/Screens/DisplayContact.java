@@ -58,11 +58,7 @@ public class DisplayContact extends AppCompatActivity {
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
         String imagea = preference.getPic();
-
-        if (image!=null) {
-            if(!imagea.equals(""))
-                Glide.with(image.getContext()).load(image).into(image);
-        }
+        Glide.with(image.getContext()).load(imagea).into(image);
         //   Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);

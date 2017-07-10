@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
@@ -154,17 +155,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 preference.setName(contact.getName());
                 preference.setPhone(contact.getNumber());
                 preference.setGroup(contact.getGroup());
-                if(contact.getIcon()!=null){
-                    if(!contact.getIcon().equals("")){
-                        preference.setPic(contact.getIcon());
-                    } else {
-                        preference.setPic("");
-                        preference.setBitmap(contact.getPic());
-                    }
-                } else {
-                    preference.setPic("");
-                    preference.setBitmap(contact.getPic());
-                }
+                preference.setPic(path);
                 preference.setId(contact.getId());
 
                 Intent i = new Intent(this, DisplayContact.class);
@@ -322,7 +313,8 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     int columnIndex = cursor.getColumnIndex(filepathcolumn[0]);
                     path = cursor.getString(columnIndex);
                     cursor.close();
-                    image.setImageBitmap(BitmapFactory.decodeFile(path));
+                    mBitmap = BitmapFactory.decodeFile(path);
+                    Glide.with(image.getContext()).load(path).into(image);
 
                    // System.out.println();
                 }
