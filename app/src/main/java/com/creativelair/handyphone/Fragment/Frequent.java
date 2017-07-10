@@ -158,7 +158,6 @@ public class Frequent extends Fragment implements View.OnClickListener {
                     null,
                     null);
 
-
             while (c1.moveToNext()) {
 
                 String contactName = c1.getString(0);
@@ -224,7 +223,6 @@ public class Frequent extends Fragment implements View.OnClickListener {
                 return null;
             }
         }
-
 
         @Override
         protected void onPostExecute(ArrayList<Contacts> contacts) {

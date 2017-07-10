@@ -123,7 +123,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             }
         }
         notifyDataSetChanged();
-
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -138,7 +137,4 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             initial = (TextView) view.findViewById(R.id.initial);
         }
     }
-
-
-
 }

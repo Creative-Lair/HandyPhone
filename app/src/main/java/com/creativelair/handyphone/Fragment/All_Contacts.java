@@ -75,7 +75,6 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
 
                         Contacts contacts = allcontacts.get(position);
 
-
                         MyDialog myDialog = new MyDialog(contacts, preference.getColor());
                         myDialog.show(getActivity().getFragmentManager(), "my_dialog");
                     }

@@ -49,7 +49,6 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
 
     }
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
