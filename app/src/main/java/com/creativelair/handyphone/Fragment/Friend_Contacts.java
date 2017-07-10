@@ -84,6 +84,8 @@ public class Friend_Contacts extends Fragment implements View.OnClickListener {
 
     }
 
+
+
     @Override
     public void onResume() {
         if(preference.getLoad()) {

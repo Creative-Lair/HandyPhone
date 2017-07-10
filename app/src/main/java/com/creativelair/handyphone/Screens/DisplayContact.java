@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.creativelair.handyphone.Fragment.MessageDialog;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Preference;
@@ -60,7 +61,7 @@ public class DisplayContact extends AppCompatActivity {
 
         if (image!=null) {
             if(!imagea.equals(""))
-                image.setImageBitmap(BitmapFactory.decodeFile(imagea));
+                Glide.with(image.getContext()).load(image).into(image);
         }
         //   Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {

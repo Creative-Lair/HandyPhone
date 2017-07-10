@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
@@ -74,7 +75,11 @@ public class EditContact extends AppCompatActivity
         oldcontact.setName(preference.getName());
         oldcontact.setNumber(preference.getPhone());
         oldcontact.setId(preference.getId());
-        pic = preference.getPic();
+        if(!preference.getPic().equals("")) {
+            pic = preference.getPic();
+        } else {
+            mBitmap = preference.getBitmap();
+        }
 
         prepare();
         intialize();
@@ -84,10 +89,11 @@ public class EditContact extends AppCompatActivity
     private void intialize() {
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
-
-        int imageResource = getResources().getIdentifier(pic , "drawable", getPackageName());
-        Drawable image1 = getResources().getDrawable(imageResource);
-        image.setImageDrawable(image1);
+        if(mBitmap!=null){
+            Glide.with(image.getContext()).load(mBitmap).into(image);
+        } else if (pic!=null) {
+            Glide.with(image.getContext()).load(pic).into(image);
+        }
         //    Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);

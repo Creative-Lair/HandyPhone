@@ -108,6 +108,14 @@ public class Preference {
         editor.commit();
     }
 
+    public Bitmap getBitmap(){
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap b){
+        bitmap = b;
+    }
+
     public boolean getLoad() {
         return pref.getBoolean(KEY_LOAD, false);
     }

@@ -140,7 +140,17 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
                 preference.setName(contacts.getName());
                 preference.setPhone(contacts.getNumber());
                 preference.setGroup(contacts.getGroup());
-                preference.setPic(contacts.getIcon());
+                if(contacts.getIcon()!=null){
+                    if(!contacts.getIcon().equals("")){
+                        preference.setPic(contacts.getIcon());
+                    } else {
+                        preference.setPic("");
+                        preference.setBitmap(contacts.getPic());
+                    }
+                } else {
+                    preference.setPic("");
+                    preference.setBitmap(contacts.getPic());
+                }
                 preference.setId(contacts.getId());
 
                 Intent i = new Intent(getActivity(), EditContact.class);

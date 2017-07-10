@@ -1,12 +1,14 @@
 package com.creativelair.handyphone.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.util.LruCache;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     private ArrayList<Contacts> display;
     private Preference pref;
 
+    private LruCache<String, Bitmap> cache;
+
+
     public ContactListAdapter(Context mContext, ArrayList<Contacts> contacts) {
         this.mContext = mContext;
         this.contacts = new ArrayList<>();
@@ -41,6 +46,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         this.contacts.addAll(contacts);
         this.display.addAll(contacts);
         pref = new Preference(mContext);
+        final int maxMemory = (int) Runtime.getRuntime().maxMemory() / 1024;
+        final int cacheSzie = maxMemory / 8;
+        cache = new LruCache<>(cacheSzie);
     }
 
     public ArrayList<Contacts> getList() {

@@ -154,7 +154,17 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 preference.setName(contact.getName());
                 preference.setPhone(contact.getNumber());
                 preference.setGroup(contact.getGroup());
-                preference.setPic(contact.getIcon());
+                if(contact.getIcon()!=null){
+                    if(!contact.getIcon().equals("")){
+                        preference.setPic(contact.getIcon());
+                    } else {
+                        preference.setPic("");
+                        preference.setBitmap(contact.getPic());
+                    }
+                } else {
+                    preference.setPic("");
+                    preference.setBitmap(contact.getPic());
+                }
                 preference.setId(contact.getId());
 
                 Intent i = new Intent(this, DisplayContact.class);

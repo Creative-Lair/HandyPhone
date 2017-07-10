@@ -123,6 +123,12 @@ public class Frequent extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onPause(){
+        frequent.clear();
+        super.onPause();
+    }
+
     public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
         ProgressDialog pd;
         @Override
