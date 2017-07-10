@@ -14,11 +14,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.R;
 
 import java.util.ArrayList;
+
+import static com.creativelair.handyphone.R.id.imageView;
 
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.MyViewHolder> {
@@ -70,7 +73,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
         else if(contact.getIcon()!=null){
             if(!contact.getIcon().equals("")) {
-                holder.img.setImageBitmap(BitmapFactory.decodeFile(contact.getIcon()));
+                Glide.with(mContext).load(contact.getIcon()).into(holder.img);
+                //holder.img.setImageBitmap(BitmapFactory.decodeFile(contact.getIcon()));
                 holder.initial.setText("");
             } else {
                 pref.setColor(Mcolors[colorIndex % 4]);

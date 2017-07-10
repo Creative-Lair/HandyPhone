@@ -101,7 +101,6 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
             messages.add(msg7);
 
             preference.setMSGLOADED(true);
-
         }
         MessageListAdapter adapter = new MessageListAdapter(getActivity(), R.layout.messagedialoglist, messages);
         lv.setAdapter(adapter);
@@ -113,7 +112,6 @@ public class MessageDialog extends DialogFragment implements AdapterView.OnItemC
     public void addMessages(){
 
     }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

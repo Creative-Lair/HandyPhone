@@ -105,6 +105,11 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         super.onResume();
     }
 
+    @Override
+    public void onPause(){
+        allcontacts.clear();
+        super.onPause();
+    }
 
     public void checkPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -133,7 +138,6 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                     LoadContactsAyscn loadContactsAyscn = new LoadContactsAyscn();
                     loadContactsAyscn.execute();
                 }
-
             } else {
                 Toast.makeText(getActivity(), "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
             }
@@ -161,7 +165,6 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
             pd.setCancelable(false);
             pd.show();
         }
-
 
         @Override
         protected ArrayList<Contacts> doInBackground(Void... params) {

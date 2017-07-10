@@ -88,7 +88,11 @@ public class Family_Contacts extends Fragment implements View.OnClickListener {
         super.onResume();
     }
 
-
+    @Override
+    public void onPause(){
+        allcontacts.clear();
+        super.onPause();
+    }
 
     private void loadContacts() {
         allcontacts = db.getFamily();

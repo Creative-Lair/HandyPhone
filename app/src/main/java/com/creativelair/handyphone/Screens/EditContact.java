@@ -96,7 +96,6 @@ public class EditContact extends AppCompatActivity
         } else if (preference.getGroup().equals("Family")) {
             family.setChecked(true);
         }
-
     }
 
     public void prepare() {

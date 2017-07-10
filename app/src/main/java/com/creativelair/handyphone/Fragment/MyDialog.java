@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.R;
@@ -85,7 +86,8 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
             initial.setText("");
         }else if (contacts.getIcon()!=null) {
                 if(!contacts.getIcon().equals("")){
-                    iv.setImageBitmap(BitmapFactory.decodeFile(contacts.getIcon()));
+                    Glide.with(this).load(contacts.getIcon()).into(iv);
+                    //iv.setImageBitmap(BitmapFactory.decodeFile(contacts.getIcon()));
                     initial.setText("");
                 }else {
                     initial.setText("" + contacts.getName().toUpperCase().charAt(0));

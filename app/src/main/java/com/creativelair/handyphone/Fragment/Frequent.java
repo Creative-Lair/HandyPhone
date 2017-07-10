@@ -109,8 +109,6 @@ public class Frequent extends Fragment implements View.OnClickListener {
         }
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
