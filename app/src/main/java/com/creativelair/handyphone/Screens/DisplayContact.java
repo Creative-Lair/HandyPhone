@@ -3,6 +3,8 @@ package com.creativelair.handyphone.Screens;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +23,8 @@ import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
+
+import static java.security.AccessController.getContext;
 
 public class DisplayContact extends AppCompatActivity {
 
@@ -52,7 +56,12 @@ public class DisplayContact extends AppCompatActivity {
     private void intialize() {
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
-        image.setImageBitmap(preference.getPic());
+        String imagea = preference.getPic();
+
+        if (image!=null) {
+            if(!imagea.equals(""))
+                image.setImageBitmap(BitmapFactory.decodeFile(imagea));
+        }
         //   Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);

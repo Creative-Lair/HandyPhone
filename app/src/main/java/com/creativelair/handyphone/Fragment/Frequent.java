@@ -109,6 +109,8 @@ public class Frequent extends Fragment implements View.OnClickListener {
         }
     }
 
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
@@ -186,8 +188,8 @@ public class Frequent extends Fragment implements View.OnClickListener {
                         if (photo != null) {
                             contacts1 = new Contacts(contactName, phNumber, photo, id);
                         } else
-                            contacts1 = new Contacts(contactName, phNumber, null, id);
-                        contacts1.setGroup(" ");
+                            contacts1 = new Contacts(contactName, phNumber, "", id);
+                        contacts1.setGroup("Frequent");
                         contacts.add(contacts1);
                         c.close();
                     }

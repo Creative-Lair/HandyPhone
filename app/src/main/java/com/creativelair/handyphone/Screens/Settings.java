@@ -182,7 +182,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                         if (photo != null)
                             contacts1 = new Contacts(contactName, phNumber, photo, id);
                         else
-                            contacts1 = new Contacts(contactName, phNumber, null, id);
+                            contacts1 = new Contacts(contactName, phNumber, "", id);
                         contacts1.setGroup(" ");
                         db.addContact(contacts1);
                         contacts.add(contacts1);

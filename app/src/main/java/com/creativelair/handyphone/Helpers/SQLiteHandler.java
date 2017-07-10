@@ -27,6 +27,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "conactid";
     private static final String KEY_NAME = "contactname";
     private static final String KEY_CONTACTPIC = "contactpic";
+    private static final String KEY_CONTACTBLOB = "contactblob";
     private static final String KEY_CONTACTNUMBER = "contactnumber";
     private static final String KEY_GROUP = "contactgroup";
     private static final String KEY_CONTACT_ID = "id_Contact";
@@ -39,9 +40,19 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             KEY_NAME,
             KEY_CONTACTNUMBER,
             KEY_GROUP,
-            KEY_CONTACTPIC,
-            KEY_CONTACT_ID
+            KEY_CONTACT_ID,
+            KEY_CONTACTBLOB
     };
+
+    String[] Column3 = {
+            KEY_ID,
+            KEY_NAME,
+            KEY_CONTACTNUMBER,
+            KEY_GROUP,
+            KEY_CONTACTPIC,
+            KEY_CONTACT_ID,
+    };
+
 
     String[] Column2 = {
             MESSAGE_ID,
@@ -61,7 +72,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 KEY_NAME + " TEXT NOT NULL, " +
                 KEY_CONTACTNUMBER + " TEXT NOT NULL, " +
                 KEY_GROUP + " TEXT NOT NULL, " +
-                KEY_CONTACTPIC + " BLOB," +
+                KEY_CONTACTPIC + " TEXT, " +
+                KEY_CONTACTBLOB + " LONGBLOB, " +
                 KEY_CONTACT_ID + " INTEGER, PRIMARY KEY(" + KEY_ID + "))";
         String CREATE_MESSAGE_TABLE =
                 "CREATE TABLE " + MESSAGE_TEMPLATE + "(" +
@@ -122,19 +134,24 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         String name = contacts.getName();
         String phone = contacts.getNumber();
-        Bitmap image = contacts.getIcon();
+        String image = contacts.getIcon();
+        Bitmap bitmap = contacts.getPic();
+
+
         String group = contacts.getGroup();
         int id = contacts.getId();
 
         ContentValues values = new ContentValues();
-        if (image != null) {
+        if(bitmap != null){
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG ,100,bos);
             byte[] img = bos.toByteArray();
-            values.put(KEY_CONTACTPIC, img);
+            values.put(KEY_CONTACTBLOB, img);
         } else {
-            values.put(KEY_CONTACTPIC, "");
+            values.put(KEY_CONTACTPIC, image);
         }
+
+        values.put(KEY_CONTACTPIC, image);
         values.put(KEY_NAME, name); // Name
         values.put(KEY_CONTACTNUMBER, phone); // Email
         values.put(KEY_GROUP, group);
@@ -146,7 +163,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
     public void updateContact(Contacts oldcontacts, Contacts contacts) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Bitmap image = contacts.getIcon();
+        String image = contacts.getIcon();
+        Bitmap bitmap = contacts.getPic();
         String where = KEY_CONTACTNUMBER + "= ? AND " + KEY_NAME + "=?";
         String[] whereargs = {oldcontacts.getNumber(), oldcontacts.getName()};
         ContentValues cv = new ContentValues();
@@ -154,17 +172,16 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         cv.put(KEY_CONTACTNUMBER, contacts.getNumber());
         cv.put(KEY_GROUP, contacts.getGroup());
         cv.put(KEY_CONTACT_ID, contacts.getId());
+        cv.put(KEY_CONTACTPIC, image);
 
-
-        if (image != null) {
+        if(bitmap != null){
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.PNG, 75, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG ,100,bos);
             byte[] img = bos.toByteArray();
-            cv.put(KEY_CONTACTPIC, img);
+            cv.put(KEY_CONTACTBLOB, img);
         } else {
-            cv.put(KEY_CONTACTPIC, "");
+            cv.put(KEY_CONTACTPIC, image);
         }
-
         db.update(TABLE_CONTACT, cv, where, whereargs);
 
         db.close(); // Closing database connection
@@ -183,12 +200,12 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
                 user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-                byte[] imageBytes = null;
-                imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
-                if (imageBytes != null) {
-                    user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                if(cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB))!=null){
+                    byte[] imageBytes = null;
+                    imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB));
+                    user.setPic(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
                 } else {
-                    user.setIcon(null);
+                    user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 }
                 contacts.add(user);
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
@@ -206,7 +223,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         String[] whereArgs = {WORK};
         ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
+        Cursor cursor = db.query(TABLE_CONTACT, Column3, whereClause, whereArgs, null, null, null);
         // Move to first row
         if (cursor.moveToFirst()) {
             do {
@@ -215,13 +232,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
                 user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-                byte[] imageBytes = null;
-                imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
-                if (imageBytes != null) {
-                    user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-                } else {
-                    user.setIcon(null);
-                }
+                user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 contacts.add(user);
                 Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
@@ -240,7 +251,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         String[] whereArgs = {FAMILY};
         ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
+        Cursor cursor = db.query(TABLE_CONTACT, Column3, whereClause, whereArgs, null, null, null);
         // Move to first row
         if (cursor.moveToFirst()) {
             do {
@@ -249,13 +260,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
                 user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-                byte[] imageBytes = null;
-                imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
-                if (imageBytes != null) {
-                    user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-                } else {
-                    user.setIcon(null);
-                }
+                user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 contacts.add(user);
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
@@ -271,7 +276,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         String[] whereArgs = {FRIEND};
         ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CONTACT, Column, whereClause, whereArgs, null, null, null);
+        Cursor cursor = db.query(TABLE_CONTACT, Column3, whereClause, whereArgs, null, null, null);
         // Move to first row
         if (cursor.moveToFirst()) {
             do {
@@ -280,13 +285,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
                 user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-                byte[] imageBytes = null;
-                imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTPIC));
-                if (imageBytes != null) {
-                    user.setIcon(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-                } else {
-                    user.setIcon(null);
-                }
+                user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 contacts.add(user);
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());

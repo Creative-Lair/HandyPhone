@@ -2,14 +2,18 @@ package com.creativelair.handyphone.Screens;
 
 import android.Manifest;
 import android.content.ContentProviderOperation;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
@@ -29,6 +33,7 @@ import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -49,6 +54,7 @@ public class EditContact extends AppCompatActivity
     Bitmap mBitmap;
     Contacts contact;
     Contacts oldcontact;
+    String pic, path;
     private String mCurrentPhotoPath;
     private Preference preference;
 
@@ -68,7 +74,7 @@ public class EditContact extends AppCompatActivity
         oldcontact.setName(preference.getName());
         oldcontact.setNumber(preference.getPhone());
         oldcontact.setId(preference.getId());
-        mBitmap = preference.getPic();
+        pic = preference.getPic();
 
         prepare();
         intialize();
@@ -78,7 +84,10 @@ public class EditContact extends AppCompatActivity
     private void intialize() {
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
-        image.setImageBitmap(preference.getPic());
+
+        int imageResource = getResources().getIdentifier(pic , "drawable", getPackageName());
+        Drawable image1 = getResources().getDrawable(imageResource);
+        image.setImageDrawable(image1);
         //    Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);
@@ -158,8 +167,8 @@ public class EditContact extends AppCompatActivity
                 contact.setNumber(mPhone);
                 contact.setId(preference.getId());
 
-                if (mBitmap != null) {
-                    contact.setIcon(mBitmap);
+                if (path != null) {
+                    contact.setIcon(path);
                 } else {
                     contact.setIcon(null);
                 }
@@ -208,7 +217,7 @@ public class EditContact extends AppCompatActivity
         boolean success = false;
         String name = contact.getName();
         String number = contact.getNumber();
-        Bitmap pic = contact.getIcon();
+        String pic = contact.getIcon();
         int ContactId = contact.getId();
         String oldname = oldcontact.getName();
         String oldnumber = oldcontact.getNumber();
@@ -322,27 +331,16 @@ public class EditContact extends AppCompatActivity
             case PICK_PHOTO:
                 if (resultCode == RESULT_OK) {
                     // Getting the uri of the picked photo
-                    Uri selectedImage = data.getData();
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    image.setImageBitmap(photo);
 
-                    InputStream imageStream = null;
-                    try {
-                        // Getting InputStream of the selected image
-                        imageStream = getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
 
-                    // Creating bitmap of the selected image from its inputstream
-                    mBitmap = BitmapFactory.decodeStream(imageStream);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    mBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                    byte[] imageInByte = stream.toByteArray();
-                    long lengthbmp = imageInByte.length /1024;
-                    if(lengthbmp < 1000) {
-                        image.setImageBitmap(mBitmap);
-                    } else {
-                        Toast.makeText(this, "Image too large... Your Image should be less them 1MB", Toast.LENGTH_SHORT).show();
-                    }
+                    // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+                    Uri tempUri = getImageUri(getApplicationContext(), photo);
+
+                    // CALL THIS METHOD TO GET THE ACTUAL PATH
+                    File finalFile = new File(getRealPathFromURI(tempUri));
+                    path = finalFile.getAbsolutePath();
 
                 }
                 break;
@@ -368,9 +366,23 @@ public class EditContact extends AppCompatActivity
                     db.updateContact(oldcontact, contact);
                     updateContact(oldcontact, contact);
                 } else {
-                    Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Until you grant the permission, we cannot display the names", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
     }
 }

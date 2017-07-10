@@ -1,9 +1,12 @@
 package com.creativelair.handyphone.Adapters;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,20 +64,32 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         Contacts contact = display.get(position);
         holder.name.setText(contact.getName());
         holder.name.setTypeface(Roboto);
-        if (contact.getIcon() != null) {
-            holder.img.setImageBitmap(contact.getIcon());
-            holder.initial.setText("");
-        } else {
-            pref.setColor(Mcolors[colorIndex % 4]);
-            color = pref.getColor();
-            contact.setColor(color);
-            holder.img.setImageDrawable(new ColorDrawable(Color.parseColor(color)));
-            colorIndex++;
-            holder.initial.setText("" + holder.name.getText().toString().toUpperCase().charAt(0));
-            holder.initial.setTypeface(RobotoBlack);
+        if (contact.getPic() != null) {
+                holder.img.setImageBitmap(contact.getPic());
+                holder.initial.setText("");
         }
-
-
+        else if(contact.getIcon()!=null){
+            if(!contact.getIcon().equals("")) {
+                holder.img.setImageBitmap(BitmapFactory.decodeFile(contact.getIcon()));
+                holder.initial.setText("");
+            } else {
+                pref.setColor(Mcolors[colorIndex % 4]);
+                color = pref.getColor();
+                contact.setColor(color);
+                holder.img.setImageDrawable(new ColorDrawable(Color.parseColor(color)));
+                colorIndex++;
+                holder.initial.setText("" + holder.name.getText().toString().toUpperCase().charAt(0));
+                holder.initial.setTypeface(RobotoBlack);
+            }
+        } else{
+                pref.setColor(Mcolors[colorIndex % 4]);
+                color = pref.getColor();
+                contact.setColor(color);
+                holder.img.setImageDrawable(new ColorDrawable(Color.parseColor(color)));
+                colorIndex++;
+                holder.initial.setText("" + holder.name.getText().toString().toUpperCase().charAt(0));
+                holder.initial.setTypeface(RobotoBlack);
+        }
     }
 
     @Override

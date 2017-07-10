@@ -94,6 +94,18 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
+    @Override
+    public void onResume() {
+        if(preference.getLoad()) {
+            allcontacts.clear();
+            allcontacts = db.getContactDetails();
+            ContactListAdapter adapter = new ContactListAdapter(getContext(), allcontacts);
+            listView.setAdapter(adapter);
+        }
+        super.onResume();
+    }
+
+
     public void checkPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
@@ -198,7 +210,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                         if (photo != null)
                             contacts1 = new Contacts(contactName, phNumber, photo, id);
                         else
-                            contacts1 = new Contacts(contactName, phNumber, null, id);
+                            contacts1 = new Contacts(contactName, phNumber, "", id);
                         contacts1.setGroup("All");
                         db.addContact(contacts1);
                         contacts.add(contacts1);

@@ -2,14 +2,17 @@ package com.creativelair.handyphone.Screens;
 
 import android.Manifest;
 import android.content.ContentProviderOperation;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
@@ -30,6 +33,7 @@ import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +52,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     SQLiteHandler db;
     Bitmap mBitmap;
     Contacts contact;
+    String path;
     private Preference preference;
 
     @Override
@@ -131,10 +136,10 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 contact.setGroup(category);
                 contact.setName(mName);
                 contact.setNumber(mPhone);
-                if (mBitmap != null) {
-                    contact.setIcon(mBitmap);
+                if (path != null) {
+                    contact.setIcon(path);
                 } else {
-                    contact.setIcon(null);
+                    contact.setIcon("");
                 }
 
 
@@ -302,27 +307,17 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
             case PICK_PHOTO:
                 if(resultCode == RESULT_OK){
                     // Getting the uri of the picked photo
-                    Uri selectedImage = data.getData();
 
-                    InputStream imageStream = null;
-                    try {
-                        // Getting InputStream of the selected image
-                        imageStream = getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    Uri SelectedImage = data.getData();
+                    String[] filepathcolumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(SelectedImage, filepathcolumn, null,null,null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filepathcolumn[0]);
+                    path = cursor.getString(columnIndex);
+                    cursor.close();
+                    image.setImageBitmap(BitmapFactory.decodeFile(path));
 
-                    // Creating bitmap of the selected image from its inputstream
-                    mBitmap = BitmapFactory.decodeStream(imageStream);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    mBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                    byte[] imageInByte = stream.toByteArray();
-                    long lengthbmp = imageInByte.length /1024;
-                    if(lengthbmp < 1000) {
-                        image.setImageBitmap(mBitmap);
-                    } else {
-                        Toast.makeText(this, "Image too large... Your Image should be less them 1MB", Toast.LENGTH_SHORT).show();
-                    }
+                   // System.out.println();
                 }
         }
     }
@@ -352,4 +347,5 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 break;
         }
     }
+
 }

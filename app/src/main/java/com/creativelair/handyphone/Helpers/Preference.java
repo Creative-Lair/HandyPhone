@@ -99,12 +99,13 @@ public class Preference {
         editor.commit();
     }
 
-    public Bitmap getPic() {
-        return bitmap;
+    public String getPic() {
+        return pref.getString("p", "");
     }
 
-    public void setPic(Bitmap pic) {
-        bitmap = pic;
+    public void setPic(String pic) {
+        editor.putString("p", pic);
+        editor.commit();
     }
 
     public boolean getLoad() {

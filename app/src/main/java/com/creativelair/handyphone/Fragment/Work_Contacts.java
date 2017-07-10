@@ -85,6 +85,17 @@ public class Work_Contacts extends Fragment implements View.OnClickListener {
         listView.setAdapter(adapter);
 
     }
+    @Override
+    public void onResume() {
+        if(preference.getLoad()) {
+            allcontacts.clear();
+            allcontacts = db.getWork();
+            ContactListAdapter adapter = new ContactListAdapter(getContext(), allcontacts);
+            listView.setAdapter(adapter);
+        }
+        super.onResume();
+    }
+
 
     @Override
     public void onClick(View v) {

@@ -7,8 +7,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,13 +82,22 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         name.setText(contacts.getName());
         phone.setText(contacts.getNumber());
 
-        if (contacts.getIcon() != null) {
-            iv.setImageBitmap(contacts.getIcon());
+        if(contacts.getPic()!=null){
+            iv.setImageBitmap(contacts.getPic());
             initial.setText("");
-        } else {
-            initial.setText("" + contacts.getName().toUpperCase().charAt(0));
-            iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
-        }
+        }else if (contacts.getIcon()!=null) {
+                if(!contacts.getIcon().equals("")){
+                    iv.setImageBitmap(BitmapFactory.decodeFile(contacts.getIcon()));
+                    initial.setText("");
+                }else {
+                    initial.setText("" + contacts.getName().toUpperCase().charAt(0));
+                    iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
+                }
+
+            } else {
+                initial.setText("" + contacts.getName().toUpperCase().charAt(0));
+                iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
+            }
         call.setOnClickListener(this);
         msg.setOnClickListener(this);
         edit.setOnClickListener(this);

@@ -77,6 +77,18 @@ public class Family_Contacts extends Fragment implements View.OnClickListener {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
+    @Override
+    public void onResume() {
+        if(preference.getLoad()) {
+            allcontacts.clear();
+            allcontacts = db.getFamily();
+            ContactListAdapter adapter = new ContactListAdapter(getContext(), allcontacts);
+            listView.setAdapter(adapter);
+        }
+        super.onResume();
+    }
+
+
 
     private void loadContacts() {
         allcontacts = db.getFamily();

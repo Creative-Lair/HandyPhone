@@ -85,6 +85,18 @@ public class Friend_Contacts extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume() {
+        if(preference.getLoad()) {
+            allcontacts.clear();
+            allcontacts = db.getFriend();
+            ContactListAdapter adapter = new ContactListAdapter(getContext(), allcontacts);
+            listView.setAdapter(adapter);
+        }
+        super.onResume();
+    }
+
+
+    @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
