@@ -111,16 +111,4 @@ public class Search extends Activity implements SearchView.OnQueryTextListener, 
         listAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        contacts.clear();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-
-    }
 }
