@@ -26,16 +26,14 @@ public class Preference {
     private static final String ENAME = "ename";
     private static final String ENUMBER = "enumber";
     private static final String MESSAGELOADED = "msgloaded";
-
-
-
+    private static final String Call_Number = "call_number";
 
 
     public static Bitmap bitmap;
     private static String TAG = Preference.class.getSimpleName();
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    Context _context;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private Context _context;
     int PRIVATE_MODE = 0;
 
 
@@ -52,6 +50,15 @@ public class Preference {
     public void setName(String name) {
         editor.putString(KEY_NAME, name);
         editor.commit();
+    }
+
+    public void setCallNumber(String v){
+        editor.putString(Call_Number , v);
+        editor.commit();
+    }
+
+    public String getCallNumber(){
+        return pref.getString(Call_Number, "");
     }
 
     public String getColor() {

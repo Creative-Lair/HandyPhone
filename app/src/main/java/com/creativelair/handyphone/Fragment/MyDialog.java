@@ -30,9 +30,6 @@ import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.Screens.EditContact;
 
-/**
- * Created by AHSAN on 4/3/2017.
- */
 
 public class MyDialog extends DialogFragment implements View.OnClickListener {
 
@@ -87,7 +84,6 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         }else if (contacts.getIcon()!=null) {
                 if(!contacts.getIcon().equals("")){
                     Glide.with(this).load(contacts.getIcon()).into(iv);
-                    //iv.setImageBitmap(BitmapFactory.decodeFile(contacts.getIcon()));
                     initial.setText("");
                 }else {
                     initial.setText("" + contacts.getName().toUpperCase().charAt(0));
@@ -129,6 +125,8 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
 
         switch (id){
             case R.id.call:
+
+                preference.setCallNumber(contacts.getNumber());
 
                 if(isPermissionGranted()){
                     call_action();
@@ -172,8 +170,7 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
                     == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
-
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, 1);
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, 3);
                 return false;
             }
         }
@@ -182,26 +179,7 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         }
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-
-            case 1: {
-
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted.", Toast.LENGTH_SHORT).show();
-                    call_action();
-                } else {
-                    Toast.makeText(getActivity(), "Permission Denied.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
     private void call_action() {
-
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + contacts.getNumber()));
         startActivity(intent);

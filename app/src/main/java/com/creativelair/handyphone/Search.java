@@ -105,9 +105,22 @@ public class Search extends Activity implements SearchView.OnQueryTextListener, 
     }
 
     private void loadData() {
-        contacts = db.getContactDetails();
+        contacts = db.getAll();
         listAdapter = new ContactListAdapter(this, contacts);
         mList.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        contacts.clear();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+
     }
 }

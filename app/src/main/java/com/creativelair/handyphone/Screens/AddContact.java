@@ -51,7 +51,6 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     CheckBox work,friend,family;
     Button add, gallery;
     SQLiteHandler db;
-    Bitmap mBitmap;
     Contacts contact;
     String path;
     private Preference preference;
@@ -191,26 +190,18 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
         int rawContactID = ops.size();
 
-        // Adding insert operation to operations list
-        // to insert a new raw contact in the table ContactsContract.RawContacts
         ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
                 .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
                 .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
                 .build());
 
-        // Adding insert operation to operations list
-        // to insert display name in the table ContactsContract.Data
         if (DisplayName != null) {
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
                     .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, DisplayName)
                     .build());
-            Log.d("Contact Add", "Name added");
         }
-
-        // Adding insert operation to operations list
-        // to insert Mobile Number in the table ContactsContract.Data
         if (MobileNumber != null) {
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
@@ -219,28 +210,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
                     .build());
 
-            Log.d("Contact Add", "Mobile Number Added");
         }
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        if(mBitmap!=null){    // If an image is selected successfully
-            mBitmap.compress(Bitmap.CompressFormat.PNG , 75, stream);
-
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
-                    .withValue(ContactsContract.Data.IS_SUPER_PRIMARY, 1)
-                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO,stream.toByteArray())
-                    .build());
-
-            try {
-                stream.flush();
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Asking the Contact provider to create a new contact
         try {
             getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
             Toast.makeText(this, "Contact is successfully added", Toast.LENGTH_SHORT).show();
@@ -313,11 +283,9 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     int columnIndex = cursor.getColumnIndex(filepathcolumn[0]);
                     path = cursor.getString(columnIndex);
                     cursor.close();
-                    mBitmap = BitmapFactory.decodeFile(path);
                     Glide.with(image.getContext()).load(path).into(image);
-
-                   // System.out.println();
                 }
+                break;
         }
     }
     @Override

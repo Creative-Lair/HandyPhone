@@ -184,7 +184,6 @@ public class EditContact extends AppCompatActivity
 
                 } else {
                     db.updateContact(oldcontact, contact);
-                    updateContact(oldcontact, contact);
 
                     preference.setName(contact.getName());
                     preference.setPhone(contact.getNumber());
@@ -218,68 +217,6 @@ public class EditContact extends AppCompatActivity
 
     }
 
-    private boolean updateContact(Contacts oldcontact, Contacts contact) {
-        boolean success = false;
-        String name = contact.getName();
-        String number = contact.getNumber();
-        String pic = contact.getIcon();
-        int ContactId = contact.getId();
-        String oldname = oldcontact.getName();
-        String oldnumber = oldcontact.getNumber();
-
-        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
-
-        String where = ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME + "=?";
-
-    /*    if (name != null) {
-                ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                        .withSelection(where, new String[]{oldname})
-                        .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                        .withValue(ContactsContract.Data.DISPLAY_NAME, name)
-                        .build());
-                Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
-            }
-       /*     ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(where, new String[]{oldnumber})
-                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                    .build());
-
-            ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(where, new String[]{oldnumber})
-                    .withValue(ContactsContract.Data.IS_SUPER_PRIMARY, 1)
-                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO,stream.toByteArray())
-                    .build());
-
-
-            try {
-                stream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-            // Adding insert operation to operations list
-        // to insert Mobile Number in the table ContactsContract.Data
-
-
-
-            Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
-//
-        // Asking the Contact provider to create a new contact
-        try {
-            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-            Toast.makeText(this, "Contact is successfully Updated", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            success = false;
-            e.printStackTrace();
-            Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }*/
-        return success;
-    }
-
     public String check() {
 
         if (work.isChecked()) {
@@ -305,23 +242,19 @@ public class EditContact extends AppCompatActivity
                 if (isChecked) {
                     family.setChecked(false);
                     friend.setChecked(false);
-                    //    Toast.makeText(this, "Work", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.family:
                 if (isChecked) {
                     work.setChecked(false);
                     friend.setChecked(false);
-
-                    //   Toast.makeText(this, "Family", Toast.LENGTH_SHORT).show();
-                }
+             }
                 break;
             case R.id.friends:
                 if (isChecked) {
                     family.setChecked(false);
                     work.setChecked(false);
 
-                    //  Toast.makeText(this, "Friend", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -335,18 +268,14 @@ public class EditContact extends AppCompatActivity
         switch (requestCode) {
             case PICK_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    // Getting the uri of the picked photo
-                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-                    image.setImageBitmap(photo);
-
-
-                    // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-                    Uri tempUri = getImageUri(getApplicationContext(), photo);
-
-                    // CALL THIS METHOD TO GET THE ACTUAL PATH
-                    File finalFile = new File(getRealPathFromURI(tempUri));
-                    path = finalFile.getAbsolutePath();
-
+                    Uri SelectedImage = data.getData();
+                    String[] filepathcolumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(SelectedImage, filepathcolumn, null,null,null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filepathcolumn[0]);
+                    path = cursor.getString(columnIndex);
+                    cursor.close();
+                    Glide.with(image.getContext()).load(path).into(image);
                 }
                 break;
 
@@ -369,25 +298,10 @@ public class EditContact extends AppCompatActivity
             case PERMISSIONS_REQUEST_READ_CONTACTS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     db.updateContact(oldcontact, contact);
-                    updateContact(oldcontact, contact);
                 } else {
                     Toast.makeText(this, "Until you grant the permission, we cannot display the names", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
     }
 }

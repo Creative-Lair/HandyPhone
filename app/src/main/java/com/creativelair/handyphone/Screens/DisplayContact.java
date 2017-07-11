@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.creativelair.handyphone.Fragment.MessageDialog;
@@ -59,7 +60,6 @@ public class DisplayContact extends AppCompatActivity {
         phone.setText(preference.getPhone());
         String imagea = preference.getPic();
         Glide.with(image.getContext()).load(imagea).into(image);
-        //   Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);
         } else if (preference.getGroup().equals("Friend")) {
@@ -155,10 +155,10 @@ public class DisplayContact extends AppCompatActivity {
             case 1: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Toast.makeText(getActivity(), "Permission granted", Toast.LENGTH_SHORT).show();
+                     Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
                     call_action();
                 } else {
-                    // Toast.makeText(getActivity(), "Permission denied", Toast.LENGTH_SHORT).show();
+                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
                 }
             }
         }

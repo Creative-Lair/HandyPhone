@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.SEND_SMS)) {
+
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.SEND_SMS},
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
 
-            case 1: {
+            case 1:
 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -153,9 +154,10 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Permission Denied.", Toast.LENGTH_SHORT).show();
                 }
-            }
+                break;
 
-            case 2: {
+
+            case 2:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         sendMessage();
@@ -164,18 +166,23 @@ public class MainActivity extends AppCompatActivity {
                             "SMS faild, please try again.", Toast.LENGTH_LONG).show();
                     return;
                 }
-            }
+                break;
 
-   /*         case 100 : {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-                    Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
-                    loadContactsAyscn.execute();
+            case 3:
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Granted.", Toast.LENGTH_SHORT).show();
+                    call_action();
                 } else {
-                    Toast.makeText(this, "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Permission Denied.", Toast.LENGTH_SHORT).show();
                 }
-            }
-     */   }
+
+                break;
+
+
+
+        }
     }
 
     public void sendMessage(){
@@ -183,6 +190,13 @@ public class MainActivity extends AppCompatActivity {
         smsManager.sendTextMessage(pref.getEnumber(), null, pref.getMSGTEXT(), null, null);
         Toast.makeText(getApplicationContext(), "SMS sent.",
                 Toast.LENGTH_LONG).show();
+    }
+
+
+    private void call_action() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + pref.getCallNumber()));
+        startActivity(intent);
     }
 
 

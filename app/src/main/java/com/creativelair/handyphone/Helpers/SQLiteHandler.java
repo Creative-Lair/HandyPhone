@@ -205,8 +205,36 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 } else {
                     user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 }
+                if(user.getGroup().equals("All"))
+                    contacts.add(user);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return contacts;
+    }
+
+    public ArrayList<Contacts> getAll() {
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
+        ArrayList<Contacts> contacts = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Contacts user = new Contacts();
+                user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+                user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
+                user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
+                user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
+                if(cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB))!=null){
+                    byte[] imageBytes = null;
+                    imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB));
+                    user.setPic(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                } else {
+                    user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
+                }
                 contacts.add(user);
-                System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -216,13 +244,11 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     }
 
     public ArrayList<Contacts> getWork() {
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
         String whereClause = KEY_GROUP + "=?";
         String[] whereArgs = {WORK};
         ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_CONTACT, Column3, whereClause, whereArgs, null, null, null);
-        // Move to first row
         if (cursor.moveToFirst()) {
             do {
                 Contacts user = new Contacts();
@@ -232,25 +258,20 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
                 user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 contacts.add(user);
-                Log.d(TAG, "Fetching user from Sqlite: " + user.getName() + user.getGroup());
-                System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        // return user
 
         return contacts;
     }
 
     public ArrayList<Contacts> getFamily() {
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
         String whereClause = KEY_GROUP + "=?";
         String[] whereArgs = {FAMILY};
         ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_CONTACT, Column3, whereClause, whereArgs, null, null, null);
-        // Move to first row
         if (cursor.moveToFirst()) {
             do {
                 Contacts user = new Contacts();
@@ -275,7 +296,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_CONTACT, Column3, whereClause, whereArgs, null, null, null);
-        // Move to first row
         if (cursor.moveToFirst()) {
             do {
                 Contacts user = new Contacts();
@@ -294,9 +314,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         return contacts;
     }
 
-    /**
-     * Re crate database Delete all tables and create them again
-     * */
     public void deleteContact() {
         SQLiteDatabase db = this.getWritableDatabase();
 
