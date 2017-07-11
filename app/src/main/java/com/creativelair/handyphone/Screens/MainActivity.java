@@ -68,15 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.emergency) {
             if(pref.getEmergency()){
-                if(pref.getCALL() || pref.getCALLMSG()){
-                    if(isPermissionGranted()) {
-                        call();
-                    }
-                }
 
                 if(pref.getCALLMSG() || pref.getMSG()){
                     msg();
                 }
+
+                try{
+                    Thread.sleep(2000);
+                } catch (Exception e){
+                    e.printStackTrace();
+                } finally {
+                    if(pref.getCALL() || pref.getCALLMSG()){
+                        if(isPermissionGranted()) {
+                            call();
+                        }
+                    }
+                }
+
+
             } else {
                 Intent i = new Intent(this, EmergencyContact.class);
                 startActivity(i);

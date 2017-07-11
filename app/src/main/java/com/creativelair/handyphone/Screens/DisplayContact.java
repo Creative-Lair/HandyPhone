@@ -3,6 +3,7 @@ package com.creativelair.handyphone.Screens;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -58,8 +59,8 @@ public class DisplayContact extends AppCompatActivity {
     private void intialize() {
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
-        String imagea = preference.getPic();
-        Glide.with(image.getContext()).load(imagea).into(image);
+        Bitmap bitmap = preference.getBitmap();
+        image.setImageBitmap(bitmap);
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);
         } else if (preference.getGroup().equals("Friend")) {

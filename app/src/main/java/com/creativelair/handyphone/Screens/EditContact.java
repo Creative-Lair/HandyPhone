@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -75,11 +76,7 @@ public class EditContact extends AppCompatActivity
         oldcontact.setName(preference.getName());
         oldcontact.setNumber(preference.getPhone());
         oldcontact.setId(preference.getId());
-        if(!preference.getPic().equals("")) {
-            pic = preference.getPic();
-        } else {
-            mBitmap = preference.getBitmap();
-        }
+        mBitmap = preference.getBitmap();
 
         prepare();
         intialize();
@@ -89,11 +86,7 @@ public class EditContact extends AppCompatActivity
     private void intialize() {
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
-        if(mBitmap!=null){
-            Glide.with(image.getContext()).load(mBitmap).into(image);
-        } else if (pic!=null) {
-            Glide.with(image.getContext()).load(pic).into(image);
-        }
+        image.setImageBitmap(mBitmap);
         //    Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);
@@ -188,7 +181,9 @@ public class EditContact extends AppCompatActivity
                     preference.setName(contact.getName());
                     preference.setPhone(contact.getNumber());
                     preference.setGroup(contact.getGroup());
-                    preference.setPic(contact.getIcon());
+                    BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    preference.setBitmap(bitmap);
                     preference.setId(contact.getId());
 
                     Intent i = new Intent(this, DisplayContact.class);

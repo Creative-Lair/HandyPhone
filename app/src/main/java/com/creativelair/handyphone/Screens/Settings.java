@@ -1,11 +1,13 @@
 package com.creativelair.handyphone.Screens;
 
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -27,6 +29,7 @@ import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -177,12 +180,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                         int imgId = c.getInt(1);
 
                         Contacts contacts1;
-                        photo = queryContactImage(imgId);
+                        photo = queryContactImage(c_id);
                         if (photo != null)
                             contacts1 = new Contacts(contactName, phNumber, photo, id);
                         else
                             contacts1 = new Contacts(contactName, phNumber, "", id);
-                        contacts1.setGroup(" ");
+                        contacts1.setGroup("All");
                         db.addContact(contacts1);
                         contacts.add(contacts1);
                         c.close();
@@ -193,25 +196,14 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             return contacts;
         }
 
-        public Bitmap queryContactImage(int imageDataRow) {
-            Cursor c = getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{
-                    ContactsContract.CommonDataKinds.Photo.PHOTO
-            }, ContactsContract.Data._ID + "=?", new String[] {
-                    Integer.toString(imageDataRow)
-            }, null);
-            byte[] imageBytes = null;
-            if (c != null) {
-                if (c.moveToFirst()) {
-                    imageBytes = c.getBlob(0);
-                }
-                c.close();
-            }
-
-            if (imageBytes != null) {
-                return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            } else {
+        public Bitmap queryContactImage(String imageDataRow) {
+            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(imageDataRow));
+            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), uri, true);
+            if (input == null) {
                 return null;
             }
+            return BitmapFactory.decodeStream(input);
+
         }
         @Override
         protected void onPostExecute(ArrayList<Contacts> contacts) {

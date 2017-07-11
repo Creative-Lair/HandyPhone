@@ -7,8 +7,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -30,6 +32,9 @@ import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.Screens.EditContact;
 
+import static com.creativelair.handyphone.R.id.image;
+import static com.creativelair.handyphone.R.id.imageView;
+
 
 public class MyDialog extends DialogFragment implements View.OnClickListener {
 
@@ -42,6 +47,7 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
     private Contacts contacts;
     private ImageButton edit;
     private Preference preference;
+    private boolean i;
 
 
     @SuppressLint("ValidFragment")
@@ -81,17 +87,21 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
         if(contacts.getPic()!=null){
             iv.setImageBitmap(contacts.getPic());
             initial.setText("");
+            i = true;
         }else if (contacts.getIcon()!=null) {
                 if(!contacts.getIcon().equals("")){
                     Glide.with(this).load(contacts.getIcon()).into(iv);
                     initial.setText("");
+                    i = true;
                 }else {
                     initial.setText("" + contacts.getName().toUpperCase().charAt(0));
                     iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
+                    i = false;
                 }
             } else {
                 initial.setText("" + contacts.getName().toUpperCase().charAt(0));
                 iv.setImageDrawable(new ColorDrawable(Color.parseColor(contacts.getColor())));
+                i = false;
             }
         call.setOnClickListener(this);
         msg.setOnClickListener(this);
@@ -138,17 +148,15 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
                 preference.setName(contacts.getName());
                 preference.setPhone(contacts.getNumber());
                 preference.setGroup(contacts.getGroup());
-                if(contacts.getIcon()!=null){
-                    if(!contacts.getIcon().equals("")){
-                        preference.setPic(contacts.getIcon());
-                    } else {
-                        preference.setPic("");
-                        preference.setBitmap(contacts.getPic());
-                    }
+
+                if(i) {
+                    BitmapDrawable drawable = (BitmapDrawable) iv.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    preference.setBitmap(bitmap);
                 } else {
-                    preference.setPic("");
-                    preference.setBitmap(contacts.getPic());
+                    preference.setBitmap(null);
                 }
+
                 preference.setId(contacts.getId());
 
                 Intent i = new Intent(getActivity(), EditContact.class);

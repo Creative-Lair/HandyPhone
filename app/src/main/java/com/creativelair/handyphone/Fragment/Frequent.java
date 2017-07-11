@@ -2,12 +2,15 @@ package com.creativelair.handyphone.Fragment;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +34,8 @@ import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.RecyclerItemClickListener;
 import com.creativelair.handyphone.Screens.AddContact;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -38,7 +43,9 @@ import java.util.ArrayList;
  * Created by HishamAhmed on 04-Apr-17.
  */
 
-public class Frequent extends Fragment implements View.OnClickListener {
+public class
+
+Frequent extends Fragment implements View.OnClickListener {
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     private static LayoutInflater inflat = null;
@@ -125,8 +132,16 @@ public class Frequent extends Fragment implements View.OnClickListener {
 
     @Override
     public void onPause(){
-        frequent.clear();
         super.onPause();
+        frequent.clear();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
+        loadContactsAyscn.execute();
     }
 
     public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
@@ -187,7 +202,7 @@ public class Frequent extends Fragment implements View.OnClickListener {
                         int imgId = c.getInt(1);
 
                         Contacts contacts1;
-                        photo = queryContactImage(imgId);
+                        photo = queryContactImage(c_id);
                         if (photo != null) {
                             contacts1 = new Contacts(contactName, phNumber, photo, id);
                         } else
@@ -203,25 +218,13 @@ public class Frequent extends Fragment implements View.OnClickListener {
         }
 
 
-        public Bitmap queryContactImage(int imageDataRow) {
-            Cursor c = getActivity().getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{
-                    ContactsContract.CommonDataKinds.Photo.PHOTO
-            }, ContactsContract.Data._ID + "=?", new String[]{
-                    Integer.toString(imageDataRow)
-            }, null);
-            byte[] imageBytes = null;
-            if (c != null) {
-                if (c.moveToFirst()) {
-                    imageBytes = c.getBlob(0);
-                }
-                c.close();
-            }
-
-            if (imageBytes != null) {
-                return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            } else {
+        public Bitmap queryContactImage(String imageDataRow) {
+            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(imageDataRow));
+            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(getActivity().getContentResolver(), uri, true);
+            if (input == null) {
                 return null;
             }
+            return BitmapFactory.decodeStream(input);
         }
 
         @Override

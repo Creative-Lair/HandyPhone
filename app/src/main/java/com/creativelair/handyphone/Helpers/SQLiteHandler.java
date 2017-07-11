@@ -170,7 +170,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         cv.put(KEY_CONTACTNUMBER, contacts.getNumber());
         cv.put(KEY_GROUP, contacts.getGroup());
         cv.put(KEY_CONTACT_ID, contacts.getId());
-        cv.put(KEY_CONTACTPIC, image);
 
         if(bitmap != null){
             ByteArrayOutputStream bos = new ByteArrayOutputStream();

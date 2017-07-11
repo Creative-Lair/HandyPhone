@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -155,6 +156,9 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 preference.setPhone(contact.getNumber());
                 preference.setGroup(contact.getGroup());
                 preference.setPic(path);
+                BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                preference.setBitmap(bitmap);
                 preference.setId(contact.getId());
 
                 Intent i = new Intent(this, DisplayContact.class);
