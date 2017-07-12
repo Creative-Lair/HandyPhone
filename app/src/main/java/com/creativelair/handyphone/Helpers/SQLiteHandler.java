@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -51,6 +50,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             KEY_GROUP,
             KEY_CONTACTPIC,
             KEY_CONTACT_ID,
+            KEY_CONTACTBLOB
     };
 
     String[] Column2 = {
@@ -58,9 +58,11 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             MESSAGE_HEADER,
             MESSAGE_TEXT
     };
+    Context con;
 
     public SQLiteHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.con = context;
     }
 
     // Creating Tables
@@ -145,8 +147,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             bitmap.compress(Bitmap.CompressFormat.JPEG ,100,bos);
             byte[] img = bos.toByteArray();
             values.put(KEY_CONTACTBLOB, img);
-        } else {
-            values.put(KEY_CONTACTPIC, image);
         }
 
         values.put(KEY_CONTACTPIC, image);
@@ -154,6 +154,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         values.put(KEY_CONTACTNUMBER, phone); // Email
         values.put(KEY_GROUP, group);
         values.put(KEY_CONTACT_ID, id);
+
 
         long uid = db.insert(TABLE_CONTACT, null, values);
         db.close(); // Closing database connection
@@ -176,9 +177,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             bitmap.compress(Bitmap.CompressFormat.JPEG ,100,bos);
             byte[] img = bos.toByteArray();
             cv.put(KEY_CONTACTBLOB, img);
-        } else {
-            cv.put(KEY_CONTACTPIC, image);
         }
+        cv.put(KEY_CONTACTPIC, image);
         db.update(TABLE_CONTACT, cv, where, whereargs);
 
         db.close(); // Closing database connection
@@ -255,7 +255,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
                 user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-                user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
+                if (cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB)) != null) {
+                    byte[] imageBytes = null;
+                    imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB));
+                    user.setPic(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                } else {
+                    user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
+                }
                 contacts.add(user);
             } while (cursor.moveToNext());
         }
@@ -278,7 +284,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
                 user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-                user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
+                if (cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB)) != null) {
+                    byte[] imageBytes = null;
+                    imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB));
+                    user.setPic(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                } else {
+                    user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
+                }
                 contacts.add(user);
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
@@ -302,7 +314,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
                 user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
                 user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-                user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
+                if (cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB)) != null) {
+                    byte[] imageBytes = null;
+                    imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB));
+                    user.setPic(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+                } else {
+                    user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
+                }
                 contacts.add(user);
                 System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());

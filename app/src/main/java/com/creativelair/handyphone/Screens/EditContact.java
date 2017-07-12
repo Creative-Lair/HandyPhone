@@ -1,19 +1,14 @@
 package com.creativelair.handyphone.Screens;
 
 import android.Manifest;
-import android.content.ContentProviderOperation;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -33,12 +28,6 @@ import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 public class EditContact extends AppCompatActivity
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -87,7 +76,6 @@ public class EditContact extends AppCompatActivity
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
         image.setImageBitmap(mBitmap);
-        //    Toast.makeText(this, preference.getGroup(), Toast.LENGTH_SHORT).show();
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);
         } else if (preference.getGroup().equals("Friend")) {
@@ -169,8 +157,12 @@ public class EditContact extends AppCompatActivity
                     contact.setIcon(path);
                 } else {
                     contact.setIcon(null);
+
                 }
 
+                BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                contact.setPic(bitmap);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
@@ -181,8 +173,6 @@ public class EditContact extends AppCompatActivity
                     preference.setName(contact.getName());
                     preference.setPhone(contact.getNumber());
                     preference.setGroup(contact.getGroup());
-                    BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
-                    Bitmap bitmap = drawable.getBitmap();
                     preference.setBitmap(bitmap);
                     preference.setId(contact.getId());
 

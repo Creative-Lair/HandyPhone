@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -34,7 +33,6 @@ import com.creativelair.handyphone.R;
 import com.creativelair.handyphone.RecyclerItemClickListener;
 import com.creativelair.handyphone.Screens.AddContact;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -132,26 +130,6 @@ Frequent extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onPause(){
-        super.onPause();
-        frequent.clear();
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
-            loadContactsAyscn.execute();
-        } else if(preference.permission()) {
-            Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
-            loadContactsAyscn.execute();
-        }
-    }
 
     public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
         ProgressDialog pd;

@@ -6,10 +6,10 @@
     android:gravity="center"
     android:orientation="vertical">
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:id="@+id/scrollView">
+        android:scrollbars="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,6 +86,7 @@
                 android:textSize="22sp" />
 
             <LinearLayout
+                android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/category"
@@ -125,18 +126,20 @@
                     android:layout_marginStart="10dp"
                     android:text="@string/friends" />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/add"
+                android:layout_width="200dp"
+                android:layout_height="75dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/line"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorBlack"
+                android:text="@string/add_contact_button"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
         </RelativeLayout>
     </ScrollView>
-    <Button
-        android:id="@+id/add"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_below="@+id/scrollView"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorBlack"
-        android:text="@string/add_contact_button"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+
 
 </RelativeLayout>
