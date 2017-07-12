@@ -94,6 +94,7 @@ Frequent extends Fragment implements View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
         } else {
+            preference.setPermission(true);
             perms = false;
             Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
             loadContactsAyscn.execute();
@@ -141,7 +142,12 @@ Frequent extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        if(preference.permission()) {
+
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
+            loadContactsAyscn.execute();
+        } else if(preference.permission()) {
             Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
             loadContactsAyscn.execute();
         }
