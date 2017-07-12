@@ -27,6 +27,7 @@ public class Preference {
     private static final String ENUMBER = "enumber";
     private static final String MESSAGELOADED = "msgloaded";
     private static final String Call_Number = "call_number";
+    private static final String permisssion = "permission";
 
 
     public static Bitmap bitmap;
@@ -55,6 +56,15 @@ public class Preference {
     public void setCallNumber(String v){
         editor.putString(Call_Number , v);
         editor.commit();
+    }
+
+    public void setPermission(boolean v){
+        editor.putBoolean(permisssion, v);
+        editor.commit();
+    }
+
+    public  boolean permission(){
+        return pref.getBoolean(permisssion,false);
     }
 
     public String getCallNumber(){

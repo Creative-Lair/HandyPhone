@@ -132,6 +132,7 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                preference.setPermission(true);
                 if (preference.getLoad()) {
                     allcontacts = db.getContactDetails();
                     ContactListAdapter adapter = new ContactListAdapter(activity, allcontacts);

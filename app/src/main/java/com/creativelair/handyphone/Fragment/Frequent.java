@@ -122,6 +122,7 @@ Frequent extends Fragment implements View.OnClickListener {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
                 perms = true;
+                preference.setPermission(true);
                 Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
                 loadContactsAyscn.execute();
             } else {
@@ -140,8 +141,10 @@ Frequent extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
-        loadContactsAyscn.execute();
+        if(preference.permission()) {
+            Frequent.LoadContactsAyscn loadContactsAyscn = new Frequent.LoadContactsAyscn();
+            loadContactsAyscn.execute();
+        }
     }
 
     public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
