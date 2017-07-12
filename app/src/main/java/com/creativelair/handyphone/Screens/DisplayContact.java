@@ -4,15 +4,12 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
@@ -20,14 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.creativelair.handyphone.Fragment.MessageDialog;
 import com.creativelair.handyphone.Helpers.Contacts;
 import com.creativelair.handyphone.Helpers.Preference;
 import com.creativelair.handyphone.Helpers.SQLiteHandler;
 import com.creativelair.handyphone.R;
-
-import static java.security.AccessController.getContext;
 
 public class DisplayContact extends AppCompatActivity {
 
@@ -77,7 +71,6 @@ public class DisplayContact extends AppCompatActivity {
     }
 
     public void prepare() {
-
         name = (TextView) findViewById(R.id.name);
         phone = (TextView) findViewById(R.id.phone);
         work = (CheckBox) findViewById(R.id.work);
@@ -124,8 +117,6 @@ public class DisplayContact extends AppCompatActivity {
                 myDialog.show(getFragmentManager(), "my_dialog");
                 break;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -156,10 +147,10 @@ public class DisplayContact extends AppCompatActivity {
             case 1: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                     Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                     Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show();
                     call_action();
                 } else {
-                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                     Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
                 }
             }
         }

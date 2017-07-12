@@ -130,7 +130,6 @@ Frequent extends Fragment implements View.OnClickListener {
         }
     }
 
-
     public class LoadContactsAyscn extends AsyncTask<Void, Void, ArrayList<Contacts>> {
         ProgressDialog pd;
         @Override
@@ -152,7 +151,6 @@ Frequent extends Fragment implements View.OnClickListener {
                     ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER,
                     ContactsContract.CommonDataKinds.Phone._ID,
                     ContactsContract.CommonDataKinds.Phone.PHOTO_ID};
-
 
             Cursor c1 = getActivity().getContentResolver().query(ContactsContract.Contacts.CONTENT_STREQUENT_URI,
                     columns,
@@ -203,7 +201,6 @@ Frequent extends Fragment implements View.OnClickListener {
             c1.close();
             return contacts;
         }
-
 
         public Bitmap queryContactImage(String imageDataRow) {
             Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(imageDataRow));

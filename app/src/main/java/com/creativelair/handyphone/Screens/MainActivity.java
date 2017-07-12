@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-
     private Preference pref;
 
     @Override
@@ -84,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
-
-
             } else {
                 Intent i = new Intent(this, EmergencyContact.class);
                 startActivity(i);
@@ -102,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent2);
         }
 
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -115,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void msg() {
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -148,23 +142,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
 
             case 1:
-
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Granted.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show();
                     call();
                 } else {
-                    Toast.makeText(this, "Permission Denied.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
                 }
                 break;
-
 
             case 2:
                 if (grantResults.length > 0
@@ -172,25 +163,21 @@ public class MainActivity extends AppCompatActivity {
                         sendMessage();
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                            "SMS faild!, please try again.", Toast.LENGTH_LONG).show();
                     return;
                 }
                 break;
 
             case 3:
-
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Granted.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show();
                     call_action();
                 } else {
-                    Toast.makeText(this, "Permission Denied.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
-
-
-
         }
     }
 
@@ -201,12 +188,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
-
     private void call_action() {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + pref.getCallNumber()));
         startActivity(intent);
     }
-
-
 }

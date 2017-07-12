@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
         android:foregroundGravity="center"
-        android:src="@drawable/app_logo3" />
+        android:src="@drawable/app_logo_small" />
 
     <TextView
         android:id="@+id/design"
@@ -37,7 +37,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="55dp"
-        android:src="@drawable/cl_logo"
+        android:src="@drawable/cl_logo_small"
         android:layout_below="@+id/version"
         android:layout_centerHorizontal="true" />
 

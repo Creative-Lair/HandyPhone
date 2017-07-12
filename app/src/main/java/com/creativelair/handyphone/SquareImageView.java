@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-public class SquareImageView extends ImageView {
+public class SquareImageView extends android.support.v7.widget.AppCompatImageView {
 
     // Inherited constructors
 
@@ -38,5 +38,4 @@ public class SquareImageView extends ImageView {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
-
 }

@@ -21,7 +21,6 @@ public class Contacts {
         Group = null;
         Color = null;
         pic = null;
-
     }
 
     public Contacts(String name, String number, String icon, int id) {
@@ -54,9 +53,7 @@ public class Contacts {
         Name = name;
     }
 
-    public String getNumber() {
-        return Number;
-    }
+    public String getNumber() { return Number; }
 
     public void setNumber(String number) {
         Number = number;
@@ -94,7 +91,3 @@ public class Contacts {
         this.id = id;
     }
 }
-
-
-
-

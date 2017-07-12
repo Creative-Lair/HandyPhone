@@ -71,9 +71,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         setListener();
     }
 
-
     public void prepare(){
-
         name = (TextView) findViewById(R.id.name);
         phone = (TextView) findViewById(R.id.phone);
         work = (CheckBox) findViewById(R.id.work);
@@ -102,13 +100,11 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id){
             case R.id.add:
-
                 String mName = name.getText().toString().trim();
                 String mPhone = phone.getText().toString().trim();
                 String category = check();
@@ -127,10 +123,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     Toast.makeText(this, "Please Select Category", Toast.LENGTH_SHORT).show();
                     break;
                 }
-
-
                 mName = mName.substring(0,1).toUpperCase() + mName.substring(1);
-
 
                 contact = new Contacts();
 
@@ -142,7 +135,6 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 } else {
                     contact.setIcon("");
                 }
-
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
@@ -156,10 +148,12 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 preference.setPhone(contact.getNumber());
                 preference.setGroup(contact.getGroup());
                 preference.setPic(path);
-                BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
-                preference.setBitmap(bitmap);
-                preference.setId(contact.getId());
+                if(path != null){
+                    BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    preference.setBitmap(bitmap);
+                    preference.setId(contact.getId());
+                }
 
                 Intent i = new Intent(this, DisplayContact.class);
                 startActivity(i);
@@ -182,7 +176,6 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
                 break;
         }
-
     }
 
     public int addContact(Contacts contact) {
@@ -213,14 +206,12 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
                     .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
                     .build());
-
         }
         try {
             getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-            Toast.makeText(this, "Contact is successfully added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Contact is successfully added!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return rawContactID;
     }
@@ -304,7 +295,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     startActivityForResult(intent, PICK_PHOTO);
                 }
                 else {
-                    Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Until you grant the permission, we can't display the names.", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -313,7 +304,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                     db.addContact(contact);
                     addContact(contact);
                 } else {
-                    Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Until you grant the permission, we can't display the names.", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

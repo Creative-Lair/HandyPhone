@@ -110,5 +110,4 @@ public class Search extends Activity implements SearchView.OnQueryTextListener, 
         mList.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
     }
-
 }

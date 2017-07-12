@@ -35,9 +35,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     private Context mContext;
     private ArrayList<Contacts> display;
     private Preference pref;
-
     private LruCache<String, Bitmap> cache;
-
 
     public ContactListAdapter(Context mContext, ArrayList<Contacts> contacts) {
         this.mContext = mContext;

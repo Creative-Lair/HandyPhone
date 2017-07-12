@@ -48,8 +48,7 @@ public class MyDialog extends DialogFragment implements View.OnClickListener {
     private ImageButton edit;
     private Preference preference;
     private boolean i;
-
-
+    
     @SuppressLint("ValidFragment")
     public MyDialog(Contacts contacts, String color) {
         super();

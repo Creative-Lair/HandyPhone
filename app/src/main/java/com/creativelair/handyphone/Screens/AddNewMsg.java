@@ -87,8 +87,6 @@ public class AddNewMsg extends AppCompatActivity
                 pref = new Preference(this);
                 pref.setHeading(heading);
                 pref.setMsg(mesg);
-                //Message msg = new Message(heading,mesg);
-                //db.addMessage(msg, );
 
                 finish();
         }

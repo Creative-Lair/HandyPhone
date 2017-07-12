@@ -156,7 +156,6 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(this, "Contact Added", Toast.LENGTH_SHORT).show();
                     pref.setEmergency(true);
                     finish();
-
                 }
                 break;
 
@@ -165,7 +164,6 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
                 intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
                 startActivityForResult(intent, 103);
                 break;
-
         }
     }
 
@@ -189,7 +187,6 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
                     msg.setChecked(false);
                     msg_box.setEnabled(false);
                 }
-
                 break;
 
             case R.id.callMsg:
@@ -222,9 +219,6 @@ public class EmergencyContact extends AppCompatActivity implements View.OnClickL
 
                 name.setText(n);
                 number.setText(nu);
-
-               // Log.d(TAG, "ZZZ number : " + number +" , name : "+name);
-
             }
         }
     };

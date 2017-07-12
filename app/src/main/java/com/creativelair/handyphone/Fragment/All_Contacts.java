@@ -179,7 +179,6 @@ public class All_Contacts extends Fragment implements View.OnClickListener{
                     ContactsContract.CommonDataKinds.Phone._ID,
                     ContactsContract.CommonDataKinds.Phone.PHOTO_ID};
 
-
             Cursor c1 = getActivity().getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
                     columns,
                     null,

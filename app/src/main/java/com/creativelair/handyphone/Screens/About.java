@@ -47,7 +47,6 @@ public class About extends AppCompatActivity {
                 finish();
                 break;
         }
-
         return true;
     }
 }

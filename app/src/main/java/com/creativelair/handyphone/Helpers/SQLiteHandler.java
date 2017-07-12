@@ -129,7 +129,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         return messages;
     }
 
-
     public void addContact(Contacts contacts) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -154,7 +153,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         values.put(KEY_CONTACTNUMBER, phone); // Email
         values.put(KEY_GROUP, group);
         values.put(KEY_CONTACT_ID, id);
-
 
         long uid = db.insert(TABLE_CONTACT, null, values);
         db.close(); // Closing database connection

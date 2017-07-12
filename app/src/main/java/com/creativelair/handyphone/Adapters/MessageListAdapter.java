@@ -28,9 +28,7 @@ public class MessageListAdapter extends ArrayAdapter {
         mContext = context;
         messages = objects;
 
-
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override
@@ -63,7 +61,6 @@ public class MessageListAdapter extends ArrayAdapter {
         text.setText(msg.getText());
         header.setTypeface(RobotoBlack);
         text.setTypeface(Roboto);
-
 
         return vi;
     }

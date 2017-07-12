@@ -56,7 +56,6 @@ public class Work_Contacts extends Fragment implements View.OnClickListener {
                         if (view == null) {
                             view = inflat.inflate(R.layout.all_contacts, null);
                         }
-
                         Contacts contacts = allcontacts.get(position);
 
                         MyDialog myDialog = new MyDialog(contacts, preference.getColor());
@@ -112,6 +111,4 @@ public class Work_Contacts extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-
-
 }

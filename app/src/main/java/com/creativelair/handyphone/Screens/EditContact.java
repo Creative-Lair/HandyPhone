@@ -86,7 +86,6 @@ public class EditContact extends AppCompatActivity
     }
 
     public void prepare() {
-
         name = (TextView) findViewById(R.id.name);
         phone = (TextView) findViewById(R.id.phone);
         work = (CheckBox) findViewById(R.id.work);
@@ -105,7 +104,6 @@ public class EditContact extends AppCompatActivity
         gallery.setOnClickListener(this);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -115,7 +113,6 @@ public class EditContact extends AppCompatActivity
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -142,9 +139,7 @@ public class EditContact extends AppCompatActivity
                     break;
                 }
 
-
                 mName = mName.substring(0, 1).toUpperCase() + mName.substring(1);
-
 
                 contact = new Contacts();
 
@@ -179,7 +174,6 @@ public class EditContact extends AppCompatActivity
                     Intent i = new Intent(this, DisplayContact.class);
                     startActivity(i);
                     finish();
-
                 }
 
                 break;
@@ -197,9 +191,7 @@ public class EditContact extends AppCompatActivity
                     e.printStackTrace();
                 }
                 break;
-
         }
-
     }
 
     public String check() {
@@ -213,7 +205,6 @@ public class EditContact extends AppCompatActivity
         } else {
             return null;
         }
-
     }
 
     @Override
@@ -242,7 +233,6 @@ public class EditContact extends AppCompatActivity
 
                 }
                 break;
-
         }
     }
 
@@ -263,7 +253,6 @@ public class EditContact extends AppCompatActivity
                     Glide.with(image.getContext()).load(path).into(image);
                 }
                 break;
-
         }
     }
 
@@ -276,7 +265,7 @@ public class EditContact extends AppCompatActivity
                     intent.setType("image/*");
                     startActivityForResult(intent, PICK_PHOTO);
                 } else {
-                    Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -284,7 +273,7 @@ public class EditContact extends AppCompatActivity
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     db.updateContact(oldcontact, contact);
                 } else {
-                    Toast.makeText(this, "Until you grant the permission, we cannot display the names", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Until you grant the permission, we can't display the names", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

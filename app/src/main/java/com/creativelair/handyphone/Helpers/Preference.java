@@ -222,5 +222,4 @@ public class Preference {
         editor.putBoolean(MESSAGELOADED, v);
         editor.commit();
     }
-
 }

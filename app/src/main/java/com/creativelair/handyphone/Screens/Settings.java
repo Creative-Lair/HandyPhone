@@ -54,7 +54,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setTitle("Setting");
 
-
         adapter = new SettingsAdapter(this, R.layout.settinglistitems, items);
 
         items.add("Clear Data:Wipe away all the contacts in categories, emergency contact and custom message templates");
@@ -212,7 +211,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 pd.hide();
             }
             preference.setLoad(true);
-            Toast.makeText(Settings.this, "Resync Complete", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Settings.this, "Resync Complete!", Toast.LENGTH_SHORT).show();
         }
     }
 }
