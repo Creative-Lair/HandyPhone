@@ -54,7 +54,9 @@ public class DisplayContact extends AppCompatActivity {
         name.setText(preference.getName());
         phone.setText(preference.getPhone());
         Bitmap bitmap = preference.getBitmap();
-        image.setImageBitmap(bitmap);
+        if(bitmap!=null)
+            image.setImageBitmap(bitmap);
+        preference.setBitmap(null);
         if (preference.getGroup().equals("Work")) {
             work.setChecked(true);
         } else if (preference.getGroup().equals("Friend")) {

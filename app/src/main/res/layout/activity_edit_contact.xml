@@ -140,6 +140,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/colorBlack"
                 android:text="@string/update_contact"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp" />
         </RelativeLayout>
