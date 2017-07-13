@@ -66,7 +66,7 @@ public class DisplayContact extends AppCompatActivity {
         }
         contacts = new Contacts();
         contacts.setName(preference.getName());
-        contacts.setNumber(preference.getName());
+        contacts.setNumber(preference.getPhone());
         contacts.setGroup(preference.getGroup());
         contacts.setId(preference.getId());
         contacts.setIcon(preference.getPic());
