@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.creativelair.handyphone"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="com.creativelair.handyphone">
 
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="true"
         android:resizeable="true">
     </supports-screens>
 
@@ -127,8 +124,20 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".Screens.Settings" />
-        <activity android:name=".Screens.About"></activity>
+        <activity
+            android:name=".Screens.Settings"
+            android:configChanges="orientation"
+            android:label="Settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+
+        </activity>
+        <activity android:name=".Screens.About"
+            android:configChanges="orientation"
+            android:label="About"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

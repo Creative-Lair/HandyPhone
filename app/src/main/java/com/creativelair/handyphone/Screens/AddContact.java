@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 2;
     private final int PICK_PHOTO = 1;
     ActionBar actionBar;
-    TextView name, phone;
+    EditText name, phone;
     ImageView image;
     CheckBox work,friend,family;
     Button add, gallery;
@@ -72,8 +73,8 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     }
 
     public void prepare(){
-        name = (TextView) findViewById(R.id.name);
-        phone = (TextView) findViewById(R.id.phone);
+        name = (EditText) findViewById(R.id.name);
+        phone = (EditText) findViewById(R.id.phone);
         work = (CheckBox) findViewById(R.id.work);
         friend = (CheckBox) findViewById(R.id.friends);
         family = (CheckBox) findViewById(R.id.family);
@@ -142,6 +143,13 @@ implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
                 } else {
                     contact.setId(addContact(contact));
                     db.addContact(contact);
+                    Contacts c = new Contacts();
+                    c.setGroup("All");
+                    c.setNumber(mPhone);
+                    c.setIcon(contact.getIcon());
+                    c.setName(mName);
+                    db.addContact(c);
+
                 }
 
                 preference.setName(contact.getName());

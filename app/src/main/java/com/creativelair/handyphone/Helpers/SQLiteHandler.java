@@ -202,36 +202,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 } else {
                     user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 }
-        //        if(user.getGroup().equals("All"))
+                if(user.getGroup().equals("All"))
                     contacts.add(user);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        return contacts;
-    }
-
-    public ArrayList<Contacts> getAll() {
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT + " ORDER BY " + KEY_NAME + "  COLLATE NOCASE";
-        ArrayList<Contacts> contacts = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Contacts user = new Contacts();
-                user.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
-                user.setNumber(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
-                user.setGroup(cursor.getString(cursor.getColumnIndex(KEY_GROUP)));
-                user.setId(cursor.getInt(cursor.getColumnIndex(KEY_CONTACT_ID)));
-                if(cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB))!=null){
-                    byte[] imageBytes = null;
-                    imageBytes = cursor.getBlob(cursor.getColumnIndex(KEY_CONTACTBLOB));
-                    user.setPic(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-                } else {
-                    user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
-                }
-                contacts.add(user);
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -290,7 +262,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                     user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 }
                 contacts.add(user);
-                System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -320,7 +291,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                     user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 }
                 contacts.add(user);
-                System.out.print(cursor.getString(cursor.getColumnIndex(KEY_CONTACTNUMBER)));
             } while (cursor.moveToNext());
         }
         cursor.close();

@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class EditContact extends AppCompatActivity
     private final int PICK_PHOTO = 1;
     private final int CAMERA = 4;
     ActionBar actionBar;
-    TextView name, phone;
+    EditText name, phone;
     ImageView image;
     CheckBox work, friend, family;
     Button add, gallery;
@@ -86,8 +87,8 @@ public class EditContact extends AppCompatActivity
     }
 
     public void prepare() {
-        name = (TextView) findViewById(R.id.name);
-        phone = (TextView) findViewById(R.id.phone);
+        name = (EditText) findViewById(R.id.name);
+        phone = (EditText) findViewById(R.id.phone);
         work = (CheckBox) findViewById(R.id.work);
         friend = (CheckBox) findViewById(R.id.friends);
         family = (CheckBox) findViewById(R.id.family);
@@ -164,6 +165,14 @@ public class EditContact extends AppCompatActivity
 
                 } else {
                     db.updateContact(oldcontact, contact);
+
+                    Contacts c = new Contacts();
+                    c.setGroup("All");
+                    c.setNumber(mPhone);
+                    c.setIcon(contact.getIcon());
+                    c.setName(mName);
+                    c.setPic(contact.getPic());
+                    db.addContact(c);
 
                     preference.setName(contact.getName());
                     preference.setPhone(contact.getNumber());
