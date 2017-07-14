@@ -183,7 +183,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     }
 
     public ArrayList<Contacts> getContactDetails() {
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT + " ORDER BY " + KEY_NAME + "  COLLATE NOCASE";
         ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -202,7 +202,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 } else {
                     user.setIcon(cursor.getString(cursor.getColumnIndex(KEY_CONTACTPIC)));
                 }
-                if(user.getGroup().equals("All"))
+        //        if(user.getGroup().equals("All"))
                     contacts.add(user);
             } while (cursor.moveToNext());
         }
@@ -213,7 +213,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     }
 
     public ArrayList<Contacts> getAll() {
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT;
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACT + " ORDER BY " + KEY_NAME + "  COLLATE NOCASE";
         ArrayList<Contacts> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
