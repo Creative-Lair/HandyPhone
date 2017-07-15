@@ -162,8 +162,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String image = contacts.getIcon();
         Bitmap bitmap = contacts.getPic();
-        String where = KEY_CONTACTNUMBER + "= ? AND " + KEY_NAME + "=?";
-        String[] whereargs = {oldcontacts.getNumber(), oldcontacts.getName()};
+        String where = KEY_CONTACTNUMBER + "= ? AND " + KEY_NAME + "=? AND " + KEY_GROUP + "=?";
+        String[] whereargs = {oldcontacts.getNumber(), oldcontacts.getName(), oldcontacts.getGroup()};
         ContentValues cv = new ContentValues();
         cv.put(KEY_NAME, contacts.getName());
         cv.put(KEY_CONTACTNUMBER, contacts.getNumber());

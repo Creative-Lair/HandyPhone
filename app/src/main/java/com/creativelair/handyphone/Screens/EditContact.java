@@ -21,7 +21,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -65,6 +64,7 @@ public class EditContact extends AppCompatActivity
 
         oldcontact.setName(preference.getName());
         oldcontact.setNumber(preference.getPhone());
+        oldcontact.setGroup(preference.getGroup());
         oldcontact.setId(preference.getId());
         mBitmap = preference.getBitmap();
 
@@ -166,13 +166,32 @@ public class EditContact extends AppCompatActivity
                 } else {
                     db.updateContact(oldcontact, contact);
 
-                    Contacts c = new Contacts();
-                    c.setGroup("All");
-                    c.setNumber(mPhone);
-                    c.setIcon(contact.getIcon());
-                    c.setName(mName);
-                    c.setPic(contact.getPic());
-                    db.addContact(c);
+                    if (oldcontact.getGroup().equals("All")) {
+                        Contacts c = new Contacts();
+                        c.setGroup("All");
+                        c.setNumber(mPhone);
+                        c.setIcon(contact.getIcon());
+                        c.setName(mName);
+                        c.setPic(contact.getPic());
+                        db.addContact(c);
+                    } else if (oldcontact.getGroup().equals("Frequent")) {
+                        Contacts c = new Contacts();
+                        c.setGroup(contact.getGroup());
+                        c.setNumber(mPhone);
+                        c.setIcon(contact.getIcon());
+                        c.setName(mName);
+                        c.setPic(contact.getPic());
+                        db.addContact(c);
+                    } else {
+                        Contacts c = new Contacts();
+                        c.setGroup("All");
+                        c.setNumber(mPhone);
+                        c.setIcon(contact.getIcon());
+                        c.setName(mName);
+                        c.setPic(contact.getPic());
+                        oldcontact.setGroup("All");
+                        db.updateContact(oldcontact, c);
+                    }
 
                     preference.setName(contact.getName());
                     preference.setPhone(contact.getNumber());
